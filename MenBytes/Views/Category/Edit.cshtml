@@ -1,0 +1,194 @@
+﻿@model MenBytes.Models.ViewModels.EditCategoryViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="hk-pg-header">
+    <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span>Form Create</h4>
+</div>
+<section class="hk-sec-wrapper">
+    <div class="row">
+        <div class="col-sm">
+            @*<form class="needs-validation" id="CrreateCatagoryFrm"  novalidate>*@
+            @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { @class = "needs-validation", id = "EditCatagoryForm" }))
+            {
+                <input type="hidden" value="@Model.Id" />
+                <div class="form-row">
+                    <div class="col-md-12 mb-12">
+                        <label for="validationCustom01">Category name</label>
+                        <input type="text" name="Name" value="@Model.Name" class="form-control" id="categoryName" placeholder="First name">
+
+
+                        @*@Html.TextBoxFor(model => model.Name, "", new { @class = "form-control", placeholder = "Category's Name" })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+
+                        @*<div class="valid-feedback">
+                                Looks good!
+                            </div>*@
+                    </div>
+
+
+                </div>
+
+                @*<div class="form-group">
+                    <div class="form-check custom-control custom-checkbox">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input custom-control-input" })
+                        <label class="form-check-label custom-control-label" for="IsActive">
+                            Agree to active this Category?
+                        </label>
+
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        <div class="invalid-feedback">
+                            You must agree before submitting.
+                        </div>
+                    </div>
+                </div>*@
+
+                @Html.AntiForgeryToken()
+                <button type="button" class="btn btn-primary" id="EditCategoryBtn">Edit Form</button>
+
+            }
+
+            @*</form>*@
+        </div>
+    </div>
+</section>
+
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>EditCategoryViewModel</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }*@
+
+@section scripts{
+    
+
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<script type="text/javascript">
+
+        //$("#Name").on("keypress keyup blur", function (event) {
+        //    $(this).val($(this).val().replace(/[^\d].+/, ""));
+        //    if ((event.which < 48 || event.which > 57)) {
+
+        //        event.preventDefault();
+        //    }
+        //});
+
+
+        $("#categoryName").on("keypress keyup blur",function(event){
+            var inputValue = event.charCode;
+
+            if(!((inputValue > 64 && inputValue < 91) || (inputValue > 96 && inputValue < 123)||(inputValue==32) || (inputValue==0))){
+                event.preventDefault();
+            }
+        });
+
+        $("#EditCatagoryForm").validate({
+            rules: {
+                Name: {
+                    required: true
+
+                }
+            },
+            message: {
+                Name: {
+                    lettersonly: "Category's Name is Required"
+                }
+            }
+
+        });
+
+
+
+
+
+
+        $("#EditCategoryBtn").click(function() {
+            alert("Edit Button is Clicked")
+            if ($("#EditCatagoryForm").valid())
+            {
+
+                $.ajax({
+                        url: '@Url.Action("Edit","Category")',
+                        type:'POST',
+                        data:$("#EditCatagoryForm").serialize()
+                }).done(function (msg) {
+                    if (msg == true) {
+                        $.toast().reset('all');
+                        $("body").removeAttr('class');
+                        $.toast({
+                            text: '<i class="jq-toast-icon ti-face-smile"></i><p>Category Edit Successfuly!</p>',
+                            position: 'top-right',
+                            loaderBg:'#7a5449',
+                            class: 'jq-has-icon jq-toast-success',
+                            hideAfter: 3500, 
+                            stack: 6,
+                            showHideTransition: 'fade'
+                        });
+                        window.location.href="http://localhost:11804/Category/Index";
+                    } else {
+
+                    }
+
+                    })
+                    .fail(function() {
+                      
+                        //swal("Oops!", "Data is Not Edit Successfuly!", "error");
+                        $.toast().reset('all'); 
+                        $("body").removeAttr('class');
+                        $.toast({
+                            text: '<i class="jq-toast-icon ti-twitter-alt"></i><p>Oops! Category is Not Edit.</p>',
+                            position: 'top-right',
+                            loaderBg:'#7a5449',
+                            class: 'jq-has-icon jq-toast-danger',
+                            hideAfter: 3500, 
+                            stack: 6,
+                            showHideTransition: 'fade'
+                        });
+                    })
+            }
+            else {
+                swal("Warning!", "Fill your Required fields (*)!", "error");
+            }
+
+        });
+
+
+</script>
+}

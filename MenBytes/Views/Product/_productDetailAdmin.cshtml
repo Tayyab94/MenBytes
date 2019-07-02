@@ -1,0 +1,35 @@
+﻿@model MenBytes.Models.ViewModels.showAllProducts
+
+<div class="container detaildiv" style="margin-top: 18px">
+    <div class="row">
+        @foreach (var imge in Model.ProductImages)
+        {
+            <div class="col-md-4">
+                <img src="@Url.Content(imge)" alt="Product Image" class="img-responsive img-thumbnail"/>
+            </div>
+        }
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-5">
+            
+            <h6> @Html.DisplayFor(model => model.ProductName)</h6>
+            <p><strong>Quantity</strong> &nbsp; <span class="badge badge-gold">@Html.DisplayFor(model => model.Quantity)</span> </p>
+            <p><strong>Sale Price</strong>    @Html.DisplayFor(model => model.salePrice)</p>
+            <p><strong>Purchase Price</strong>  @Html.DisplayFor(model => model.purchasePrice)</p>
+            
+            
+            <p><strong>Category</strong>  @Html.DisplayFor(model => model.CategoryName)</p>
+            <p><strong>Company</strong>    @Html.DisplayFor(model => model.CompanyName)</p>
+            <p><strong>Freatures</strong>  @Html.DisplayFor(model => model.IsFeatured)</p>
+            <p><strong>Deleted</strong>    @Html.DisplayFor(model => model.IsDeleted)</p>
+
+
+        </div>
+        
+        <div class="col-7"><h5>Description</h5>
+            <p class="text-justify">@Html.DisplayFor(model => model.ProductDescription)</p> 
+        </div>
+    </div>
+   
+</div>

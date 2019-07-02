@@ -1,0 +1,225 @@
+﻿@model MenBytes.Models.ViewModels.clientHomeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+
+    string mes = (TempData["cartEmptyMessage"] == null? "":TempData["cartEmptyMessage"].ToString());
+}
+
+@if (!string.IsNullOrEmpty(mes) )
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> @mes.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<!-- HOME MAIN  -->
+<section class="simple-head" data-stellar-background-ratio="0.5">
+    <div class="position-center-center"> 
+        <!-- Container Fluid -->
+        <div class="container-full"> 
+            <!-- Header Text -->
+            <div class="text-left col-lg-8 no-padding"> @*<span class="price">@(string.IsNullOrEmpty(mes) ? "" : mes)</span>*@
+                <h4>The Latest  Products for @DateTime.Now.Year</h4>
+                <h1 class="extra-huge-text">look hot with @DateTime.Now.Year style</h1>
+                <div class="text-btn"> <a href="@Url.Action("Index","Shop")" class="btn btn-inverse margin-top-40">SHOP NOW</a> </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<div id="content">
+
+
+    @*<!-- Quick View -->
+        <div id="qck-view-shop" class="zoom-anim-dialog qck-inside mfp-hide">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <!-- Images Slider -->
+                    <div class="images-slider">
+                        <ul class="slides">
+                            <li data-thumb="images/item-img-1-1.jpg"> <img src="images/item-img-1-1.jpg" alt=""> </li>
+                            <li data-thumb="images/item-img-1-1-1.jpg"> <img src="images/item-img-1-1-1.jpg" alt=""> </li>
+                            <li data-thumb="images/item-img-1-1.jpg"> <img src="images/item-img-1-1.jpg" alt=""> </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Content Info -->
+                <div class="col-sm-6">
+                    <div class="contnt-info">
+                        <h3>Mid Rise Skinny Jeans</h3>
+                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the look and feel of finished, typeset text. Only for show. He who searches for meaning here will be sorely disappointed. <br>
+                            <br>
+                            These words are here to provide the reader with a basic impression of how actual text will appear in its final presentation. </p>
+
+                        <!-- Btn  -->
+                        <div class="add-info">
+                            <div class="quantity">
+                                <input type="number" min="1" max="100" step="1" value="1" class="form-control qty">
+                            </div>
+                            <a href="#." class="btn btn-inverse"><i class="icon-heart"></i></a> <a href="#." class="btn">ADD TO CART </a> </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+    @{
+        Html.RenderAction("products", "Widgets");
+    }
+
+    <!-- ABOUT -->
+    <section class="about">
+        <div class="light-gray-bg">
+            <div class="main-page-section half_left_layout">
+
+                <!-- Left Background -->
+                <div class="main-half-layout half_left_layout studio-bg"> </div>
+                <!-- Right Content -->
+                <div class="main-half-layout-container half_left_layout">
+                    <div class="about-us-con">
+                        <h3>A Brief History of the MenBytes</h3>
+                        <p>
+                            Menbytes is the leading online marketplace in South Asia, empowering tens of thousands of sellers to contact with millions of customers. Draz
+                            Provides immediate  and easy acces to 10 millio producs in more than 100+ Categories and delivers more than 2 million packages enery month to
+                            all cornors of its Countries.
+
+                            draz is small, a marketplace and community for its customers. it is also a univerity for enterpreneursm and every month it educate more than 5,000
+                            mew  sellers on e-Commerce operations
+                        </p>
+                        <h6>1950 <span></span> 1999</h6>
+                        <p>MenBytes's e-commerce platforms cater to both Pakistani and global consumers, though the majority of its transactions are generated domestically. At its heart is Sale, a Pakistani consumer-to-consumer website much like eBay. Tmall offers merchants official storefronts to consumers in Pakistan. MenBytes connect businesses in Pakistan with buyers around the world and within the Country</p>
+                        <h6>2000 <span></span> 2018</h6>
+                        <p>
+                            Menbytes is the leading online marketplace in South Asia, empowering tens of thousands of sellers to contact with millions of customers. Draz
+                            Provides immediate  and easy acces to 10 millio producs in more than 100+ Categories and delivers more than 2 million packages enery month to
+                            all cornors of its Countries..
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ABOUT -->
+    <section class="about">
+        <!-- Right Background -->
+        <div class="main-page-section half_left_layout">
+            <div class="main-half-layout half_right_layout"> </div>
+
+            <!-- Left Content -->
+            <div class="main-half-layout-container half_right_layout">
+                <div class="about-us-con">
+                    <h3>Fully Customizability Options Look Beautiful in @DateTime.Now.Date.Year</h3>
+                    <p>Menbytes is the leading online marketplace in South Asia, empowering tens of thousands of sellers to contact with millions of customers. Draz
+                        Provides immediate  and easy acces to 10 millio producs in more than 100+ Categories and delivers more than 2 million packages enery month to
+                        all cornors of its Countries. </p>
+                    <ul class="order-info">
+                        <li>
+                            <i class="flaticon-sewing-machine"> </i>
+                            <h5>Fully Customizability</h5>
+                        </li>
+                        <li>
+                            <i class="flaticon-needle-with-thread-to-sew-clothes"> </i>
+                            <h5>Fully Hand Made</h5>
+                        </li>
+                        <li>
+                            <i class="flaticon-shirt"> </i>
+                            <h5>Elegant Looks</h5>
+                        </li>
+                    </ul>
+                    <a href="#." class="btn btn-inverse">Order Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Share -->
+    <section class="light-gray-bg padding-top-100 padding-bottom-80">
+        <div class="container-full">
+
+            <!-- Main Heading -->
+            <div class="heading text-center">
+                <h4>Knowledge Share</h4>
+                <span>
+                    In this Section you will find the interested Blogs of the Products which will give  you the More detail of about the Product
+                </span>
+            </div>
+            <div class="knowledge-share">
+                <ul class="row">
+                    
+                    @foreach (var blog in Model.BlogsList)
+                    {
+                        <!-- Post 1 -->
+                        <li class="col-md-4">
+
+                            <!-- Post Img -->
+                            <div class="img-por"> <img src="@Url.Content(blog.blogImage)" alt=""></div>
+                            <article>
+                                <!-- Date And comment -->
+                                <div class="date"> <span class="huge">@blog.postedDate.Date.ToString("M")</span> @*<span>@blog.postedDate.Date.DayOfWeek.ToString("G")</span>*@</div>
+                                <div class="com-sec"> <span>By: <strong><a href="#.">@blog.postedBy</a></strong></span> <span>Comments: <strong><a href="#.">@blog.BlogComments.Count</a></strong></span> </div>
+
+
+                                <p class="pull-right"><a href="@Url.Action("BlogDetail","SiteBlog",new {id=@blog.Id})">Read more</a></p>
+                                <div class="clearfix"></div>
+                                @*<a href="#." class="b-tittle">@blog.Title</a>*@
+                            </article>
+                        </li>
+                    }
+                    @*<a href="@Url.Action("BloglistPage","SiteBlog")" class="btn" style="color: white">More Blogs</a>*@
+
+                
+                </ul>
+                @*<p class="center-block">
+                    Html.ActionLink("More blogs", "BloglistPage", "SiteBlog", new {@class = "pull-right"})
+                    
+                    <a href="@Url.Action("BloglistPage","SiteBlog")" class="pull-right">More</a>
+                </p>*@
+                
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+
+
+            $("#addtocart").click(function(e) {
+
+                alert("Button is Click")
+                e.preventDefault();
+                var id = $(this).data("pid");
+
+
+                $.ajax({
+                    url: "/Cart/AddToCartPartial/" + id,
+                    type: "GET",
+                    success: function(result) {
+                        $(".ajaxCart").html(result);
+                    },
+                    error: function(result) {
+                        alert("Something Wrong");
+                    }
+                });
+                alert(id);
+
+            });
+            //Function End
+
+
+        
+       
+
+
+    </script>
+}

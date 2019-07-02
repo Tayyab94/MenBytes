@@ -1,0 +1,54 @@
+﻿@model MenBytes.Models.ViewModels.EditProductQunatiyUPViewModel
+
+
+<div class="modal-body">
+    @*@Html.HiddenFor(x => x.pro_Id, new { id = "ProductID" })
+
+    // @Html.HiddenFor(x => x.Id, new { id = "stocktblPrimaryKey" })*@
+
+    <input type="hidden" value="@Model.Id" id="stocktblPrimaryKey" />
+
+
+    <input type="hidden" value="@Model.pro_Id" id="ProductID" />
+    <div class="form-group">
+        @Html.Label("Last Updated Quantity", htmlAttributes: new { @class = "control-label col-md-12" })
+        <div class="col-md-12">
+            <input type="number" min="1" max="100" name="Quantity" data-primary-id="@Model.Id" value="@Model.quantity" id="eidtUpdateQtyBox" class="form-control sale_purchase_Qty" />
+        </div>
+    </div>
+</div>
+
+  
+
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+
+
+@section scripts{
+
+
+    @*<script>
+
+            $(document).ready(function() {
+
+
+                $("#changeStatusBtn").on("click",
+                    function(e) {
+                        var id = $(this).attr("data-id");
+
+                        var selectValueD_V = $(".statusDD ").find(":selected").val();
+
+                        var selectValueD_T = $(".statusDD ").find(":selected").text();
+
+                        alert(selectValueD_V);
+
+                        alert(selectValueD_T);
+
+
+                    });
+            })
+        </script>*@
+}

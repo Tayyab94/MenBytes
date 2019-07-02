@@ -1,0 +1,878 @@
+﻿@using MenBytes.Models.Context
+@using Microsoft.AspNet.Identity
+@model MenBytes.Models.ViewModels.AdminHomeViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@{
+    string userId = User.Identity.GetUserId();
+    ApplicationDbContext _context = new ApplicationDbContext();
+
+    var totalOrders = _context.Orders.Count();
+    var totalOrders1 = _context.Orders.Where(x => x.orderStatusID == 3).Count();
+
+    var totalUSers = _context.Users.Where(x => x.Id != userId).Count();
+
+}
+
+
+@section CustomrCss
+{
+    <style type="text/css">
+
+
+        .portlet {
+            margin-bottom: 15px;
+        }
+
+        .btn-white {
+            border-color: #cccccc;
+            color: #333333;
+            background-color: #ffffff;
+        }
+
+        .portlet {
+            border: 1px solid;
+        }
+
+            .portlet .portlet-heading {
+                padding: 0 15px;
+            }
+
+                .portlet .portlet-heading h4 {
+                    padding: 1px 0;
+                    font-size: 16px;
+                }
+
+                .portlet .portlet-heading a {
+                    color: #fff;
+                }
+
+                    .portlet .portlet-heading a:hover,
+                    .portlet .portlet-heading a:active,
+                    .portlet .portlet-heading a:focus {
+                        outline: none;
+                    }
+
+            .portlet .portlet-widgets .dropdown-menu a {
+                color: #333;
+            }
+
+            .portlet .portlet-widgets ul.dropdown-menu {
+                min-width: 0;
+            }
+
+            .portlet .portlet-heading .portlet-title {
+                float: left;
+            }
+
+                .portlet .portlet-heading .portlet-title h4 {
+                    margin: 10px 0;
+                }
+
+            .portlet .portlet-heading .portlet-widgets {
+                float: right;
+                margin: 8px 0;
+            }
+
+                .portlet .portlet-heading .portlet-widgets .tabbed-portlets {
+                    display: inline;
+                }
+
+                .portlet .portlet-heading .portlet-widgets .divider {
+                    margin: 0 5px;
+                }
+
+            .portlet .portlet-body {
+                padding: 15px;
+                background: #fff;
+            }
+
+            .portlet .portlet-footer {
+                padding: 10px 15px;
+                background: #e0e7e8;
+            }
+
+                .portlet .portlet-footer ul {
+                    margin: 0;
+                }
+
+        .portlet-green,
+        .portlet-green > .portlet-heading {
+            border-color: #16a085;
+        }
+
+            .portlet-green > .portlet-heading {
+                color: #fff;
+                background-color: #16a085;
+            }
+
+        .portlet-orange,
+        .portlet-orange > .portlet-heading {
+            border-color: #f39c12;
+        }
+
+            .portlet-orange > .portlet-heading {
+                color: #fff;
+                background-color: #f39c12;
+            }
+
+        .portlet-blue,
+        .portlet-blue > .portlet-heading {
+            border-color: #2980b9;
+        }
+
+            .portlet-blue > .portlet-heading {
+                color: #fff;
+                background-color: #2980b9;
+            }
+
+        .portlet-red,
+        .portlet-red > .portlet-heading {
+            border-color: #e74c3c;
+        }
+
+            .portlet-red > .portlet-heading {
+                color: #fff;
+                background-color: #e74c3c;
+            }
+
+        .portlet-purple,
+        .portlet-purple > .portlet-heading {
+            border-color: #8e44ad;
+        }
+
+            .portlet-purple > .portlet-heading {
+                color: #fff;
+                background-color: #8e44ad;
+            }
+
+        .portlet-default,
+        .portlet-dark-blue,
+        .portlet-default > .portlet-heading,
+        .portlet-dark-blue > .portlet-heading {
+            border-color: #34495e;
+        }
+
+            .portlet-default > .portlet-heading,
+            .portlet-dark-blue > .portlet-heading {
+                color: #fff;
+                background-color: #34495e;
+            }
+
+        .portlet-basic,
+        .portlet-basic > .portlet-heading {
+            border-color: #333;
+        }
+
+            .portlet-basic > .portlet-heading {
+                border-bottom: 1px solid #333;
+                color: #333;
+                background-color: #fff;
+            }
+
+        media(min-width:768px) {
+            .portlet
+
+        {
+            margin-bottom: 30px;
+        }
+
+        }
+
+        .img-chat {
+            width: 40px;
+            height: 40px;
+        }
+
+        .text-green {
+            color: #16a085;
+        }
+
+        .text-orange {
+            color: #f39c12;
+        }
+
+        .text-red {
+            color: #e74c3c;
+        }
+    </style>
+}
+
+<!-- Container -->
+<div class="container mt-xl-50 mt-sm-30 mt-15">
+    <!-- Title -->
+    <div class="hk-pg-header align-items-top">
+        <div class="col-md-12">
+
+            <div class="alert alert-inv alert-inv-info" role="alert" style="border-radius: 10px">
+                <h2 class=" font-weight-600 mb-10 text-center" style="font-family:cursive"><strong class="text-white">Admin</strong><strong class="text-white"> Panel</strong> </h2>
+            </div>
+
+        </div>
+        @*<div class="d-flex w-500p">
+                <select class="form-control custom-select custom-select-sm mr-15">
+                    <option selected="">Latest Products</option>
+                    <option value="1">CRM</option>
+                    <option value="2">Projects</option>
+                    <option value="3">Statistics</option>
+                </select>
+                <select class="form-control custom-select custom-select-sm mr-15">
+                    <option selected="">USA</option>
+                    <option value="1">USA</option>
+                    <option value="2">India</option>
+                    <option value="3">Australia</option>
+                </select>
+                <select class="form-control custom-select custom-select-sm">
+                    <option selected="">December</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="1">April</option>
+                    <option value="2">May</option>
+                    <option value="3">June</option>
+                    <option value="1">July</option>
+                    <option value="2">August</option>
+                    <option value="3">September</option>
+                    <option value="1">October</option>
+                    <option value="2">November</option>
+                    <option value="3">December</option>
+                </select>
+            </div>*@
+    </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="hk-row">
+                <div class="col-sm-12">
+                    <div class="card-group hk-dash-type-2">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-5">
+                                    <div>
+                                        <span class="d-block font-15 text-dark font-weight-500">Users</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-success font-14 font-weight-500">@*+10%*@</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block display-4 text-dark mb-5">@totalUSers</span>
+                                    <small class="d-block">@totalUSers Target Users</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-5">
+                                    <div>
+                                        <span class="d-block font-15 text-dark font-weight-500">Total Orders</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-success font-14 font-weight-500">
+                                            @*+ @{
+                                                try
+                                                {
+                                                    @(totalOrders / totalOrders1)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    @(0);
+                                                }
+                                            }%*@
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block display-4 text-dark mb-5"><span class="counter-anim">@totalOrders</span></span>
+                                    <small class="d-block">(@(totalOrders1)) Complete</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-5">
+                                    <div>
+                                        <span class="d-block font-15 text-dark font-weight-500"><strong>New Contacts</strong></span>
+                                    </div>
+                                    <div>
+                                        <span class="text-warning font-14 font-weight-500">
+                                            @*@{ try
+                                                {
+                                                    @(Model.TotalContactsUSer / Model.TotalWebSubscribe)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    @(0);
+                                                }
+                                            }%*@
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block display-4 text-dark mb-5">@Model.TotalContactsUSer</span>
+                                    <small class="d-block">@Model.TotalWebSubscribe <strong>Subscribers</strong></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-5">
+                                    <div>
+                                        <span class="d-block font-15 text-dark font-weight-500"><strong>Products</strong></span>
+                                    </div>
+                                    <div>
+                                        <span class="text-warning font-14 font-weight-500">
+                                            @*@{ try
+                                                {
+                                                    @(Model.TotalProducts / Model.TotalCategories)
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    @(0);
+                                                }
+                                            }
+                                            %*@
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block display-4 text-dark mb-5">@Model.TotalProducts</span>
+                                    <small class="d-block">@Model.TotalCategories <strong>Categories</strong> </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            @*apna Chat Templete*@
+
+
+            <section class="hk-sec-wrapper">
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="container bootstrap snippet">
+
+                                    <div class="portlet portlet-default">
+                                        <div class="portlet-heading">
+                                            <div class="portlet-title">
+                                                <h4 class="text-white"><i class="fa fa-circle text-green"></i> Live Chat</h4>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div id="chat" class=" in">
+                                            <div>
+                                                <div class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 230px;">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p class="text-center text-muted small">@DateTime.Now.ToString("f")</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="currentmsg">
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="portlet-footer">
+                                                @*<form role="form">*@
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" id="adminmsgChat" placeholder="Write your Message Here" aria-label="Write your Message Here" aria-describedby="Write your Message Here">
+                                                    <div class="input-group-append">
+                                                        <button type="button" class="btn btn-outline-primary btn-small pull-right AdminsendMessageBtn"><i class="fa fa-send"></i></button>
+                                                    </div>
+                                                    @*</div>*@
+                                                    @*<div class="form-group">
+                                                            <textarea class="form-control" id="adminmsgChat" placeholder="Enter message..."></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="button" class="btn btn-outline-primary btn-small pull-right AdminsendMessageBtn"><i class="fa fa-send"></i></button>
+                                                            <div class="clearfix"></div>
+                                                        </div>*@
+                                                    @*</form>*@
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            @*End apna Chat Templage*@
+
+            @*apna Templete*@
+
+
+            <section class="hk-sec-wrapper">
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="row">
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">
+                                        Products
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white ">Product Section</h5>
+
+                                        <p class="card-text">Total Products   <span class="badge badge-primary badge-pill">@Model.TotalProducts</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Category</div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Category Section</h5>
+                                        <p class="card-text">Total Categories   <span class="badge badge-primary badge-pill">@Model.TotalCategories</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Company</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Company Section</h5>
+                                        <p class="card-text">Total Sellers <span class="badge badge-primary badge-pill">@Model.TotalCompanies</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Contacted Users</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Contact Section</h5>
+                                        <p class="card-text">Total Connected Users   <span class="badge badge-primary badge-pill">@Model.TotalContactsUSer</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Subscribers</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Subscribe Section</h5>
+                                        <p class="card-text">Total Subscribers <span class="badge badge-primary badge-pill">@Model.TotalWebSubscribe</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Comments</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Produt's Comments</h5>
+                                        <p class="card-text">Total Comments in all Products <span class="badge badge-primary badge-pill">@Model.TotalCountAllProductComments    </span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Orders</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Produt's Order</h5>
+                                        <p class="card-text">Total Orders of Products <span class="badge badge-primary badge-pill">@totalOrders</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            @*End apna Templage*@
+
+
+
+
+
+            <div class="hk-row">
+                <div class="col-lg-4">
+                    <div class="card card-refresh">
+                        @*<div class="refresh-container">
+                    <div class="loader-pendulums"></div>
+                </div>*@
+                        @*<div class="card-header card-header-action">
+                    <h6>Youtube Subscribers</h6>
+                    <div class="d-flex align-items-center card-action-wrap">
+                        <a href="#" class="inline-block refresh mr-15">
+                            <i class="ion ion-md-radio-button-off"></i>
+                        </a>
+                        <div class="inline-block dropdown">
+                            <a class="dropdown-toggle no-caret" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="ion ion-md-more"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+                        <div class="card-body">
+                            @*<div class="hk-legend-wrap mb-20">
+                        <div class="hk-legend">
+                            <span class="d-10 bg-neon rounded-circle d-inline-block"></span><span>Desktop</span>
+                        </div>
+                        <div class="hk-legend">
+                            <span class="d-10 bg-neon-light-1 rounded-circle d-inline-block"></span><span>Mobile</span>
+                        </div>
+                    </div>*@
+                            @*<div id="area_chart" style="height: 240px;"></div>*@
+                            <div id="containerCompaniesRatioDiv" style="height: 240px;" @*style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"*@>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-4">
+                    <div class="card card-refresh">
+
+                        <div class="card-body">
+                            <div id="containerOrderRatioDiv" style="height: 240px;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-4">
+                    <div class="card card-refresh">
+
+                        <div class="card-body">
+                            <div id="containerBrandRatioDiv" style="height: 240px;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="hk-row">
+
+                <div class="col-md-12">
+                    <div class="card card-refresh">
+
+                        <div class="card-body">
+
+                            <div id="container"></div>
+                            <div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 9px">
+
+                                <button type="button" class="btn btn-small btn-outline-primary" id="plain">Plain</button>
+                                <button type="button" class="btn btn-small btn-outline-blue" id="inverted">Inverted</button>
+                                <button type="button" class="btn btn-small btn-outline-gold" id="polar">Polar</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /Row -->
+    </div>
+
+</div>
+<!-- /Main Content -->
+
+
+
+
+@section scripts{
+    @*<script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>*@
+
+    <script src="~/Scripts/Charts/highcharts.js"></script>
+
+
+    <script src="~/Scripts/Charts/exporting.js"></script>
+    <script src="~/Scripts/Charts/export-data.js"></script>
+    <script src="~/Scripts/Charts/MultiplaChartJS/highcharts-more.js"></script>
+    @*<script src="https://code.highcharts.com/highcharts-more.js"></script>*@
+    
+
+    @*<script src="https://code.highcharts.com/modules/exporting.js"></script>*@
+
+
+
+    <script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+
+    @*<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
+    <script>
+
+        $(document).ready(function () {
+
+            $.getJSON("/Home/GetData",
+                function (data) {
+                    var name1 = [];
+                    var quantity1 = [];
+                    for (var i = 0; i < data.length; i++) {
+                        name1.push(moment(data[i].dTime).format('DD-MMM'));
+                        quantity1.push(data[i].bill);
+                    }
+
+                    var chart = Highcharts.chart('container', {
+
+                        title: {
+                            text: 'Order Report(15 Days)'
+                        },
+
+                        subtitle: {
+                            text: 'MenBytes'
+                        },
+
+                        xAxis: {
+                            title: {
+                                text: 'Date of the Week'
+                            },
+                            categories: name1
+                        },
+
+                        series: [{
+                            type: 'column',
+                            colorByPoint: true,
+                            data: quantity1,
+                            showInLegend: false
+                        }], credits: {
+                            enabled: false
+                        }
+
+                    });
+
+
+                    $('#plain').click(function () {
+                        chart.update({
+                            chart: {
+                                inverted: false,
+                                polar: false
+                            },
+                            subtitle: {
+                                text: 'Plain'
+                            }
+                        });
+                    });
+
+                    $('#inverted').click(function () {
+                        chart.update({
+                            chart: {
+                                inverted: true,
+                                polar: false
+                            },
+                            subtitle: {
+                                text: 'Inverted'
+                            }
+                        });
+                    });
+
+                    $('#polar').click(function () {
+                        chart.update({
+                            chart: {
+                                inverted: false,
+                                polar: true
+                            },
+                            subtitle: {
+                                text: 'Polar'
+                            }
+                        });
+                    });
+
+                });
+
+
+
+
+            $.getJSON("/Home/GetBrandDataForChart",
+                function (data) {
+                    var name = [];
+                    var quantity = [];
+                    for (var i = 0; i < data.length; i++) {
+                        name.push([data[i].Name, data[i].Qty]);
+                        //quantity.push(data[i].Qty);
+                    }
+                    Highcharts.chart('containerCompaniesRatioDiv', {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: 'Companies Products'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Brands',
+                            colorByPoint: true,
+                            data: name
+                        }],
+                        credits: {
+                            enabled: false
+                        },
+                    });
+                });
+
+            
+
+            //Get Brand Order Ratio etc
+
+            $.getJSON("/Home/GetDataForChartOftopBrand",
+                function (data) {
+                    var name = [];
+                    var quantity = [];
+                    for (var i = 0; i < data.length; i++) {
+                        name.push([data[i].orderName, data[i].OrderCount]);
+                        //quantity.push(data[i].Qty);
+                    }
+                    Highcharts.chart('containerBrandRatioDiv', {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: 'Top Selling Brands'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Brands',
+                            colorByPoint: true,
+                            data: name
+                        }],
+                        credits: {
+                            enabled: false
+                        },
+                    });
+                });
+
+
+
+
+            $.getJSON("/Home/GetOrderDataForChart",
+                function (data) {
+                    var name = [];
+                    var quantity = [];
+                    for (var i = 0; i < data.length; i++) {
+                        name.push([data[i].orderName, data[i].OrderCount]);
+                        //quantity.push(data[i].Qty);
+                    }
+                    Highcharts.chart('containerOrderRatioDiv', {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: 'Weekly Order Status'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Status Ratio',
+                            colorByPoint: true,
+                            data: name
+                        }],
+                        credits: {
+                            enabled: false
+                        },
+                    });
+                });
+        });
+
+
+    </script>
+
+}

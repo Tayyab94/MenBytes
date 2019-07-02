@@ -1,0 +1,179 @@
+﻿@*@model MenBytes.Models.MenBytesModels.Category*@
+
+@model MenBytes.Models.ViewModels.NewCategoryViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@*<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span>Form Create</h4>
+    </div>
+    <!-- /Title -->
+    <div class="row">
+        <div class="col-xl-12">*@
+<div class="hk-pg-header">
+    <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span>Form Create</h4>
+</div>
+<section class="hk-sec-wrapper">
+    <div class="row">
+        <div class="col-sm">
+            @*<form class="needs-validation" id="CrreateCatagoryFrm"  novalidate>*@
+            @using (Html.BeginForm("CreateNew","Category",new { @class = "needs-validation", id= "CatagoryForm" }))
+            {
+
+                <div class="form-row">
+                    <div class="col-md-12 mb-12">
+                        <label for="validationCustom01">Category name</label>
+                        <input type="text" name="Name" class="form-control"  placeholder="First name">
+                      
+                        
+                        @*@Html.TextBoxFor(model => model.Name, "", new { @class = "form-control", placeholder = "Category's Name" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+
+                        @*<div class="valid-feedback">
+                                Looks good!
+                            </div>*@
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check custom-control custom-checkbox">
+                        @*<input type="checkbox" class="form-check-input custom-control-input" name="IsActive" id="IsActive" required>
+
+
+                            <label class="form-check-label custom-control-label" for="IsActive">
+                                Agree to active this Category?
+                            </label>*@
+                        @*@Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input custom-control-input" })*@
+
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input custom-control-input" })
+                        <label class="form-check-label custom-control-label" for="IsActive">
+                            Agree to active this Category?
+                        </label>
+
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        <div class="invalid-feedback">
+                            You must agree before submitting.
+                        </div>
+                    </div>
+                </div>
+                @Html.AntiForgeryToken()
+                <button type="button" class="btn btn-primary" id="saveCategoryBtn">Submit form</button>
+
+            }
+
+            @*</form>*@
+        </div>
+    </div>
+</section>
+@*</div>
+        </div>
+    </div>*@
+
+
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Category</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+@*@section Scripts {
+
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*<script type="text/javascript">
+        $(document).read(function() {
+            $('.CategoryBtnSave').click(function() {
+
+                alert("Hell");
+            });
+        });
+
+    </script>
+    }*@
+
+
+
+
+
+<script>    
+
+    $("#CatagoryForm").validate({
+        rules: {
+            Name: {
+                required: true
+            }
+        },
+        message: {
+            Name: {
+                required: "This Field is Reu"
+            }
+        }
+
+    });
+
+
+    $("#saveCategoryBtn").click(function() {
+
+        if ($("#CatagoryForm").valid()) {
+                 
+            $.ajax({
+                    url: '@Url.Action("CreateNew","Category")',
+                    type:'POST',
+                    data:$("#CrreateCatagoryFrm").serialize()
+                }).done(function() {
+                    alert("Data Save");
+                })
+                .fail(function() {
+                    alert("Fail");
+                })
+        } else {
+            alert("Not Save");
+        }
+
+    });
+
+
+</script>
+
+
+
+

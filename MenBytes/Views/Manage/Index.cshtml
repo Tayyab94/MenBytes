@@ -1,0 +1,283 @@
+﻿@using MenBytes.Models
+@using MenBytes.Models.Context
+@using MenBytes.Models.MenBytesModels
+@using Microsoft.AspNet.Identity
+@model MenBytes.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Manage";
+
+    string userID = User.Identity.GetUserId();
+
+    ApplicationUser currentUSer = new ApplicationDbContext().Users.Where(x => x.Id == userID).SingleOrDefault();
+
+    var objOrderCount = new ApplicationDbContext().Orders.Where(x => x.userID == userID).Count(); 
+
+}
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="/order/Index">User</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+<div class="container">
+
+    <!-- Title -->
+    @*<div class="hk-pg-header">
+            <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="database"></i></span></span>Acti</h4>
+        </div>*@
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+
+                <p class="mb-40">WelCome to Mr:<code>@currentUSer.user_Name</code>Into your Profile Section :)</p>
+                <div class="row">
+                    <div class="col-sm">
+
+                        <p class="text-success">@ViewBag.StatusMessage</p>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">
+                                        Password
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white ">Password Setting</h5>
+
+                                        <p class="card-text">
+                                            [
+                                            @if (Model.HasPassword)
+                                            {
+                                                @Html.ActionLink("Change your password", "ChangePassword")
+                                            }
+                                            else
+                                            {
+                                                @Html.ActionLink("Create", "SetPassword")
+                                            }
+                                            ]
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">Setting</div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">Eternal Login Settings</h5>
+                                        <p class="card-text">
+                                            @Model.Logins.Count [
+                                            @Html.ActionLink("Manage", "ManageLogins") ]
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>*@
+                            
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-30">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header text-center bg-info">My Orders</div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">My Total Orders</h5>
+                                        <p class="card-text">
+                                            @objOrderCount [
+                                            @Html.ActionLink("My-Order", "Orders","Manage") ]
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </div>
+    <!-- /Row -->
+    @*<section class="hk-sec-wrapper">
+
+            <div class="row">
+                <div class="col-sm">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-30">
+                            <div class="card text-white bg-dark">
+                                <div class="card-header text-center bg-info">
+                                    Products
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title text-white ">Product Section</h5>
+
+                                    <p class="card-text">Total Products   <span class="badge badge-primary badge-pill">@Model.TotalProducts</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-30">
+                            <div class="card text-white bg-dark">
+                                <div class="card-header text-center bg-info">Category</div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Category Section</h5>
+                                    <p class="card-text">Total Categories   <span class="badge badge-primary badge-pill">@Model.TotalCategories</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-30">
+                            <div class="card text-white bg-dark">
+                                <div class="card-header text-center bg-info">Company</div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Company Section</h5>
+                                    <p class="card-text">Total Sellers <span class="badge badge-primary badge-pill">@Model.TotalCompanies</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-30">
+                            <div class="card text-white bg-dark">
+                                <div class="card-header text-center bg-info">Contacted Users</div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Contact Section</h5>
+                                    <p class="card-text">Total Connected Users   <span class="badge badge-primary badge-pill">@Model.TotalContactsUSer</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-30">
+                            <div class="card text-white bg-dark">
+                                <div class="card-header text-center bg-info">Subscribers</div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Subscribe Section</h5>
+                                    <p class="card-text">Total Subscribers <span class="badge badge-primary badge-pill">@Model.TotalWebSubscribe</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-30">
+                            <div class="card text-white bg-dark">
+                                <div class="card-header text-center bg-info">Comments</div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Produt's Comments</h5>
+                                    <p class="card-text">Total Comments in all Products <span class="badge badge-primary badge-pill">@Model.TotalCountAllProductComments    </span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>*@
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+@*<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Create", "SetPassword")
+            }
+            ]
+        </dd>
+        <dt>External Logins:</dt>
+        <dd>
+            @Model.Logins.Count [
+            @Html.ActionLink("Manage", "ManageLogins") ]
+        </dd>
+        
+            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+             Uncomment the following block after you have set up two-factor authentication
+        
+        
+            <dt>Phone Number:</dt>
+            <dd>
+                @(Model.PhoneNumber ?? "None")
+                @if (Model.PhoneNumber != null)
+                {
+                    <br />
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                    }
+                }
+                else
+                {
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                }
+            </dd>
+        
+        <dt>Two-Factor Authentication:</dt>
+        <dd>
+            <p>
+                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication.
+            </p>
+        
+            
+            Tow Factor Authentication Code is Below this
+            
+            @if (Model.TwoFactor)
+            {
+                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Enabled
+                        <input type="submit" value="Disable" class="btn btn-link" />
+                    </text>
+                }
+            }
+            else
+            {
+                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Disabled
+                        <input type="submit" value="Enable" class="btn btn-link" />
+                    </text>
+                }
+            }
+            
+            End the Code for Two Factor Euthentication
+        </dd>
+
+    </dl>
+</div>*@

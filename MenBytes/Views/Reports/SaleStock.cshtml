@@ -1,0 +1,243 @@
+﻿@model MenBytes.Models.ViewModels.SaleStockViewModel
+
+
+@{
+
+    ViewBag.Title = "SaleStock";
+}
+
+
+@section CustomrCss{
+    <link href="~/clientHtml/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+}
+
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Stock</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Reports</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+<div class="modal fade" id="filterModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #6cca05ab">
+                <h5 class="modal-title text-center">Filter your Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+      
+            <div class="modal-body">
+                <form method="get">
+                    <div class="form-group row">
+                        <label for="toDate" class="col-sm-4 col-form-label">To </label>
+                        <div class="col-sm-8">
+                            @*@Html.TextBoxFor(x=>x.toDate,"",new {@class= "form-control dte", id = "toDate" })*@
+                            <input type="text" id="toDate" name="toDate" class="form-control dte" value="@Model.toDate" placeholder="Select Date" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="DateStarting" class="col-sm-4 col-form-label">Form </label>
+
+                        <div class="col-sm-8">
+                            @*@Html.TextBoxFor(x=>x.frmDate,"",new{ id = "frmDate", @class="form-control dte"})*@
+                            <input type="text" id="frmDate" name="frmDate" class="form-control dte" value="@Model.frmDate" placeholder="Select Date" />
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="stkType" class="col-sm-4 col-form-label">Payment Type</label>
+
+
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(x=>x.SearchItem,new List<SelectListItem>()
+                            { new SelectListItem{Text = "cash",Value = "cash"},new SelectListItem{Text = "Paypal",Value = "Paypal"}}," -Select Payment Type- ",new {@class="form-control",id="payType"})
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="stkType" class="col-sm-4 col-form-label">Order Status</label>
+
+
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(x => x.statusId, new SelectList(Model.orderStatusList, "Id", "statusName"), " -Select Statys- ", new { @class = "form-control", id = "statusDDl" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-outline-danger left" data-dismiss="modal">Close</button>
+
+                <button type="button" id="filterbtn" class="btn btn-outline-primary"><i class="jq-toast-icon ti-search"></i> Filter</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Title -->
+  
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span><button class="btn btn-outline-primary" id="filterbutton"><i class="fa fa-search"></i> Apply Filter</button></h4>
+        @*<input type="button" id="btnNew" class="btn btn-primary form-control" value="Add New" />*@
+    </div>
+
+
+
+    <!-- /Title -->
+    <div class="row">
+        <div class="col-xl-12">
+
+            <section class="hk-sec-wrapper">
+
+                <div class="row">
+                    <div class="col-sm">
+
+                        <h3 class="lnr-text-align-center" style="margin-bottom: 9px"><i class="fa fa-arrow-up"></i>Please Click Filter Button</h3>
+                        <div class="tblContainer">
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section scripts{
+    
+    <script src="~/AdminSide/html/dist/JavaScriptPrint/printThis.js"></script>
+    
+    
+
+
+    <script src="~/AdminSide/html/dist/JavaScriptPrint/printThis.js"></script>
+    <!-- Data Table JavaScript -->
+
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+
+
+    @*<script src="~/AdminSide/html/dist/js/dataTables-data.js"></script>*@
+
+    @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+
+
+    <script src="~/Scripts/S_Alerts/sweetalert.min.js"></script>
+    @*<script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+        <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>*@
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    @*<link rel="stylesheet" href="/resources/demos/style.css">*@
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+   
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#filterbutton").click(function() {
+                $("#filterModel").modal('show');
+            });
+
+
+            $(".dte").datepicker({
+                format: "dd-M-yyyy",
+                autoclose: true,
+                todayHighlight: true,
+                maxDate: "now"
+            });
+
+            $("#filterbtn").click(function (e) {
+
+                var fromDate = $("#frmDate").val();
+
+                var toDate =$("#toDate").val();
+
+                var statusDDL = $("#statusDDl option:selected").val();
+
+                if (statusDDL =='') {
+                    statusDDL = 0;
+                }
+
+                var payment = $("#payType option:selected").val();
+
+                if (fromDate == '' || toDate == '') {
+
+                    e.preventDefault();
+
+                    $.alert({
+                        icon: 'fa fa-warning',
+                        title: 'Error!',
+                        titleClass: 'text-danger',
+                        content: 'Please Select the Date form the calender!',
+                        animationBounce: 1.5
+                    });
+
+                    return false;
+
+                } else if (fromDate != '' || toDate != '') {
+                    var fd = new Date(fromDate);
+                    var td = new Date(toDate);
+
+                    if (fd < td) {
+                        e.preventDefault();
+
+                        $.alert({
+                            icon: 'fa fa-warning',
+                            title: 'Error!',
+                            titleClass: 'text-danger',
+                            content: 'From Date should not be less than To Date..!',
+                            animationBounce: 1.5
+                        });
+
+                        return false;
+                    }
+                }
+
+
+                    $.ajax({
+                        url: "@Url.Action("FilterSaleStock", "Reports")",
+                        type: "GET",
+                        data: { payment: payment, toDate: toDate, fromDate: fromDate, statusID: statusDDL }
+                    }).done(function(result) {
+
+                        $(".tblContainer").html(result);
+                        $("#filterModel").modal('hide');
+                    }).fail(function() {
+                        $.alert({
+                            icon: 'fa fa-warning',
+                            title: 'Error!',
+                            titleClass: 'text-danger',
+                            content: 'Something s  wrong please try again..:(',
+                            animationBounce: 1.5
+                        });
+                    });
+
+            });
+
+
+
+            
+
+        });
+
+
+
+    </script>
+}

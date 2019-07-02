@@ -1,0 +1,742 @@
+﻿@using System.Web.UI.WebControls
+@using MenBytes.Models.Context
+@using MenBytes.Models.MenBytesModels
+@using MenBytes.Models.ViewModels
+@using Microsoft.AspNet.Identity
+@using System.Data.Entity
+
+@{
+    ApplicationDbContext _context = new ApplicationDbContext();
+    List<Category> categoriesList = _context.Categories.Where(x=>x.IsActive==true).ToList();
+
+    List<showAllProducts_ClientHome> ProductList = _context.Products
+        .Include(x => x.ProductImages)
+
+        .Select(s => new showAllProducts_ClientHome
+        {
+            ID = s.ID,
+            ProductName = s.ProductName,
+            salePrice = s.salePrice,
+            ProductImages = s.ProductImages.Select(x => x.ImagePath).FirstOrDefault()
+        }).OrderByDescending(x => x.ID).Take(3).ToList();
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @*<meta name="viewport" content="width=device-width" />*@
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="M_Adnan">
+
+    <link rel="shortcut icon" href="~/favicon.ico">
+    @*<link rel="icon" href="favicon.ico" type="image/x-icon">*@
+    <title>@ViewBag.Title</title>
+
+    <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+    <link rel="stylesheet" type="text/css" href="~/clientHtml/rs-plugin/css/settings.css" media="screen" />
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/clientHtml/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+    <!-- Toggles CSS -->
+    @*<link href="~/AdminSide/html/vendors/jquery-toggles/css/toggles.css" rel="stylesheet" type="text/css">
+        <link href="~/AdminSide/html/vendors/jquery-toggles/css/themes/toggles-light.css" rel="stylesheet" type="text/css">*@
+
+    <!-- Custom CSS -->
+    @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">*@
+
+    <link href="~/clientHtml/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/clientHtml/css/ionicons.min.css" rel="stylesheet">
+    <link href="~/clientHtml/css/main.css" rel="stylesheet">
+    <link href="~/clientHtml/css/style.css" rel="stylesheet">
+    <link href="~/clientHtml/css/responsive.css" rel="stylesheet">
+    <link href="~/clientHtml/font/flaticon.css" rel="stylesheet">
+
+    <!-- JavaScripts -->
+    <script src="~/clientHtml/js/modernizr.js"></script>
+
+    <!-- Online Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400,700,900|Poppins:300,400,500,600,700|Montserrat:300,400,500,600,700,800" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @RenderSection("CustomrCss", false)
+</head>
+<body>
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="position-center-center">
+            <div class="ldr"></div>
+        </div>
+    </div>
+    <div id="wrap">
+
+
+        @if (ViewBag.Title != "Index")
+        {
+            <!-- TOP Bar -->
+            <div class="top-bar">
+                <div class="container-full">
+                    <p><i class="icon-envelope"></i> tayyab.bhatti30@gmail.com </p>
+                    <p class="call"> <i class="icon-call-in"></i> (+92)336-4978771 </p>
+
+                    <!-- Login Info -->
+                    <div class="login-info">
+                        <ul>
+
+                            @if (Request.IsAuthenticated)
+                            {
+                                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+
+                                    @*<li>
+                                            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                        </li>*@
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">LOGOUT</a></li>
+
+                                }
+                            }
+                            else
+                            {
+
+                                <li><a href="@Url.Action("Login", "Account")">LOGIN</a></li>
+                                <li>@Html.ActionLink("Resigrataion", "Register", "Account")</li>
+                            }
+                            <li><a href="@Url.Action("Index","Manage")"> MY ACCOUNT </a></li>
+                            <li><a href="@Url.Action("index","Cart")">MY CART</a></li>
+                            <li><a href="@Url.Action("WishList","Cart")">Wish List</a></li>
+                            <!-- USER BASKET -->
+                            <li class="dropdown user-basket">
+                                <a href="#" id="mini" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Cart Items <i class="icon-basket-loaded"></i> </a>
+                                <div id="tay">
+                                    <ul class="dropdown-menu">
+
+
+                                        @*@Html.Action("MiniCartList", new { area = "", controller = "Cart" })*@
+                                        @*<li>
+                                                <div class="media-left">
+                                                    <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="images/cart-img-1.jpg" alt="..."> </a> </div>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Rise Skinny Jeans</h6>
+                                                    <span class="price">129.00 USD</span> <span class="qty">QTY: 01</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="media-left">
+                                                    <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="images/cart-img-2.jpg" alt="..."> </a> </div>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Mid Rise Skinny Jeans</h6>
+                                                    <span class="price">129.00 USD</span> <span class="qty">QTY: 01</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <h5 class="text-left">SUBTOTAL: <small> 258.00 USD </small></h5>
+                                            </li>
+                                            <li class="margin-0">
+                                                <div class="row">
+                                                    <div class="col-sm-6"> <a href="shopping-cart.html" class="btn">VIEW CART</a></div>
+                                                    <div class="col-sm-6 "> <a href="checkout.html" class="btn">CHECK OUT</a></div>
+                                                </div>
+                                            </li>*@
+                                    </ul>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.Title != "Index")
+        {
+            <!-- header -->
+            <header>
+                <div class="sticky">
+                    <div class="container-full">
+
+                        <!-- Logo -->
+                        <div class="logo"> <a href="@Url.Action("Index","ClientSide")"><img class="img-responsive" src="~/clientHtml/images/logoooo.png" alt=""></a> </div>
+                        <nav class="navbar ownmenu navbar-expand-lg">
+                            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span></span> </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="nav">
+                                    <li class="dropdown">
+                                        <a href="@Url.Action("Index","ClientSide")">Home</a>
+
+                                    </li>
+
+                                    <li class="@(ViewBag.Title=="AboutUs"?"active":string.Empty)"> <a href="@Url.Action("AboutUs","ClientSide")">About </a> </li>
+
+                                    <!-- Two Link Option -->
+                                    <li class="dropdown">
+                                        <a href="#." class="dropdown-toggle" data-toggle="dropdown">Collection</a>
+                                        <div class="dropdown-menu two-option">
+                                            <div class="row">
+                                                @foreach (var cat in categoriesList)
+                                                {
+                                                    <ul class="col-sm-6">
+                                                        <li> <a href="@Url.Action("index","Shop", new{CataId=cat.Id})">@cat.Name</a></li>
+
+                                                    </ul>
+                                                }
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <!-- MEGA MENU -->
+                                    <li class="dropdown megamenu">
+                                        <a href="#." class="dropdown-toggle" data-toggle="dropdown">Mega Store</a>
+                                        <div class="dropdown-menu">
+                                            <div class="row">
+
+                                                <!-- Shop Pages -->
+                                                <div class="col-md-5">
+                                                    <h6>Collections</h6>
+                                                    <ul class="col-2-li">
+                                                        @foreach (var cat in categoriesList)
+                                                        {
+                                                            <li> <a href="@Url.Action("index","Shop", new{CataId=cat.Id})">@cat.Name</a></li>
+
+
+                                                        }
+
+                                                    </ul>
+                                                </div>
+
+                                                <!-- Shop Pages -->
+                                                <div class="col-md-3">
+                                                    <h6>Pages</h6>
+                                                    <ul>
+                                                        <li> <a href="@Url.Action("Index","ClientSide")"> Home</a></li>
+                                                        <li> <a href="@Url.Action("Index","Shop")"> Shop</a></li>
+
+                                                        <li> <a href="@Url.Action("AboutUs","ClientSide")"> About Us</a></li>
+                                                        <li> <a href="@Url.Action("BloglistPage","SiteBlog")"> Blogs</a></li>
+                                                        <li> <a href="@Url.Action("Contact","ClientSide")"> Contact Us</a></li>
+                                                        <li> <a href="@Url.Action("Register","Account")"> Registration</a></li>
+                                                        <li> <a href="@Url.Action("Login","Account")"> Login</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <!-- Top Rate -->
+                                                <div class="col-md-4">
+                                                    <h6>New Arrivals</h6>
+                                                    <div class="top-rated">
+                                                        <ul>
+                                                            @foreach (var pro in ProductList)
+                                                            {
+                                                                <li>
+                                                                    <div class="media-left">
+                                                                        <div class="cart-img"> <a href="@Url.Action("ProductDetail","Product",new {id=@pro.ID})"> <img class="media-object img-responsive" src="@Url.Content(pro.ProductImages)" alt="..."> </a> </div>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <h6 class="media-heading">@pro.ProductName</h6>
+                                                                        <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+                                                                        <span class="price">@pro.salePrice USD</span>
+                                                                    </div>
+                                                                </li>
+                                                            }
+
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- MEga Menu Elements -->
+                                            <div class="mega-menu-elements"> <img src="~/ClientHtml/images/nav-img.png" alt=""> </div>
+                                        </div>
+                                    </li>
+                                    <li class="@(ViewBag.Title=="BloglistPage"?"active":string.Empty)"> <a class="@(ViewBag.Title=="BloglistPage"?"active":string.Empty)" href="@Url.Action("BloglistPage","SiteBlog")"> Blogs</a> </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ContactUs</a>
+                                        <ul class="dropdown-menu">
+
+                                            <li class="@(ViewBag.Title=="Contact"?"active":string.Empty)"> <a class="@(ViewBag.Title=="Contact"?"active":string.Empty)" href="@Url.Action("Contact","ClientSide")"> Contact Form</a> </li>
+                                            <li class="@(ViewBag.Title=="Contact"?"active":string.Empty)"> <a class="@(ViewBag.Title=="Contact"?"active":string.Empty)" href="@Url.Action("LiveChat","ClientSide")"> Live Chat</a> </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+
+                        <!-- Curency -->
+                        @*<div class="curency">
+                                <a href="#." class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> USD<i class="fa fa-angle-down"></i> </a>
+                                <div class="dropdown-menu"> <a class="dropdown-item" href="#">EU</a> <a class="dropdown-item" href="#">USD</a> <a class="dropdown-item" href="#">CA</a> <a class="dropdown-item" href="#">PKR</a> </div>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </header>
+
+        }
+        else
+        {
+            <!-- Nav Chart Updated -->
+            <nav id="cd-lateral-nav">
+                <div class="cd-navigation">
+                    <div class="inside-cart">
+                        <div class="position-center-center">
+                            <h5>Shopping Cart</h5>
+
+                            @*We have send the Request to the server  for getting the Cart data and the code is in own-menu-js file*@
+                            <div id="partialCart_View">
+                                <ul></ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- header -->
+            <header class="sticky">
+                <div class="container-full">
+
+                    <!-- Logo -->
+                    <div class="logo">
+                        <a href="@Url.Action("Index", "ClientSide")">
+                            <img class="img-responsive" src="~/clientHtml/images/logoooo.png" alt="" />
+                        </a>
+                    </div>
+                    <nav class="navbar ownmenu navbar-expand-lg">
+                        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span></span> </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="nav">
+                                <li class="dropdown active">
+                                    <a href="@Url.Action("index","ClientSide")">Home</a>
+
+                                </li>
+
+                                <li class="@(ViewBag.Title =="AboutUs"?"active":string.Empty)"> <a href="@Url.Action("AboutUs","ClientSide")">About </a> </li>
+
+                                <!-- Two Link Option -->
+                                <li class="dropdown">
+                                    <a href="#." class="dropdown-toggle" data-toggle="dropdown">Collection</a>
+                                    <div class="dropdown-menu two-option">
+                                        <div class="row">
+
+                                            @foreach (var cat in categoriesList)
+                                            {
+                                                <ul class="col-sm-6">
+                                                    <li> <a href="@Url.Action("index","Shop", new{CataId=cat.Id})">@cat.Name</a></li>
+
+                                                </ul>
+                                            }
+
+
+
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- MEGA MENU -->
+                                <li class="dropdown megamenu">
+                                    <a href="#." class="dropdown-toggle" data-toggle="dropdown">Mega Store</a>
+                                    <div class="dropdown-menu">
+                                        <div class="row">
+
+                                            <!-- Shop Pages -->
+                                            <div class="col-md-5">
+                                                <h6>Collections</h6>
+                                                <ul class="col-2-li">
+                                                    @foreach (var cat in categoriesList)
+                                                    {
+                                                        <li> <a href="@Url.Action("index","Shop", new{CataId=cat.Id})">@cat.Name</a></li>
+
+                                                    }
+
+                                                </ul>
+                                            </div>
+
+                                            <!-- Shop Pages -->
+                                            <div class="col-md-3">
+                                                <h6>Pages</h6>
+                                                <ul>
+                                                    <li> <a href="@Url.Action("Index","ClientSide")"> Home</a></li>
+                                                    <li> <a href="@Url.Action("Index","Shop")"> Shop</a></li>
+                                                    <li> <a href="@Url.Action("AboutUs","ClientSide")"> About Us</a></li>
+                                                    <li> <a href="@Url.Action("BloglistPage","SiteBlog")"> Blogs</a></li>
+                                                    <li> <a href="@Url.Action("Contact","ClientSide")"> Contact Us</a></li>
+                                                    <li> <a href="@Url.Action("Register","Account")"> Registration</a></li>
+                                                    <li> <a href="@Url.Action("Login","Account")"> Login</a></li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- Top Rate -->
+                                            <div class="col-md-4">
+                                                <h6>New Arrivals</h6>
+                                                <div class="top-rated">
+                                                    <ul>
+                                                        @foreach (var pro in ProductList)
+                                                        {
+                                                            <li>
+                                                                <div class="media-left">
+                                                                    <div class="cart-img"> <a href="@Url.Action("ProductDetail","Product",new {id=@pro.ID})"> <img class="media-object img-responsive" src="@Url.Content(pro.ProductImages)" alt="..."> </a> </div>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <h6 class="media-heading">@pro.ProductName</h6>
+                                                                    <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+                                                                    <span class="price">@pro.salePrice USD</span>
+                                                                </div>
+                                                            </li>
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MEga Menu Elements -->
+                                        <div class="mega-menu-elements"> <img src="~/ClientHtml/images/nav-img.png" alt=""></div>
+                                    </div>
+                                </li>
+                                <li class="@(ViewBag.Title=="BloglistPage"?"active":string.Empty)"> <a class="@(ViewBag.Title=="BloglistPage"?"active":string.Empty)" href="@Url.Action("BloglistPage","SiteBlog")"> Blogs</a> </li>
+                                
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">ContactUs</a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="@(ViewBag.Title=="Contact"?"active":string.Empty)"> <a class="@(ViewBag.Title=="Contact"?"active":string.Empty)" href="@Url.Action("Contact","ClientSide")"> Contact Form</a> </li>
+                                        <li class="@(ViewBag.Title=="Contact"?"active":string.Empty)"> <a class="@(ViewBag.Title=="Contact"?"active":string.Empty)" href="@Url.Action("LiveChat","ClientSide")"> Live Chat</a> </li>
+                                    </ul>
+                                </li>
+                                
+
+
+                                <li class="@(ViewBag.Title=="WishList"?"active":string.Empty)"><a href="@Url.Action("WishList","Cart")"> Wish List</a> </li>
+
+
+                                @if (Request.IsAuthenticated)
+                                {
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> User</a>
+                                        <ul class="dropdown-menu">
+                                            @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+
+                                            @if (User.IsInRole(MB.Admin))
+                                            {
+
+                                                <li><a href="@Url.Action("Index","Home")" title="Profile" style="margin-left: -10px">Go to Admin Side</a> </li>
+                                            }
+                                            else
+                                            {
+
+                                                <li><a href="@Url.Action("Index","Manage",routeValues:null)" title="Profile" style="margin-left: -10px">Profile</a> </li>
+                                            }
+
+                                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <li><a href="javascript:document.getElementById('logoutForm').submit()" title="Logout">Logout</a> </li>
+                                            }
+                                        </ul>
+                                    </li>
+
+                                }
+
+                            </ul>
+                        </div>
+
+                        <!-- Nav Right -->
+                        <div class="nav-right">
+                            <ul class="navbar-right">
+                                <!-- USER INFO -->
+
+                                @if (!Request.IsAuthenticated)
+                                {
+
+                                    @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                                        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
+                                    <li> <a href="@Url.Action("Login","Account")" title="Login" id="registerLink"><i class="lnr lnr-user"></i> </a></li>
+                                }
+                                @*<li> <a href="login.html" title="Login"><i class="lnr lnr-user"></i> </a></li>*@
+                                <!-- USER BASKET -->
+                                @*<li> <a id="cd-menu-trigger" href="#0"><i class="lnr lnr-cart"></i><span class="c-no">2</span> </a> </li>*@
+
+
+                                @Html.Action("CartPartial", new { area = "", controller = "Cart" })
+
+                                <!-- SEARCH BAR -->
+                                <li>
+                                    <a href="javascript:void(0);" class="search-open"><i class="lnr lnr-magnifier"></i></a>
+                                    <div class="search-inside animated bounceInUp">
+                                        <i class="icon-close search-close"></i>
+                                        <div class="search-overlay"></div>
+                                        <div class="position-center-center">
+                                            <div class="search">
+                                                <form action="@Url.Action("index","Shop")" method="get">
+                                                    <input type="search" name="sreachProduct" placeholder="Search Shop">
+                                                    <button type="submit"><i class="icon-"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="clearfix"></div>
+            </header>
+
+        }
+
+        <!-- Main Layout -->
+        <main class="cd-main-content">
+
+            @RenderBody()
+            <!-- FOOTER -->
+            <footer>
+                <div class="container-full">
+                    <div class="insta-g">
+                        <div class="position-center-center">
+                            <h3>From The instgram</h3>
+                        </div>
+                        <ul>
+                            <li><img src="~/ClientHtml/images/insta-post-1.jpg" alt=""></li>
+                            <li><img src="~/ClientHtml/images/insta-post-2.jpg" alt=""></li>
+                            <li><img src="~/ClientHtml/images/insta-post-6.jpg" alt=""></li>
+                            <li><img src="~/ClientHtml/images/insta-post-4.jpg" alt=""></li>
+                            <li><img src="~/ClientHtml/images/insta-post-5.jpg" alt=""></li>
+                            <li><img src="~/ClientHtml/images/insta-post-3.jpg" alt=""></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="container">
+                    <div class="row">
+                        <!-- ABOUT Location -->
+                        <div class="col-md-4">
+                            <div class="about-footer">
+                                @*<img src="~/clientHtml/images/fLogo.png footerLogo" />*@
+                                <img class="margin-bottom-30" src="~/clientHtml/images/footerLogo.png" alt="">
+                                <p>
+                                    <i class="icon-pointer"></i> Alipur chowk, PUGC, <br>
+                                    @*University Of The Punjab.*@
+                                </p>
+                                <p>
+                                    <i class="icon-call-end"></i>  +92(336)-4978771 <br>
+                                    @*+92(336)-4978771*@
+                                </p>
+                                <p>
+                                    <i class="icon-envelope"></i> tayyab.bhatti30@gmail.com <br>
+                                    @*tayyab.bhatti30@gmail.com*@
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- HELPFUL LINKS -->
+                        <div class="col-md-5">
+                            <h6>Pages</h6>
+                            <ul class="link two-half">
+
+                                <li> <a href="@Url.Action("Index","ClientSide")"> Home</a></li>
+                                <li> <a href="@Url.Action("Index","Shop")"> Shop</a></li>
+                                <li> <a href="@Url.Action("AboutUs","ClientSide")"> About Us</a></li>
+                                <li> <a href="@Url.Action("BloglistPage","SiteBlog")"> Blogs</a></li>
+                                <li> <a href="@Url.Action("Contact","ClientSide")"> Contact Us</a></li>
+                                <li> <a href="@Url.Action("Register","Account")"> Registration</a></li>
+                                <li> <a href="@Url.Action("Login","Account")"> Login</a></li>
+
+                            </ul>
+                        </div>
+
+                        <!-- HELPFUL LINKS -->
+                        <div class="col-md-3">
+                            <h6>Account Info</h6>
+                            <ul class="link">
+                                <li><a href="#."> Products</a></li>
+                                <li><a href="#."> Find a Store</a></li>
+                                <li><a href="#."> Features</a></li>
+                                <li><a href="#."> Privacy Policy</a></li>
+                                <li><a href="#."> Blog</a></li>
+                                <li><a href="#."> Press Kit </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Rights -->
+                <div class="rights">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>&copy; @DateTime.Now.Year Punjab University All right reserved. <a href="@Url.Action("Index","Home")">Admin Side</a></p>
+                            </div>
+                            <div class="col-md-6 text-right"> <img src="~/clientHtml/images/card-icon.png" alt=""> </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="~/clientHtml/js/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/Validate/JqueryValidataion.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>*@
+    <script src="~/clientHtml/js/popper.min.js"></script>
+    <script src="~/clientHtml/js/bootstrap.min.js"></script>
+    <script src="~/clientHtml/js/own-menu.js"></script>
+    <script src="~/clientHtml/js/jquery.lighter.js"></script>
+    <script src="~/clientHtml/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/clientHtml/js/owl.carousel.min.js"></script>
+    <script src="~/clientHtml/js/lazysizes.min.js"></script>
+
+    <script src="~/clientHtml/js/main.js"></script>
+
+
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+
+<script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+<script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+
+    @*<script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>*@
+
+    @RenderSection("scripts", false)
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var $lateral_menu_trigger = $('#cd-menu-trigger'),
+            $content_wrapper = $('.cd-main-content'),
+            $navigation = $('header');
+
+        $("#mini").click(function() {
+
+
+            @*$.get("@Url.Action('MiniCartList','Cart')",
+                function (res) {
+
+                    $("#tay .dropdown-menu").html(res);
+                });*@
+            $.ajax({
+                url: "@Url.Action("MiniCartList","Cart")",
+                type:"GET"
+            }).done(function (result) {
+
+                $("#tay .dropdown-menu").html(result);
+            }).fail(function() {
+
+            });
+        });
+
+
+        @*$("#cd-menu-trigger").click(function (event) {
+
+
+
+            $.ajax({
+                url: "@Url.Action("MiniCartListPartial1", "Cart")",
+                type:"GET"
+            }).done(function (result) {
+                $("#partialCart_View ul").html(result);
+                var result1 = JSON.parse(data);
+                $("#partialCart_View ul").empty();
+                for (var i = 0; i < result1.length; i++) {
+
+                    var obj = result1[i];
+
+                    alert(obj);
+                    $("#partialCart_View ul").append("<li><div class='media-left'><div class='cart-img'><a href='#'><img class='media-object img-responsive' src="+obj.ProductImage+" alt='Product Image'></a></div></div><div class='media-body'><h6 class='media-heading'>'" + obj.ProductName.Length > 10 ? obj.ProductName.Substring(0, 10).ToString() : obj.ProductName + '"</h6><span class="price">"'+ obj.Price +'" PKR</span> <br><span class="qty">QTY:"' + obj.Quantity+'"</span></div></li>")
+
+
+
+                }
+                //alert();
+
+
+            }).fail(function() {
+
+            });
+        });*@
+
+        @*$("#cd-menu-trigger").click(function (event) {
+
+
+
+            $.ajax({
+                url: "@Url.Action("MiniCartListPartial", "Cart")",
+                type:"GET"
+            }).done(function (result) {
+                $("#partialCart_View ul").html(result);
+                $lateral_menu_trigger.toggleClass('is-clicked');
+                $navigation.toggleClass('lateral-menu-is-open');
+                $content_wrapper.toggleClass('lateral-menu-is-open').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+                    // firefox transitions break when parent overflow is changed, so we need to wait for the end of the trasition to give the body an overflow hidden
+                    $('body').toggleClass('overflow-hidden');
+                });
+                $('#cd-lateral-nav').toggleClass('lateral-menu-is-open');
+
+                //check if transitions are not supported - i.e. in IE9
+                //if($('html').hasClass('no-csstransitions')) {
+                //    $('body').toggleClass('overflow-hidden');
+                //}
+                //alert();
+
+
+            }).fail(function() {
+
+            });
+        });*@
+
+
+        $(".wishBtn").click(function() {
+
+            var id = $(this).attr("data-id");
+
+            $.ajax({
+                url: "@Url.Action("AddToWish","Product")",
+                type: "POST",
+                data: { id: id }
+            }).done(function(result) {
+
+                if (result.status===true) {
+                    $.alert({
+                        icon: 'fa fa-success',
+                        title: 'success!',
+                        titleClass:'text-success',
+                        content: result.msg,
+                        animationBounce: 1.5
+                    });
+                } else {
+                    $.alert({
+                        icon: 'fa fa-warning',
+                        title: 'Error!',
+                        titleClass:'text-danger',
+                        content: result.msg,
+                        animationBounce: 1.5
+                    });
+                }
+            }).faile(function() {
+                alert("Something Wrong");
+            });
+        });
+
+
+
+
+
+
+    });
+    </script>
+</body>
+</html>

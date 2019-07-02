@@ -1,0 +1,10 @@
+﻿@model MenBytes.Models.ViewModels.CartVM
+
+
+
+<li>
+    <div class="ajaxCart">
+        <a @*id="cd-menu-trigger" class="mini1"*@ href="@Url.Action("Index", "Cart")" ><i class="lnr lnr-cart"></i><span class="c-no">@Model.Quantity</span> </a>
+    </div>
+</li>
+

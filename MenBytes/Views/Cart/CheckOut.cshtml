@@ -1,0 +1,364 @@
+﻿@model MenBytes.Models.ViewModels.CheckOutViewModel
+
+
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+
+    int count = 1;
+
+    decimal cc = ViewBag.DolRate;
+}
+
+
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4>Checkout your order</h4>
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">SHOP</a></li>
+                <li class="active">CHECKOUT</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<div id="content">
+
+    <!--======= PAGES INNER =========-->
+    <section class="chart-page padding-top-100 padding-bottom-100">
+        <div class="container">
+
+            <!-- Payments Steps -->
+            <div class="shopping-cart">
+
+                <!-- SHOPPING INFORMATION -->
+                <div class="cart-ship-info">
+                    <form id="billingInfoForm">
+                        <div class="row">
+
+                            <!-- ESTIMATE SHIPPING & TAX -->
+                            <div class="col-sm-7">
+                                <h6>Shipping Information</h6>
+
+                                <ul class="row">
+
+                                    <!-- Name -->
+                                    <li class="col-md-6">
+                                        <label>
+                                            *FIRST NAME
+                                            <input type="text" name="firstname" id="firstname" value="" placeholder="">
+                                        </label>
+                                    </li>
+                                    <!-- LAST NAME -->
+                                    <li class="col-md-6">
+                                        <label>
+                                            *LAST NAME
+                                            <input type="text" name="lastname" id="lastname" value="" placeholder="">
+                                        </label>
+                                    </li>
+
+                                    <li class="col-md-12">
+                                        <!-- ADDRESS -->
+                                        <label>
+                                            *ADDRESS
+                                            <input type="text" name="address" id="address" value="" placeholder="">
+                                        </label>
+                                    </li>
+                                    <!-- TOWN/CITY -->
+                                    <li class="col-md-6">
+                                        <label>
+                                            *TOWN/CITY
+                                            <input type="text" name="town" id="town" value="" placeholder="">
+                                        </label>
+                                    </li>
+
+                                    <!-- COUNTRY -->
+                                    <li class="col-md-6">
+                                        <label>
+                                            COUNTRY
+                                            <input type="text" name="contrystate" id="contrystate" value="Pakistan" readonly="readonly" placeholder="">
+                                        </label>
+                                    </li>
+
+                                    <!-- EMAIL ADDRESS -->
+                                    <li class="col-md-6">
+                                        <label>
+                                            *EMAIL ADDRESS
+                                            <input type="email" name="email" id="email" value="" placeholder="">
+                                        </label>
+                                    </li>
+                                    <!-- PHONE -->
+                                    <li class="col-md-6">
+                                        <label>
+                                            *PHONE
+
+                                            <input type="text" name="phoneCode" id="phoneCode" value="+92" data-mask="(9999) 9999999">
+                                        </label>
+                                    </li>
+
+                                    @*<!-- PHONE -->
+                                        <li class="col-md-6">
+                                            <button type="submit" class="btn">continue</button>
+                                        </li>
+
+                                        <!-- CREATE AN ACCOUNT -->
+                                        <li class="col-md-6">
+                                            <div class="checkbox margin-0 ">
+                                                <input id="checkbox1" class="styled" type="checkbox">
+                                                <label for="checkbox1"> Ship to a different address </label>
+                                            </div>
+                                        </li>*@
+                                </ul>
+
+
+
+                            </div>
+
+                            <!-- SUB TOTAL -->
+                            <div class="col-sm-5">
+                                <h6>Your Order</h6>
+                                <div class="order-place">
+                                    <div class="order-detail">
+                                        <p>Total Items <span>@Model.CartTotalItems</span></p>
+                                        <p>Total Quantities <span>@Model.cartTotalQuantities </span></p>
+                                        <p>Shipping  <span> Free All palistan</span></p>
+
+                                        <!-- SUB TOTAL -->
+                                        <p class="all-total">TOTAL COST <span> PKR- @Model.CartGrandBill</span></p>
+                                    </div>
+                                    <div class="pay-meth">
+
+                                        <ul>
+                                            <li>
+                                                <div class="radio">
+                                                    <input type="radio" name="paymentMethod" id="radio2" value="cash">
+                                                    <label for="radio2"> CASH ON DELIVERY</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="radio">
+                                                    <input type="radio" name="paymentMethod" id="radio4" value="Paypal">
+                                                    <label for="radio4"> PAYPAL </label>
+                                                </div>
+                                            </li>
+                                            @*<li>
+                                                    <div class="checkbox">
+                                                        <input id="checkbox3-4" class="styled" type="checkbox">
+                                                        <label for="checkbox3-4"> I’VE READ AND ACCEPT THE <span class="color"> TERMS & CONDITIONS </span> </label>
+                                                    </div>
+                                                </li>*@
+                                        </ul>
+                                        <a href="#." id="confirmOderBtn" class="btn  btn-dark pull-right margin-top-30">PLACE ORDER</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="paypaldiv">
+        <form class="paypalform" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" style=" position: absolute;left: -2000px;">
+            <input type="hidden" name="cmd" value="_cart">                @*replease value="_cart"*@
+
+            <input type="hidden" name="upload" value="1">
+
+            <input type="hidden" name="business" value="test-business@b2bx.net"> @*Paste BusinessEMail here*@
+
+            @foreach (var item in Model.cartList)
+            {
+                <input type="hidden" name="item_name_@count" value="@item.ProductName">
+                <input type="hidden" name="amount_@count" value="@(item.Price/float.Parse(cc.ToString()))">
+                <input type="hidden" name="quantity_@count" value="@item.Quantity"> @*for Quantity*@
+
+                count++;
+            }
+
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="return" value="http://localhost:11804/Cart/Thankyou">
+            <input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+        </form>
+    </div>
+</div>
+
+
+@section scripts{
+    
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+
+    <script src="~/Scripts/jquery.maskedinput.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>*@
+    <script type="text/javascript">
+
+        $("#phoneCode").mask("999-9999999");
+
+        $("#billingInfoForm").validate({
+            rules: {
+                // simple rule, converted to {required:true}
+                firstname: "required",
+
+                lastname: "required",
+                // compound rule
+                email: {
+                    required: true,
+                    email: true
+                },
+                phoneCode: {
+                    required:true,
+                },
+                address:"required"
+            },
+            messages: {
+                firstname: "Please specify your first name",
+                lastname: "Please specify your last name",
+                email: {
+                    required: "We need your email address to contact you",
+                    email: "Your email address must be in the format of name@domain.com"
+                },
+                phoneCode: "Please provide us Phone No.",
+                address: "Please Provide the Address"
+            }
+        });
+
+
+        $("#confirmOderBtn").click(function(e) {
+
+            // alert("Now Confirm Button is Clicked");
+            e.preventDefault();
+
+
+            if ($("#billingInfoForm").valid()) {
+
+                var radioValue = $("input[name='paymentMethod']:checked").val();
+                if (radioValue){
+                    //      alert("Your are a - " + radioValue);
+
+                    var paymentType = radioValue;
+                    var first_name = $("#firstname").val();
+
+                    var last_name = $("#lastname").val();
+                    var company_name = $("#company").val();
+                    var address_name = $("#address").val();
+                    var town_name = $("#town").val();
+                    var countrystate_name = $("#contrystate").val();
+                    var email_name = $("#email").val();
+                    var phoneCode_name = $("#phoneCode").val();
+
+
+                    $.ajax({
+                        url: "@Url.Action("StoreBillingInfo","Cart")",
+                        type: "POST",
+                        data: {fName:first_name,lName:last_name,address:address_name,city:town_name,country:countrystate_name,email:email_name, phone:phoneCode_name,paymentType:radioValue}
+                    }).done(function(data) {
+                        //   alert(data);
+                        if (data == "Paypal") {
+                            // alert(data);
+
+                            $.alert({
+                                icon: 'fa fa-info',
+                                title: 'success!',
+                                titleClass:'text-info',
+                                content: 'Please wait we are Redirecting you towords Payamal',
+                                animationBounce: 1.5
+                            });
+                            setTimeout(function() {
+
+                                    $('form input[name="submit"]').click();
+                                },
+                                2000);
+                        } else {
+                            window.location.href = "/Cart/Thankyou";
+                        }
+
+                    }).fail(function() {
+                        alert("Nai save");
+                    });
+                }
+                else
+                {
+                    
+
+                    e.preventDefault();
+                    $.alert({
+                        icon: 'fa fa-warning',
+                        title: 'Error!',
+                        titleClass:'text-danger',
+                        content: 'Please Select the Payment Method',
+                        animationBounce: 1.5
+                    });
+                }
+                @*$.ajax({
+                        url: '@Url.Action("CreateNew","Category")',
+                        type:'POST',
+                        data:$("#CrreateCatagoryFrm").serialize()
+                    }).done(function() {
+                        alert("Data Save");
+                    })
+                    .fail(function() {
+                        alert("Fail");
+                    })*@
+
+            } else {
+               
+                $.alert({
+                    icon: 'fa fa-warning',
+                    title: 'Error!',
+                    titleClass:'text-danger',
+                    content: 'Fill the  Required field of Shipping Form, before to check our (*)',
+                    animationBounce: 1.5
+                });
+            }
+        });
+
+        $(".styled").click(function() {
+
+            if ($(this).prop("checked") == true) {
+
+                alert("Check Box  true")
+                var first_name = $("#firstname").val();
+
+                var last_name = $("#lastname").val();
+                var company_name = $("#company").val();
+                var address_name = $("#address").val();
+                var town_name = $("#town").val();
+                var countrystate_name = $("#contrystate").val();
+                var email_name = $("#email").val();
+                var phoneCode_name = $("#phoneCode").val();
+
+
+                $("#S_firstname").val(first_name);
+                $("#S_lastname").val(last_name);
+                $("#S_company").val(company_name);
+                $("#S_address").val(address_name);
+                $("#S_town").val(town_name);
+                $("#S_contrystate").val(countrystate_name);
+                $("#S_email").val(email_name);
+                $("#S_phoneCode").val(phoneCode_name);
+
+            } else {
+
+
+                $("#S_firstname").val("");
+                $("#S_lastname").val("");
+                $("#S_company").val("");
+                $("#S_address").val("");
+                $("#S_town").val("");
+                $("#S_contrystate").val("");
+                $("#S_email").val("");
+                $("#S_phoneCode").val("");
+            }
+        })
+
+    </script>
+}

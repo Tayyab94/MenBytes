@@ -1,0 +1,136 @@
+﻿@model MenBytes.Models.ViewModels.AllProducts
+
+
+@if (Model != null && Model.pro != null || Model.pro.Count()>0)
+{
+
+    <!-- New Arrival -->
+    <section class="padding-top-100 padding-bottom-100">
+        <div class="container-full">
+
+            <!-- Main Heading -->
+            <div class="heading text-center">
+                <h4>Best Collection Arrived</h4>
+                <span>MenBytes Deta hai ap ko Achi Collection wo b ful Susti ahahahahha. </span>
+            </div>
+
+            <!-- New Arrival -->
+            <div class="arrival-block">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"> <a class="active" id="Best-tab" data-toggle="tab" href="#bst-sell" role="tab" aria-selected="true">Best Selling</a> </li>
+                    @*<li class="nav-item"> <a id="Papular-tab" data-toggle="tab" href="#pap" role="tab" aria-selected="false">Hand Made Items</a> </li>*@
+                    @*<li class="nav-item"> <a id="Top-tab" data-toggle="tab" href="#top-10" role="tab" aria-selected="false">Top 10 Items <span class="top-tgs">Specials</span></a> </li>*@
+                </ul>
+                @if (Model.pro.Count > 0)
+                {
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="arrival-tab">
+
+                        <!-- Best Selling  -->
+                        <div class="tab-pane fade show active" id="bst-sell" role="tabpanel">
+
+                            @foreach (var pro in Model.pro)
+                            {
+
+                                <!-- Quick View -->
+                                <div id="qck-view-shop_@pro.ID" class="zoom-anim-dialog qck-inside mfp-hide">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <!-- Images Slider -->
+                                            <div class="images-slider">
+                                                <ul class="slides">
+
+                                                    @foreach (string img in pro.ProductImages)
+                                                    {
+                                                        <li data-thumb="@img.ToString()"> <img src="@Url.Content(img)" alt=""> </li>
+                                                    }
+
+                                                    @*<li data-thumb="@pro.ProductImages[1].ToString()"> <img src="@pro.ProductImages[1].ToString()" alt=""> </li>
+                                            <li data-thumb="@pro.ProductImages[2].ToString()"> <img src="@pro.ProductImages[2].ToString()" alt=""> </li>*@
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <!-- Content Info -->
+                                        <div class="col-sm-6">
+                                            <div class="contnt-info">
+                                                <h3>@pro.ProductName</h3>
+                                                @*  <p> @(pro.ProductDescription.Length > 9 ? @pro.ProductDescription.Substring(0, 90) : pro.ProductDescription ) <a href="@Url.Action("ProductDetail","Product",new {id=@pro.ID})"><strong>More</strong>........</a> </p>
+                                        <p>@pro.ProductDescription.Substring(0, 90) <a href="@Url.Action("ProductDetail","Product",new {id=@pro.ID})"><strong>More</strong>........</a> </p>*@
+                                                <!-- Btn  -->
+                                                <div class="add-info">
+                                                    @*<div class="quantity">
+                                                <input type="number" min="1" max="100" step="1" value="1" class="form-control qty">
+                                            </div>*@
+                                                    <a href="#." class="btn btn-inverse wishBtn" data-id="@pro.ID"><i class="icon-heart"></i></a> <a href="@Url.Action("ProductDetail","Product",new {id=@pro.ID})" class="btn">More Detail </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Item -->
+                                <div class="item">
+                                    <!-- Sale -->
+                                    @if (pro.IsFeatured == true)
+                                    {
+
+                                        <div class="on-sale"> Sale </div>
+                                    }
+                                    <div class="img-ser">
+                                        <img class="img-1 lazyload" src="@pro.ProductImages[0].ToString()" alt=""> <img class="img-2 lazyload" src="@pro.ProductImages[1].ToString()" alt="">
+
+                                        <!-- Images
+                            <img class="img-1 lazyload" src="images/item-img-1-1.jpg" alt=""> <img class="img-2 lazyload" src="images/item-img-1-1-1.jpg" alt=""> -->
+                                        <!-- Overlay  -->
+                                        <div class="overlay">
+                                            <div class="position-center-center"> <a class="popup-with-move-anim" href="#qck-view-shop_@pro.ID"><i class="icon-eye"></i></a> </div>
+                                            @*<div class="add-crt"><a href="#" id="addtocart" data-pid="@pro.ID"><i class="icon-basket margin-right-10"></i> Add To Cart</a></div>*@
+                                        </div>
+                                    </div>
+                                    <!-- Item Name -->
+                                    <div class="item-name">
+                                        @if (pro.ProductName.Length <= 20)
+                                        {
+                                            
+                                            <a href="#." class="i-tittle">@pro.ProductName</a>
+                                        }
+                                        else
+                                        {
+                                            
+                                            <a href="#." class="i-tittle">@pro.ProductName.Substring(0, 20)......</a>
+                                        }
+                                        @if (pro.IsFeatured == true)
+                                        {
+                                            <span class="price"><small>PKR- </small><span class="line-through">@pro.salePrice</span> <small>PKR- </small>@(pro.salePrice - (pro.salePrice * 10) / 100)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price"><small>PKR- </small>@pro.salePrice.ToString()</span>
+
+                                        }
+                                        <a class="deta animated fadeInRight" href="@Url.Action("ProductDetail", "Product", new {id = @pro.ID})">View Detail</a>
+                                    </div>
+                                </div>
+
+                            }
+
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <h1 class="text-center text-danger"><text>No Product</text></h1>
+                }
+
+            </div>
+        </div>
+    </section>
+
+}
+else
+{
+
+}
+

@@ -1,0 +1,62 @@
+﻿<!-- About -->
+<section class="small-about">
+    <div class="container-full">
+        <div class="news-letter padding-top-150 padding-bottom-150">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>We always stay with our clients and respect their business. We deliver 100% and provide instant response to help them succeed in constantly changing and challenging business world. </h3>
+                    <ul class="social_icons">
+                        <li><a href="#."><i class="icon-social-facebook"></i></a></li>
+                        <li><a href="#."><i class="icon-social-twitter"></i></a></li>
+                        <li><a href="#."><i class="icon-social-tumblr"></i></a></li>
+                        <li><a href="#."><i class="icon-social-youtube"></i></a></li>
+                        <li><a href="#."><i class="icon-social-dribbble"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <h3>Subscribe Our Newsletter</h3>
+                    <form>
+                        <input type="email"  id="emailtext" placeholder="Enter your email address" required>
+                        <button type="submit" id="subscribeBtn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+@*<script>   Not use this Script
+
+    
+        $("#subscribeBtn").on("click",
+            function(e) {
+
+                var email = $("#emailtext").val();
+                
+
+                if (email == null || email == undefined) {
+                    e.preventDefault();
+                    return false;
+                }
+                else
+                {
+                    $.ajax(
+                        {
+                            url:'@Url.Action("subscriptionAction","ClientSide")',
+                            type:'POST',
+                            data: {
+                                emailID: email
+                            },
+                            success:function(msg) {
+                                alert(msg);
+                            }
+                        })
+                }
+            });
+   
+</script>*@

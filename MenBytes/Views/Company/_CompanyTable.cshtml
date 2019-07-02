@@ -1,0 +1,192 @@
+﻿@model MenBytes.Models.ViewModels.SearchCompanyViewModel
+
+
+
+@if (Model.CompaniesList != null && Model.CompaniesList.Count > 0)
+{
+    <section class="hk-sec-wrapper">
+
+        <div class="row">
+            <div class="col-sm">
+                <div class="searchdiv">
+                    <div class="pull-right">
+                        <form class="form-inline">
+                       
+                            <div class="form-group mx-sm-3 mb-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="@Model.SearchItem" id="searchTxtBox" placeholder="Search Company">
+                                    <button type="button" class="btn btn-primary mb-2 searchBtn input-group-addon"><i class="jq-toast-icon ti-search"></i></button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-lg mb-0">
+                            <thead class="thead-active">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Activation</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CompaniesList)
+                                {
+
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.CompanyName</td>
+                                        <td>@(item.isDeleted.ToString() != "True" ? "Active" : "Not Active")</td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "Company", new {id = @item.Id})" class="mr-25 btnEdit" data-id="@item.Id" data-toggle="tooltip" data-original-title="Edit"> <i class="icon-pencil"></i> </a>
+                                           
+                                            @if (item.isDeleted)
+                                            {
+                                                <button type="button" class="btn btn-outline-info btn-sm delBtn" data-toggle="tooltip" data-id="@item.Id" data-original-title="Active this Company" title="Active"><i class="icon-check "></i></button>
+                              
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="btn btn-outline-danger btn-sm delBtn" data-toggle="tooltip" data-id="@item.Id" data-original-title="Delete" title="Delete"><i class="icon-trash txt-danger"></i></button>
+                              
+                                            }
+                                           
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="pull-right">
+                            <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                                <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                                    @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                                    {
+                                        if (Model.Pager.CurrentPage > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+                                        }
+
+                                        for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                                        {
+                                            string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                            <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>
+                                        }
+                                        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                        {
+                                    
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                                        }
+                                    }
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{ <section class="hk-sec-wrapper">
+      <div class="row">
+          
+          <h2 class="text-danger text-center">No Record is Found <i class="fa ti-face-sad"></i></h2>
+      </div>
+  </section>
+}
+
+
+
+
+
+<script>
+
+
+    $('.searchBtn').click(function() {
+        var search = $('#searchTxtBox').val();
+
+        $.ajax({
+            url: '@Url.Action("CompanyTable", "Company")',
+            data: {
+                search:search
+            }
+        }).done(function (result) {
+
+            if (result != null) {
+                $('.tblContainer').html(result);
+            }
+
+            //if (result == null) {
+            //    alert("This reccord is not matched");
+            //} else {
+            //    $('.tblContainer').html(result);
+            //}
+            }).fail(function() {
+            alert("Something is wring");
+        })
+    })
+
+
+
+    $(".pageButtons").click(function() {
+        $.ajax({
+            url: '@Url.Action("CompanyTable", "Company")',
+            data: {
+                search:'@Model.SearchItem',
+                pageNo: $(this).attr("data-pageNo")
+            }
+        }).done(function(result) {
+
+            $('.tblContainer').html(result);
+        }).fail(function() {
+
+        })
+    })
+
+
+    $('.delBtn').on('click', function (e) {
+
+        var dataID = $(this).attr("data-id");
+
+
+        $.toast().reset('all');
+        $("body").removeAttr('class');
+        $.toast({
+            heading: 'Sure! Change the Status?',
+            text: '<i class="jq-toast-icon ti-alert"></i><button class="btn btn-outline-success btn-sm mt-10 mr-5 btnDel">yes</button>',
+            position: 'top-right',
+            loaderBg:'#7a5449',
+            class: 'jq-has-icon jq-toast-black',
+            hideAfter: 3500,
+            stack: 6,
+            showHideTransition: 'fade'
+        });
+
+        $(".btnDel").click(function() {
+
+            //alert(dataID)
+
+            $.ajax({
+                url: '/Company/Delete',
+                type: "POST",
+                data: { id:dataID}
+
+            }).done(function(result) {
+                $(".tblContainer").html(result);
+            
+                $.toast().reset('all');
+            }).fail(function() {
+                alert("some")
+            });
+        });
+
+    });
+
+
+</script>

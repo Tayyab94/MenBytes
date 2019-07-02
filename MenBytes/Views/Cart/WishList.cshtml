@@ -1,0 +1,236 @@
+﻿
+@{
+    ViewBag.Title = "WishList";
+
+
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+}
+
+
+
+
+@section CustomrCss{
+
+
+    <!-- Data Table CSS -->
+    <link href="~/AdminSide/html/vendors/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/AdminSide/html/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="~/clientHtml/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    @*<link href="~/AdminSide/html/vendors/jquery-toggles/css/toggles.css" rel="stylesheet" type="text/css">
+        <link href="~/AdminSide/html/vendors/jquery-toggles/css/themes/toggles-light.css" rel="stylesheet" type="text/css">*@
+
+
+
+    @*<link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>*@
+    <link href="~/Scripts/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+}
+
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color:white">About BoShop - The Best Collection</h4>
+            <ol class="breadcrumb" style="color:white">
+                <li><a href="@Url.Action("Index","ClientSide")" style="color:white">Home</a></li>
+                <li class="active" style="color:white">Wish-List</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<div id="content">
+
+    <!-- History -->
+    <section class="history-block padding-top-100 padding-bottom-100">
+        <div class="container">
+            <div class="about-us-con">
+                <div class="table-wrap">
+                    <table id="datable_1" class="table table-hover w-100 display pb-30">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Image</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+
+@section scripts{
+    <script src="~/AdminSide/html/dist/JavaScriptPrint/printThis.js"></script>
+    <!-- Data Table JavaScript -->
+    @*<script src="~/AdminSide/html/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+        <script src="~/AdminSide/html/vendors/jszip/dist/jszip.min.js"></script>
+        <script src="~/AdminSide/html/vendors/pdfmake/build/pdfmake.min.js"></script>
+        <script src="~/AdminSide/html/vendors/pdfmake/build/vfs_fonts.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="~/AdminSide/html/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>*@
+
+    @*<script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*@
+    
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    @*<script src="~/AdminSide/html/dist/js/dataTables-data.js"></script>*@
+
+    <script src="~/Scripts/sweetalert.min.js"></script>
+
+    @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+
+
+
+
+    <script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var tID = "";
+            $("#printtabl").click(function (e) {
+
+                e.preventDefault();
+
+                $('#datable_1').printThis();
+            });
+
+
+            var tableOrders = $('#datable_1').DataTable({
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search",
+                    sLengthMenu: "_MENU_items"
+
+                },
+                "processing": true,
+
+                "bServerSide": true,
+                "sAjaxSource": "/Cart/ShowAllWishlist",
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    $.ajax({
+                        type: "GET",
+                        data: aoData,
+                        url: sSource,
+                        success: fnCallback
+                    })
+                },
+
+                //"aaData": response,
+                "aoColumns": [
+                    {
+                        "mData": "productId"
+                    },
+                    {
+                        "mData": "productName",
+                        "render": function (productName, type, full, meta) {
+
+                            return "<a href='/Product/ProductDetail/" +
+                                full.productId +
+                                "' class='btn-link' title='Detail Info Order'>" + productName + "</a>";
+                        }
+
+                    },
+                    {
+                        "mData": "Image",
+                        "render": function (ID, type, full, meta) {
+                            return '<img src="' + full.Image + '" style="height:34px;width:30px;"/>';
+                        }
+                    },
+                    {
+                        "mData": "ID",
+                        "render": function (ID, type, full, mete) {
+                            return "<a href='#' class='btn-link productDetailBtn text-danger'  data-pid='" + ID + "' title='Remove from list'><i class='fa fa-trash'></i></a>";
+                        }
+                    },
+                ]
+                ,
+                createdRow: function (row, data, dataIndex) {
+                    $(row).find('td:eq(0)').addClass('d-print-none');
+                }
+                //,
+                //fnDrawCallback: function (oSettings) {
+                //    if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                //        $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                //    }
+                //}
+
+            });
+
+
+            $('#datable_1').on("click",
+                ".productDetailBtn",
+                function () {
+                    var t = $(this);
+
+
+                    swal({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover this file!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+
+                                $.ajax({
+                                    url: "/Product/RemoveToWishlist/" + t.attr("data-pid"),
+                                    type: "POST",
+
+                                }).done(function (result) {
+
+                                    if (result) {
+                                        swal("Poof! Your imaginary file has been deleted!",
+                                            {
+                                                icon: "success",
+                                            });
+                                        tableOrders.row(t.parents("tr")).remove().draw();
+
+                                    } else {
+                                        swal("Kuch Galt hai !",
+                                            {
+                                                icon: "danger",
+                                            });
+                                    }
+
+                                }).fail(function () {
+                                    swal("Your Product is Not Delete yet!");
+                                });
+                            } else {
+                                swal("Your  file is safe!");
+                            }
+                        });
+                });
+
+        });
+
+
+
+
+    </script>
+}
+

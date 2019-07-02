@@ -1,0 +1,166 @@
+﻿@model MenBytes.Models.ViewModels.PurchaseStockViewModel
+
+@if (Model.productList != null && Model.productList.Count() > 0)
+{
+    <div class="row">
+        <div class="col-md">
+            <p class="mb-40">If you want to <code>Print this List</code>Press This <button type="button" class="btn btn-info btn-sm" id="printtabl">Print</button> Button.</p>
+
+        </div>
+
+
+    </div>
+    
+    <div class="table-wrap">
+     <h3 class="text-capitalize text-center avatar-text-info" style="margin: 10px;">MenBytes Purchase Stock Report</h3>
+     <div class="table-responsive">
+         <table class="table table-lg mb-0">
+             <thead class="thead-active">
+             <tr>
+                 <th class="d-print-none">ID</th>
+                 <th>Name</th>
+                 <th>Category</th>
+                 <th>Previour Qty</th>
+                 <th>Input Qty</th>
+                 @*<th>UpDated Qty</th>*@
+                 @if (Model.SearchItem == MB.updateStock)
+                 {
+                     <th>Sale Qty</th>
+                     <th>Balance Stock</th>
+                 }
+                 else if (Model.SearchItem != MB.newStock && Model.SearchItem != MB.updateStock)
+                 {
+                     <th>Sale Qty</th>
+                     <th>Balance Stock</th>
+                 }
+                 
+                 <th>Date</th>
+
+                 <th>Total UpDates</th>
+
+             </tr>
+             </thead>
+             <tbody>
+             @foreach (var item in Model.productList)
+             {
+
+                 <tr>
+                     <td class="d-print-none">@item.id</td>
+                     @if (item.ProductName.Length > 20)
+                     {
+                         <td>@item.ProductName.Substring(0,20)..</td>
+                     }
+                     else
+                     {
+                         <td>@item.ProductName</td>
+                     }
+                    
+                     <th>@item.Category</th>
+                     <td>@item.preQ</td>
+                     <td>@item.inQty</td>
+                     @*<td>@(item.preQ+@item.inQty)</td>*@
+
+
+                     @if (Model.SearchItem.Equals(MB.updateStock))
+                     {
+                         <td>
+                             @item.outQty
+
+                         </td>
+                         <td>
+                             @((item.preQ + item.inQty) - item.outQty)
+                         </td>
+                     }
+                     else if (Model.SearchItem != MB.newStock && Model.SearchItem != MB.updateStock)
+                     {
+                         <td>
+                             @item.outQty
+
+                         </td>
+                         <td>
+                             @((item.preQ + item.inQty) - item.outQty)
+                         </td>
+                     }
+                     
+                     <td>
+                         @item.C_Date.ToShortDateString()
+                     </td>
+
+                     <td>
+                         @item.updateCount
+                     </td>
+
+
+
+                 </tr>
+             }
+             </tbody>
+         </table>
+
+         <div class="pull-right d-print-none">
+             <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                 <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                     @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                     {
+                         if (Model.Pager.CurrentPage > 1)
+                         {
+                             <li class="page-item"><a class="page-link pageButtons" href="#" data-todate="@Model.toDate" data-fromdate="@Model.frmDate" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+
+                         }
+
+                         for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                         {
+                             string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                             <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-todate="@Model.toDate" data-fromdate="@Model.frmDate" data-pageNo="@page">@page</a></li>
+                         }
+                         if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                         {
+                             <li class="page-item"><a class="page-link pageButtons" href="#" data-todate="@Model.toDate" data-fromdate="@Model.frmDate" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                         }
+                     }
+
+                 </ul>
+             </nav>
+
+         </div>
+     </div>
+ </div>
+
+}
+else
+{
+    <h2 class="text-danger text-center">No Record is Found <i class="fa fa-frown-o"></i></h2>
+}
+
+
+
+
+    <script>
+        $("#printtabl").click(function(e) {
+
+            e.preventDefault();
+
+            $('.table-wrap').printThis();
+        });
+    var iid = "";
+
+    $(".pageButtons").click(function() {
+  
+        $.ajax({
+            url: "@Url.Action("FilterStock","Reports")",
+            data: {
+                toDate: $(this).attr("data-todate"),
+                fromDate: $(this).attr("data-fromdate"),
+                search: '@Model.SearchItem',
+                categoryID:'@Model.CategoryId',
+                pageNo: $(this).attr("data-pageNo")
+            }
+        }).done(function(result) {
+
+            $('.tblContainer').html(result);
+        }).fail(function() {
+
+        })
+    });
+    </script>

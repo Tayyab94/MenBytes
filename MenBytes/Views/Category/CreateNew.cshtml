@@ -1,0 +1,185 @@
+﻿@model MenBytes.Models.ViewModels.NewCategoryViewModel
+@{
+    ViewBag.Title = "CreateNew";
+}
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Form</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Category Create</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+<div class="content">
+
+</div> <!-- Row -->
+<div class="row">
+    <div class="col-xl-12">
+        <section class="hk-sec-wrapper">
+            <div class="row">
+                <div class="col-sm">
+                    <form class="needs-validation" id="CrreateCatagoryFrm" novalidate>
+
+
+
+                        <div class="form-row">
+                            <div class="col-md-12 mb-12">
+                                <label for="categoryName"><strong>Category Name</strong> <span class="text-danger">(*)</span></label>
+                                <input type="text" name="Name" class="form-control" id="categoryName" placeholder="Category Name">
+
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "invalid-feedback" })
+
+                                @*<div class="invalid-feedback">
+                                        Please provide Category Name.
+                                    </div>*@
+                            </div>
+                            @*<div class="col-md-12 mb-12">
+                                    <label for="validationCustom01"><strong>Category Name</strong> <span class="text-danger">(*)</span></label>
+                                    @Html.TextBoxFor(model => model.Name, "", new {@class = "form-control", placeholder = "Category's Name"})
+                                    @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+
+                                </div>*@
+
+                        </div>
+                        <div class="form-row" style="margin-top: 10px">
+
+                            <div class="col-md-6 mb-10">
+
+                                <div class="form-group">
+                                    <div class="checkbox-inline">
+
+
+                                        @*@Html.CheckBoxFor(model => model.IsActive)
+                                        Agree to active this Category?*@
+
+
+                                        @*<div class="invalid-feedback">
+                                                You must agree before submitting.
+                                            </div>*@
+                                    </div>
+                                </div>
+                                @*<label for="validationCustom05">Zip</label>
+                                    <input type="checkbox" class="form-control" id="validationCustom05" placeholder="Zip" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid zip.
+                                    </div>*@
+
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="btnSave" type="button">Submit Category</button>
+                    </form>
+                    <div class="pull-right">
+                        @Html.ActionLink("List of Categories", "Index", "Category")
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- /Row -->
+
+
+
+@section scripts
+{
+    @*<script src="~/Scripts/S_Alerts/sweetalert.min.js"></script>*@
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <script type="text/javascript">
+
+        //$("#Name").on("keypress keyup blur", function (event) {
+        //    $(this).val($(this).val().replace(/[^\d].+/, ""));
+        //    if ((event.which < 48 || event.which > 57)) {
+
+        //        event.preventDefault();
+        //    }
+        //});
+
+
+        $("#categoryName").on("keypress keyup blur",function(event){
+            var inputValue = event.charCode;
+
+            if(!((inputValue > 64 && inputValue < 91) || (inputValue > 96 && inputValue < 123)||(inputValue==32) || (inputValue==0))){
+                event.preventDefault();
+            }
+        });
+
+            $("#CrreateCatagoryFrm").validate({
+                rules: {
+                    Name: {
+                        required: true
+
+                    }
+                },
+                message: {
+                    Name: {
+                        lettersonly: "Category's Name is Required"
+                    }
+                }
+
+            });
+
+
+        $("#btnSave").click(function() {
+         
+                if ($("#CrreateCatagoryFrm").valid())
+                {
+
+                    $.ajax({
+                        url:'@Url.Action("CreateNew","Category")',
+                       type:'POST',
+                        data:$("#CrreateCatagoryFrm").serialize()
+                    }).done(function (resutl)
+                    {
+                        if (resutl) {
+                            window.location.href = "http://localhost:11804/Category/Index";
+                        }
+                    })
+                    .fail(function() {
+                        alert("Fail");
+                    })
+                }
+                else {
+                    swal("Warning!", "Fill your Required fields (*)!", "error");
+                }
+
+            });
+
+
+    </script>
+}
+
+
+@*$('.tst2').on('click',function(e){
+    $.toast().reset('all');
+    $("body").removeAttr('class');
+    $.toast({
+    heading: 'Are you sure you want to delete this file?',
+    text: '<i class="jq-toast-icon ti-alert"></i><button class="btn btn-secondary btn-sm mt-10 mr-5">yes</button><button class="btn btn-primary btn-sm mt-10">cancel</button>',
+    position: 'top-right',
+    loaderBg:'#7a5449',
+    class: 'jq-has-icon jq-toast-warning',
+    hideAfter: 3500,
+    stack: 6,
+    showHideTransition: 'fade'
+    });
+    return false;
+    });
+    <section class="hk-sec-wrapper">
+        <h5 class="hk-sec-title">Toastr alerts</h5>
+        <p class="mb-40">Toastr is a Javascript library for non-blocking notifications. View full documentation <a href="https://codeseven.github.io/toastr/demo.html" target="_blank">here</a>.</p>
+        <div class="row">
+            <div class="col-sm">
+                <div class="button-list">
+                    <button class="tst1 btn btn-info">Info Message</button>
+                    <button class="tst2 btn btn-warning">Warning Message</button>
+                    <button class="tst3 btn btn-success">Success Message</button>
+                    <button class="tst4 btn btn-danger">Error Message</button>
+                </div>
+            </div>
+        </div>
+    </section>*@

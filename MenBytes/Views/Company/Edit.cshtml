@@ -1,0 +1,179 @@
+﻿@model MenBytes.Models.MenBytesModels.Companies
+
+
+@{
+    ViewBag.Title = "Edit-Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Form</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Company Edit</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+
+
+<div class="hk-pg-header">
+    <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span>Form Create</h4>
+</div>
+<section class="hk-sec-wrapper">
+    <div class="row">
+        <div class="col-sm">
+            @*<form class="needs-validation" id="CrreateCatagoryFrm"  novalidate>*@
+            @using (Html.BeginForm("Edit", "Company", FormMethod.Post, new { id = "EditCompanyForm" }))
+            {
+                <input type="hidden" value="@Model.Id" />
+                <div class="form-row">
+                    <div class="col-md-12 mb-12">
+                        <label for="validationCustom01">Category name</label>
+                        <input type="text" name="CompanyName" value="@Model.CompanyName" class="form-control" id="companyName" placeholder="Company Name">
+
+                        @Html.ValidationMessageFor(x => x.CompanyName, "", new { @class = "text-danger" })
+                    </div>
+
+
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="EditCompanyBt" style="margin-top: 12px">Edit Compay</button>
+
+            }
+            <div class="pull-right">
+                @Html.ActionLink("List of Companies", "Index", "Company")
+            </div>
+        </div>
+       
+        
+    </div>
+    
+  @if (ViewBag.statusmessage!=null)
+        {
+    <div class="alert alert-success alert-wth-icon alert-dismissible fade show" role="alert">
+        <span class="alert-icon-wrap"><i class="fa fa-sticky-note-o"></i></span> @ViewBag.statusmessage .
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    }
+</section>
+
+@section scripts{
+
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+    <script type="text/javascript">
+        function Validate(evt) {
+            var isValid = false;
+            var regex = /^([\s\.]?[a-zA-Z]+)+$/;              
+            isValid = regex.test($("#" + evt).val());
+            return isValid;
+        }
+
+
+        $("#companyName").on("keypress keyup blur",function(event){
+            var inputValue = event.charCode;
+
+          
+             if(!((inputValue > 64 && inputValue < 91) || (inputValue > 96 && inputValue < 123)||(inputValue==32) || (inputValue==0) || inputValue==46)){
+                event.preventDefault();
+             }
+
+            //  if(!((key==8)||(key==9)||(key==32)||(key==46)||(key>=65 && key<=90)))
+            //  {
+            //     er.preventDefault();
+            //    alert("please enter only alphabets")
+            ////  }
+
+           // if (!Validate(inputValue)) {
+           //     event.preventDefault();
+         //   }
+
+          //  var expr = /^[a-zA-Z0-9._]*$/;
+          //  if (!expr.test(inputValue)) {
+
+            //    er.preventDefault();
+         //   }
+    
+        });
+
+        @*$("#EditCatagoryForm").validate({
+            rules: {
+                Name: {
+                    required: true
+
+                }
+            },
+            message: {
+                Name: {
+                    lettersonly: "Category's Name is Required"
+                }
+            }
+
+        });
+
+
+
+
+
+
+        $("#EditCategoryBtn").click(function() {
+            alert("Edit Button is Clicked")
+            if ($("#EditCatagoryForm").valid())
+            {
+
+                $.ajax({
+                        url: '@Url.Action("Edit","Category")',
+                        type:'POST',
+                        data:$("#EditCatagoryForm").serialize()
+                }).done(function (msg) {
+                    if (msg == true) {
+                        $.toast().reset('all');
+                        $("body").removeAttr('class');
+                        $.toast({
+                            text: '<i class="jq-toast-icon ti-face-smile"></i><p>Category Edit Successfuly!</p>',
+                            position: 'top-right',
+                            loaderBg:'#7a5449',
+                            class: 'jq-has-icon jq-toast-success',
+                            hideAfter: 3500,
+                            stack: 6,
+                            showHideTransition: 'fade'
+                        });
+                        window.location.href="http://localhost:11804/Category/Index";
+                    } else {
+
+                    }
+
+                    })
+                    .fail(function() {
+
+                        //swal("Oops!", "Data is Not Edit Successfuly!", "error");
+                        $.toast().reset('all');
+                        $("body").removeAttr('class');
+                        $.toast({
+                            text: '<i class="jq-toast-icon ti-twitter-alt"></i><p>Oops! Category is Not Edit.</p>',
+                            position: 'top-right',
+                            loaderBg:'#7a5449',
+                            class: 'jq-has-icon jq-toast-danger',
+                            hideAfter: 3500,
+                            stack: 6,
+                            showHideTransition: 'fade'
+                        });
+                    })
+            }
+            else {
+                swal("Warning!", "Fill your Required fields (*)!", "error");
+            }
+
+        });*@
+
+
+    </script>
+}
+

@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<address>
+    One Microsoft Way<br />
+    Redmond, WA 98052-6399<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>
+
+<address>
+    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+</address>
+
+
+
+
+
+
+<div class="hk-vertical-nav pb-0">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xl-12 pa-0">
+                <div class="emailapp-wrap">
+
+                    <div class="email-box">
+                        <div class="emailapp-left">
+                            <div class="tblContainer">
+                                @{
+                                    Html.RenderAction("ContactTableList");
+                                }
+                            </div>
+                        </div>
+
+
+                        <div class="emailapp-right">
+                            <header>
+                                <a id="back_email_list" href="javascript:void(0)" class="back-email-list">
+                                    <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                                </a>
+                                <div class="email-options-wrap">
+                                    <a href="javascript:void(0)" class=""><span class="feather-icon"><i data-feather="printer"></i></span></a>
+                                    <a href="javascript:void(0)" class=""><span class="feather-icon"><i data-feather="trash"></i></span></a>
+                                    <a href="javascript:void(0)" class="text-smoke"><span class="feather-icon"><i data-feather="more-vertical"></i></span></a>
+                                </div>
+                            </header>
+                            <div class="email-body">
+                                <div class="replayContainer">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- /Container -->

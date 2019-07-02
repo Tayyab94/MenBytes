@@ -1,0 +1,425 @@
+﻿@model MenBytes.Models.ViewModels.ProductDetailViewModel
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+}
+
+
+@section CustomrCss{
+
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+
+}
+
+
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color:white">@Model.ProductName</h4>
+            <ol class="breadcrumb">
+                <li><a href="#" style="color:white">Home</a></li>
+                <li><a href="#" style="color:white">Shop</a></li>
+                <li class="active" style="color:white">@Model.ProductName</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Content -->
+<div id="content">
+
+    <!-- Popular Products -->
+    <section class="padding-top-100 padding-bottom-100">
+        <div class="container">
+
+            <!-- SHOP DETAIL -->
+            <div class="shop-detail">
+                <div class="row">
+
+                    <!-- Popular Images Slider -->
+                    <div class="col-md-7">
+
+                        <!-- Place somewhere in the <body> of your page -->
+                        <div id="slider-shop" class="flexslider">
+                            <ul class="slides">
+                                @foreach (var img in Model.ProductImages)
+                                {
+                                    <li> <img class="img-responsive" src="@Url.Content(img)" alt=""> </li>
+
+                                }
+
+
+                            </ul>
+                        </div>
+                        <div id="shop-thumb" class="flexslider">
+                            <ul class="slides">
+                                @foreach (var img in Model.ProductImages)
+                                {
+                                    <li> <img class="img-responsive" src="@Url.Content(img)" alt=""> </li>
+
+
+                                }
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- COntent -->
+                    <div class="col-md-5">
+                        <h4>@Model.ProductName</h4>
+                        <div class="rating-strs"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></div>
+                        <span class="price"><small>PKR- </small>@Model.salePrice</span>
+                        <ul class="item-owner">
+                            <li>Brand:<span> @Model.Companies</span></li>
+                            <li>Category:<span> <a href="#">@Model.Category</a></span></li>
+                        </ul>
+
+                        <!-- Item Detail -->
+                        <p>@Model.ProductDescription</p>
+                        <!-- Short By -->
+                        <div class="some-info">
+                            <ul class="row margin-top-30">
+                                <li class="col-sm-6">
+
+                                    <!-- Quantity -->
+                                    @*<div class="quinty">
+                                            <button type="button" class="quantity-left-minus" data-type="minus" data-field=""> <span>-</span> </button>
+                                            <input type="number" id="quantity" name="quantity" class="form-control input-number" value="1">
+                                            <button type="button" class="quantity-right-plus" data-type="plus" data-field=""> <span>+</span> </button>
+                                        </div>*@
+                                </li>
+
+                                <!-- ADD TO CART -->
+                                <li class="col-sm-6"><button class="btn" id="addtocart" data-pid="@Model.ID">ADD TO CART</button> @*<a href="#." class="btn">ADD TO CART</a>*@ </li>
+
+                                <!-- LIKE -->
+                                <li class="col-sm-12"> <a href="#." class="like-us  wishBtn" data-id="@Model.ID"><i class="icon-heart"></i> ADD TO WISHLIST </a> </li>
+                            </ul>
+
+                            <!-- INFOMATION -->
+                            <div class="inner-info">
+                                <h5>Share this item with your friends</h5>
+                                <!-- Social Icons -->
+                                <ul class="social_icons">
+                                    <li><a href="#."><i class="icon-social-facebook"></i></a></li>
+                                    <li><a href="#."><i class="icon-social-twitter"></i></a></li>
+                                    <li><a href="#."><i class="icon-social-tumblr"></i></a></li>
+                                    <li><a href="#."><i class="icon-social-youtube"></i></a></li>
+                                    <li><a href="#."><i class="icon-social-dribbble"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--======= PRODUCT DESCRIPTION =========-->
+            <div class="item-decribe">
+                <!-- Nav tabs -->
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item"> <a class="active nav-link" href="#descr" role="tab" data-toggle="pill">DESCRIPTION</a></li>
+                    <li class="nav-item"><a class="nav-link review" href="#review" role="tab" data-toggle="pill">REVIEW (<strong class="">@Model.ProductComments.ToList().Count</strong>)</a></li>
+
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!-- DESCRIPTION -->
+                    <div role="tabpanel" class="tab-pane active" id="descr">
+                        <p>
+
+                            @Model.ProductDescription
+                        </p>
+                        <h6>THE SIMPLE FACTS</h6>
+                        <ul>
+                            <li>
+                                <p> Category => @Model.Category</p>
+                            </li>
+                            <li>
+                                <p> Brand => @Model.Companies </p>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!-- REVIEW -->
+                    <div role="tabpanel" class="tab-pane fade  scrollBody" id="review">
+                        <h6>@Model.ProductComments.Count REVIEWS FOR SHIP YOUR IDEA</h6>
+                        <div id="commentsSectin">
+                            @foreach (var comment in Model.ProductComments)
+                            {
+
+
+                                <div class="media">
+                                    <div class="media-left">
+                                        <!--  Image -->
+
+                                        <div class="avatar"> <a href="#"> <img class="media-object" src="~/clientHtml/images/SiteImages/man.jpg" alt=""> </a> </div>
+                                    </div>
+                                    <!--  Details -->
+                                    <div class="media-body">
+                                        <p>
+                                            “@comment.Comment”
+                                        </p>
+                                        <h6>@comment.Name <span class="pull-right">@comment.PostedDate.ToString("dd-MMM-yyyy")</span> </h6>
+                                    </div>
+                                </div>
+                             
+                            }
+                        </div>
+
+
+                        <!-- ADD REVIEW -->
+                        <h6 class="margin-t-40">ADD YOUR REVIEW</h6>
+                        <form id="commentForm" method="post">
+                            <ul class="row">
+                                <li class="col-sm-6">
+                                    <label>
+                                        *NAME
+                                        <input type="text" value="" id="UserName" name="UserName" placeholder="">
+                                    </label>
+                                </li>
+                                <li class="col-sm-6">
+                                    <label>
+
+                                        <input type="hidden" id="proID" value="@Model.ID" placeholder="">
+                                    </label>
+                                </li>
+                                <li class="col-sm-12">
+                                    <label>
+                                        *YOUR REVIEW
+                                        <textarea name="message" id="message"></textarea>
+                                    </label>
+                                </li>
+                                <li class="col-sm-6">
+                                    <!-- Rating Stars -->
+                                    <div class="stars"> <span>your precious feedback will prove valueable for us</span> <i class="fa fa-thumbs-o-up"></i></div>
+
+                                </li>
+                                <li class="col-sm-6">
+                                    <button type="button" id="cmtButton" class="btn btn-dark btn-small pull-right no-margin"><i class="fa fa-commenting" aria-hidden="true"></i> POST REVIEW</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Products -->
+    <section class="dark-bg padding-top-100 padding-bottom-100">
+        <div class="container-full">
+
+            <!-- Main Heading -->
+            <div class="heading text-center">
+                <h4>Popular Products</h4>
+             
+            </div>
+
+            <!-- Popular Item Slide -->
+            <div class="papular-block block-slide">
+
+                @foreach (var cat in Model.CategoryWiseProducts)
+                {
+                    <!-- Item -->
+                    <div class="item">
+                        <!-- Item img -->
+                        <div class="item-img">
+                            <img class="img-1" src="@Url.Content(cat.ProductImages[0])" alt=""> <img class="img-2" src="@Url.Content(cat.ProductImages[1])" alt="">
+                            <!-- Overlay -->
+                            <div class="overlay">
+                                <div class="position-bottom">
+                                    <div class="inn"><a href="@Url.Content(cat.ProductImages[0])" data-lighter><i class="icon-magnifier"></i></a> <a href="@Url.Action("ProductDetail","Product", new {id=@cat.ID})" id="addtocart_P" data-pid="@cat.ID" data-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="icon-eye"></i></a> <a href="#." data-toggle="tooltip" data-placement="top" title="Add To WishList"><i class="icon-heart"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Item Name -->
+                        <div class="item-name">
+                            <a href="#">@cat.ProductName </a>
+                            @if (cat.ProductName.Length <= 20)
+                            {
+
+                                <p>@cat.ProductDescription</p>
+                            }
+                            else
+                            { <p>@cat.ProductDescription.Substring(1, 20)</p>
+
+                         
+                        }
+
+                        </div>
+                        <!-- Price -->
+                        <span class="price"><small>$</small>@cat.salePrice</span>
+                    </div>
+
+                }
+
+                <!-- Item -->
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK WITH US -->
+    <section class="our-team padding-top-100 padding-bottom-100">
+        <div class="container">
+            <div class="heading text-center">
+                <h4>We work with the best brands</h4>
+                <hr>
+            </div>
+        </div>
+        <div class="container-full">
+            <div class="clients-slide">
+                <div> <img src="~/ClientHtml/images/c-mg-1.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-2.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-3.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-1.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-2.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-3.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-1.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-2.png" alt=""> </div>
+                <div> <img src="~/ClientHtml/images/c-mg-3.png" alt=""> </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+
+
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+
+
+    <script src="~/Scripts/toastr.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+
+    @*<script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>*@
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#cmtButton").click(function (e) {
+                var status = true;
+
+                //alert("Comment Button is Clicked");
+                var id = $("#proID").val();
+
+                var newComment = "";
+                var userName = $("#UserName").val();
+
+                var Comment = $("#message").val();
+
+                if ($("#UserName").val() == 0 || $("#message").val()== 0) {
+                    e.preventDefault();
+                    status = false;
+
+
+                    $.alert({
+                        icon: 'fa fa-warning',
+                        title: 'Error!',
+                        titleClass:'text-danger',
+                        content: 'Give user name or Comment  before Submitting your Review (*)',
+                        animationBounce: 1.5
+                    });
+
+                    return false;
+                } else {
+                    $.ajax({
+                        url: "@Url.Action("CommentAdding","Product")",
+                        type: "POST",
+                        data: { id: id, userName: userName, comment: Comment }
+                    }).done(function(result) {
+                        //alert("Ho gya Hai Save or ap ka data the  id=" + result.Id + " Name user =" + result.Name + " Comment tha " + result.Comment);
+                        //var d = new Date(result.PostedDate);
+
+                        $(".review strong").html(result.cout);
+
+                        newComment =
+                            "<div class='media'><div class='media-left'><div class='avatar'> <a href='#'><img class='media-object' src='/clientHtml/images/SiteImages/man.jpg' alt=''> </a> </div></div><div class='media-body'><p>“" +
+                        result.Comment +
+                            "”</p><h6>" +
+                        result.Name +
+                        " <span class='pull-right'>" + moment(result.PostedDate ).format("DD-MMM-YYYY")+"</span> </h6></div></div>";
+
+                        $("#review #commentsSectin").append(newComment);
+
+                        $("#UserName").val("");
+                        $("#message").val("");
+
+                    }).fail(function() {
+                        alert("Kuch techniquee problem ki waja se ap ka kam nai ho sakaa.!");
+                    });
+                }
+
+
+            });
+
+
+            $("#addtocart").click(function(e) {
+
+                e.preventDefault();
+                var id = $(this).data("pid");
+
+
+                $.ajax({
+                    url: "/Cart/AddToCartPartial/" + id,
+                    type: "GET",
+                    success: function (result) {
+                        if (result == false) {
+                            $.alert({
+                                icon: 'fa fa-warning',
+                                title: 'Error!',
+                                titleClass:'text-danger',
+                                content: 'Paa hor Quantity nai Add honi hai',
+                                animationBounce: 1.5
+                            });
+
+                        } else {
+                            $(".ajaxCart").html(result);
+
+                            toastr.success("Product is added Successfuly.", "Success!");
+                        }
+
+                    },
+                    error: function(result) {
+                        toastr.error("Product is Not added.", "Error!");
+                    }
+                });
+
+
+            });
+
+
+         //   $("#addtocart_P").click(function(e) {
+         //
+         //       alert("Button is Click new")
+         //       e.preventDefault();
+         //       var id = $(this).data("pid");
+         //
+         //
+         //       $.ajax({
+         //           url: "/Cart/AddToCartPartial/" + id,
+         //           type: "GET",
+         //           success: function(result) {
+         //               $(".ajaxCart").html(result);
+         //           },
+         //           error: function(result) {
+         //               alert("Something Wrong");
+         //           }
+         //       });
+         //       alert(id);
+         //
+         //   });
+        });
+    </script>
+}

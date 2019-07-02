@@ -1,0 +1,126 @@
+﻿@model MenBytes.Models.ViewModels.AllBlogViewModel
+
+@{
+    ViewBag.Title = "BloglistPage";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+}
+
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color:white">Blog List</h4>
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index","ClientSide")" style="color:white">Home</a></li>
+                <li class="active" style="color:white">blog</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+
+@if (Model.BlogsList != null && Model.BlogsList.Count > 0)
+{
+    <!-- Content -->
+    <div id="content">
+       
+        <!-- Blog List -->
+        <section class="blog-list padding-top-100 padding-bottom-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 "></div>
+                    <div class="col-md-6 ">
+                        @using (Html.BeginForm("BloglistPage", "SiteBlog"))
+                        {
+                            <div class="search">
+                                <input class="form-control" type="search" id="searchBlogTxt" name="search" placeholder="Search Blogs">
+                                <button type="submit" id="blogSearchBtn"><i class="fa fa-search"></i></button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+           
+
+            <div class="container">
+
+                @foreach (var blog in Model.BlogsList)
+                {
+                    <!-- Article -->
+                    <article>
+
+                        <!-- Tittle -->
+                        <div class="post-tittle">
+                            <a href="#." class="tittle">@blog.Title</a>
+                            <div class="tags"> <span>Date: <strong>@blog.postedDate.Date.ToString("M")</strong></span> <span>By: <strong>@blog.postedBy</strong></span></div>
+                        </div>
+
+                        <!-- Post Img -->
+                        <img class="img-responsive" src="@Url.Content(blog.blogImage)" alt="BlogImage">
+
+                        <!-- DATE -->
+                        @*<div class="media-left">
+                                <div class="post-date"> <span>@blog.postedDate.DayOfWeek.ToString("F")</span> <span class="num"></span> <span class="coments"><i class="icon-bubble primary-color"></i> 06 </span> </div>
+                            </div>*@
+                        <div class="media-body text-left">
+                            <p>
+                                @Html.Raw(blog.blogMessage.Substring(0, 400))
+                            </p><br/>
+                            <a href="@Url.Action("BlogDetail", "SiteBlog", new {id = @blog.Id})" class="btn">READ MORE</a>
+                        </div>
+                    </article>
+
+                }
+
+
+
+                <!-- Pagination -->
+                <ul class="pagination in-center">
+                    @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                    {
+                        if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li><a href="@Url.Action("BloglistPage", "SiteBlog", new {pageNo = (Model.Pager.CurrentPage - 1)})"><i class="fa fa-angle-left"></i></a></li>
+                                @*<li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>*@
+
+                        }
+
+                        for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                        {
+                            string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                @*<li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>*@
+                            <li class="active"><a href="@Url.Action("BloglistPage", "SiteBlog", new {pageNo = @page})">@page</a></li>
+                        }
+                        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li><a href="@Url.Action("BloglistPage", "SiteBlog", new {pageNo = (Model.Pager.CurrentPage + 1)})"><i class="fa fa-angle-right"></i></a></li>
+                                @*<li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>*@
+                        }
+                    }
+                    @*<li><a href="#"><i class="fa fa-angle-left"></i></a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>*@
+                </ul>
+            </div>
+        </section>
+    </div>
+}
+else
+{ <!-- Content -->
+    <div id="content">
+        <!-- Blog List -->
+        <section class="blog-list padding-top-100 padding-bottom-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    
+                    <h2 class="text-danger text-center">Record Not Found :(</h2>
+                </div>
+           
+            </div>
+        </div>
+        </section>
+    </div>
+}

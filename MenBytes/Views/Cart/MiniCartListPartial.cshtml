@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MenBytes.Models.ViewModels.CartVM>
+
+
+@if (Model == null || Model.Count()<0)
+{
+    <h4 class="text-danger">ViewBag.Message</h4>
+}
+else
+{
+    foreach (var item in Model)
+    {
+       
+            <li>
+                <div class="media-left">
+                    <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="@Url.Content(item.ProductImage)" alt="Product Image"> </a> </div>
+                </div>
+                <div class="media-body">
+                    <h6 class="media-heading">@(item.ProductName.Length > 10 ? item.ProductName.Substring(0, 10).ToString() : item.ProductName)</h6>
+                    <span class="price">@item.Price PKR</span> <br>
+                    <span class="qty">QTY: @item.Quantity</span>
+                </div>
+            </li>
+     
+    }
+    
+    <li class="totl">
+        <h5 class="text-left">SUBTOTAL: <small> @ViewBag.GrandTotal PKR  </small></h5>
+    </li>
+    <a href="@Url.Action("Index","Cart")" class="btn">VIEW CART</a> <a href="@Url.Action("CheckOut","Cart")" class="btn">CHECK OUT</a>
+  
+}
+
+

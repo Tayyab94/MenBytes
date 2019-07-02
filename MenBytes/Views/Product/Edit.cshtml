@@ -1,0 +1,401 @@
+﻿@model MenBytes.Models.ViewModels.EditProductViewModel
+
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+
+        <div class="col-4">
+
+            <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="align-left"></i></span></span>Edit Product</h4>
+        </div>
+        <div class="col-7" style="margin-top: 10px">
+            
+            @if (ViewBag.alertMsg != null)
+            {
+                <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
+                    <span class="alert-icon-wrap"><i class="zmdi zmdi-notifications-active"></i></span>@ViewBag.alertMsg
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+          
+        </div>
+
+    </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+                <div class="row">
+                    <div class="col-sm">
+                        <form action="@Url.Action("Edit","Product")" id="productForm" method="post" enctype="multipart/form-data">
+                           
+                            <div class="row">
+                                @Html.HiddenFor(x => x.ID)
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label for="address2">Product's Name <span class="text-muted">(*)</span></label>
+                                        <input class="form-control" id="address2" name="ProductName" value="@Model.ProductName" placeholder="Enter Product Name" type="text">
+                                        @Html.ValidationMessageFor(x => x.ProductName, "", new { @class = "text-danger" })
+
+
+                                        <label id="lbproductname" style="color:red"></label>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group">
+                                        <label for="ProductDescription">Product Description <span class="text-muted">(*)</span></label>
+                                        @Html.TextAreaFor(x => x.ProductDescription, new { @class = "form-control", placeholder = "Product Description", id= "productDescription" })
+                                        @*<textarea name="ProductDescription" value="ProductDescription" class="form-control" placeholder="Product Description"></textarea>*@
+                                        @Html.ValidationMessageFor(x => x.ProductDescription, "", new { @class = "text-danger" })
+                                    
+                                    
+                                        <label id="lbproductDes" style="color:red"></label>
+                                        </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label for="state">Companies</label>
+                                            <select class="form-control custom-select d-block w-100" id="state" name="CompanyId">
+                                                @foreach (var com in Model.Companies)
+                                                {
+                                                    var selected = com.Id == Model.CompanyId ? "selected" : string.Empty;
+                                                    @*<option value="">Choose...</option>*@
+                                                    <option value="@com.Id" @selected>@com.CompanyName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="country">category</label>
+
+                                            <select class="form-control custom-select d-block w-100" id="country" name="CategoryId">
+                                                @foreach (var cat in Model.Category)
+                                                {
+                                                    var selected = cat.Id == Model.CategoryId ? "selected" : string.Empty;
+                                                    <option value="@cat.Id" @selected>@cat.Name</option>
+                                                }
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-10">
+
+                                            <label for="purchasePrice">Purchase Price <span class="text-muted">(*)</span></label>
+                                            <input class="form-control sale_purchase_Qty purchasePrice1" id="purchasePrice" name="purchasePrice" value="@Model.purchasePrice" maxlength="@Model.purchasePrice" placeholder="Enter Purchase Price" type="number" min="1">
+
+                                            @Html.ValidationMessageFor(x => x.purchasePrice, "", new { @class = "text-danger" })@*<label for="country">Category</label>*@
+
+
+                                            <label id="lbproductPPrice" style="color:red"></label>
+                                        </div>
+                                        <div class="col-md-4 mb-10">
+
+                                            <label for="sPrice">Sale Price <span class="text-muted">(*)</span></label>
+                                            <input class="form-control sale_purchase_Qty salePrice" id="sPrice" name="salePrice" value="@Model.salePrice" placeholder="Enter Sale Price" type="number" min="1">
+                                            @Html.ValidationMessageFor(x => x.salePrice, "", new { @class = "text-danger" })
+                                       
+                                            <label id="lbproductsalePrice" style="color:red"></label>
+                                        </div>
+                                        <div class="col-md-4 mb-10">
+                                            <label for="Quantity">Quantity <span class="text-muted">(*)</span></label>
+                                            @*<input type="number" class="normal" value="@Model.Quantity" min="0" step="1" />*@
+                                            <input class="form-control sale_purchase_Qty" id="Quantity" name="Quantity" value="@Model.Quantity" readonly="readonly" placeholder="Enter Price" type="number" min="1">
+                                            @Html.ValidationMessageFor(x => x.Quantity, "", new { @class = "text-danger" })
+                                        
+                                            <label id="lbproductQuantity" style="color:red"></label>
+                                        </div>
+                                    </div>
+                                    @*<hr>
+                                    <div class="custom-control custom-checkbox mb-15">
+                                        <input class="custom-control-input isFeaturedCheck" id="same-address" type="checkbox">
+                                        <label class="custom-control-label" for="same-address">Featured Product</label>
+                                
+                                       
+                                    </div>*@
+                                    @Html.HiddenFor(x=>x.IsFeatured)
+                                </div>
+                                <div class="col-md-5">
+                                    @*@foreach (var im in Model.ProductImages)
+            {<div class="row">
+                 <div class="col-5">
+
+                     <img src="@im.ImagePath" class="img-responsive img-thumbnail"  />
+                 </div>
+             </div>
+            }
+        </div>*@
+
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-12">
+
+                                            <label for="pPrice">Image *<span class="text-muted">(1)</span></label>
+                                            <div class="form-group">
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Upload</span>
+                                                    </div>
+                                                    <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                    <span class="input-group-append">
+                                                        <span class=" btn btn-primary btn-file">
+                                                            <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                            <input type="file" id="file1" name="photo1" multiple="multiple">
+                                                        </span>
+                                                        <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <img src="@Model.ProductImages[0].ImagePath.ToString()" id="preview1" class="img-responsive img-thumbnail" width="80" height="50" />
+
+                                        </div>
+                                        <div class="col-md-12 mb-12">
+                                            <label for="sPrice">Image *<span class="text-muted">(2)</span></label>
+                                            <div class="form-group">
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Upload</span>
+                                                    </div>
+                                                    <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                    <span class="input-group-append">
+                                                        <span class=" btn btn-primary btn-file">
+                                                            <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                            <input type="file" id="file2" name="photo2">
+                                                        </span>
+                                                        <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <img src="@(Model.ProductImages[1].ImagePath.ToString()!=null? Model.ProductImages[1].ImagePath.ToString():string.Empty)" id="preview2" class="img-responsive img-thumbnail" width="80" height="50" />
+                                        </div>
+                                        <div class="col-md-12 mb-12">
+                                            <label for="zip">Image *<span class="text-muted">(3)</span></label>
+                                            <div class="form-group">
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Upload</span>
+                                                    </div>
+                                                    <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                    <span class="input-group-append">
+                                                        <span class=" btn btn-primary btn-file">
+                                                            <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                            <input type="file" id="file3" name="photo3" onchange="previousImage();">
+                                                        </span>
+                                                        <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <img src="@Model.ProductImages[2].ImagePath.ToString()" id="preview3" class="img-responsive img-thumbnail" width="80" height="50" />
+
+                                        </div>
+                                    </div>
+
+
+                                    <button class="btn btn-info pull-right" type="submit" id="EditProduct"> <i class="glyphicon glyphicon-edit"></i> Update</button>
+                                </div>
+                          
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- /Row -->
+</div>
+
+@section scripts{
+    <!-- Bootstrap Input spinner JavaScript -->
+    <script src="~/AdminSide/html/vendors/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
+    <script src="~/AdminSide/html/dist/js/inputspinner-data.js"></script>
+    
+    
+    <script type="text/javascript">
+
+        
+
+        $("#file1").change(function () {
+           
+            if (this.files && this.files[0]) {
+                var img = new FileReader();
+                
+                img.onload = function(e) {
+
+                    $("#preview1").attr('src', e.target.result);
+                }
+                img.readAsDataURL(this.files[0]);
+            }
+           
+        });
+
+        $("#file2").change(function () {
+           
+            if (this.files && this.files[0]) {
+                var img = new FileReader();
+                
+                img.onload = function(e) {
+
+                    $("#preview2").attr('src', e.target.result);
+                }
+                img.readAsDataURL(this.files[0]);
+            }
+           
+        });
+
+        $("#file3").change(function () {
+           
+            if (this.files && this.files[0]) {
+                var img = new FileReader();
+                
+                img.onload = function(e) {
+
+                    $("#preview3").attr('src', e.target.result);
+                }
+                img.readAsDataURL(this.files[0]);
+            }
+           
+        });
+
+
+
+        $("#EditProduct").on("click",
+            function (e) {
+                var Status = true;
+
+
+                var pPrice = $("#purchasePrice").val();
+                var sPrice = $("#sPrice").val();
+
+
+                if ($("#address2").val() == 0 || $("#address2").val() == null) {
+                    e.preventDefault();
+                    $("#lbproductname").html("Please Write Product Name");
+                    Status = false;
+                } else {
+                    if ($("#address2").val().length > 150 || $("#address2").val().length <= 3) {
+                        e.preventDefault();
+
+                        //$.alert({
+                        //    icon: 'fa fa-warning',
+                        //    title: 'Error!',
+                        //    titleClass: 'text-danger',
+                        //    content: "Name Should be between 3 to 50 charactors",
+                        //    animationBounce: 1.5
+                        //});
+
+                        $("#lbproductname").html("Name Should be between 3 to 150 charactors");
+                        Status = false;
+                    } else {
+
+                        $("#lbproductname").html("");
+                        Status = true;
+                    }
+                }
+
+                if ($("#productDescription").val() == 0 || $("#productDescription").val() == null) {
+                    e.preventDefault();
+                    $("#lbproductDes").html("Please Write Product Description");
+                    Status = false;
+                } else {
+
+                    $("#lbproductDes").html("");
+                    Status = true;
+
+                }
+
+                if ($("#purchasePrice").val() == 0 || $("#purchasePrice").val() == null) {
+                    e.preventDefault();
+                    $("#lbproductPPrice").html("Please Write Purchase Price");
+                    Status = false;
+                } else {
+
+                    $("#lbproductPPrice").html("");
+                    Status = true;
+
+                }
+
+
+                if ($("#sPrice").val() == 0 || $("#sPrice").val() == null) {
+                    e.preventDefault();
+                    $("#lbproductsalePrice").html("Please Write Sale Price");
+                    Status = false;
+                } else {
+                    if ($("#sPrice").val() < $("#purchasePrice").val()) {
+                        e.preventDefault();
+
+                        //$.alert({
+                        //    icon: 'fa fa-warning',
+                        //    title: 'Error!',
+                        //    titleClass: 'text-danger',
+                        //    content: "Name Should be between 3 to 50 charactors",
+                        //    animationBounce: 1.5
+                        //});
+
+                        $("#lbproductsalePrice").html("Sale price can not less than Purshase price");
+                        Status = false;
+                    } else {
+
+                        $("#lbproductsalePrice").html("");
+                        Status = true;
+                    }
+                }
+
+                if ($("#Quantity").val() == 0 || $("#Quantity").val() == null) {
+                    e.preventDefault();
+                    $("#lbproductQuantity").html("Please Write Quanityt");
+                    Status = false;
+                } else {
+
+                    $("#lbproductQuantity").html("");
+                    Status = true;
+
+                }
+
+                
+
+                if (Status === true) {
+                    $.alert({
+                        icon: 'fa fa-success',
+                        title: 'success!',
+                        titleClass: 'text-success',
+                        content: 'Please Wait form is Uploading',
+                        animationBounce: 1.5
+                    });
+                } else {
+                    $.alert({
+                        icon: 'fa fa-warning',
+                        title: 'Error!',
+                        titleClass: 'text-danger',
+                        content: 'Please fill all Required Fileds (*)',
+                        animationBounce: 1.5
+                    });
+                }
+
+
+            });
+
+        @*$("#EditProduct").click(function() {
+
+            $.ajax(
+                {
+                    url: '@Url.Action("Edit","Product")',
+                    type: 'POST',
+                    data: 
+        }).done(function(result) {
+
+            }).fail(function() {
+
+            });*@
+
+
+    </script>
+
+}

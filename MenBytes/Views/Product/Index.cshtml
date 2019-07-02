@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+
+}
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Forms</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Product List</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span><a href="@Url.Action("creatProduct","Product")" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Form Product</a></h4>
+        @*<input type="button" id="btnNew" class="btn btn-primary form-control" value="Add New" />*@
+    </div>
+    
+   
+
+    <!-- /Title -->
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="tblContainer">
+                @{
+                    Html.RenderAction("ProductTable");
+                }
+            </div>
+            <hr />
+            <div class="actionContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

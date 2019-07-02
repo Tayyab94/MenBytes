@@ -1,0 +1,96 @@
+﻿@using MenBytes.Models
+@using MenBytes.Models.Context
+@using Microsoft.AspNet.Identity
+
+
+
+@{
+
+    string userId = User.Identity.GetUserId();
+    ApplicationUser currentUser = new ApplicationDbContext().Users.Where(s => s.Id == userId).SingleOrDefault();
+
+
+}
+
+@*@if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+        }
+    }
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>
+    }*@
+
+
+<li class="nav-item dropdown dropdown-authentication">
+    <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="media">
+            <div class="media-img-wrap">
+                <div class="avatar">
+                    <img src="~/AdminSide/html/dist/img/avatar12.jpg" alt="user" class="avatar-img rounded-circle">
+                </div>
+                <span class="badge badge-success badge-indicator"></span>
+            </div>
+            <div class="media-body">
+                @if (currentUser != null)
+                {
+                    if (String.IsNullOrEmpty(currentUser.user_Name))
+                    {
+
+                        <span>UnKnow User<i class="zmdi zmdi-chevron-down"></i></span>
+                    }
+                    else
+                    {
+
+                        <span>@currentUser.user_Name<i class="zmdi zmdi-chevron-down"></i></span>
+                    }
+                }
+
+            </div>
+        </div>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
+        @if (User.IsInRole(MB.User))
+        {
+
+            <a class="dropdown-item" href="@Url.Action("Index","Manage")"><i class="dropdown-icon zmdi zmdi-account"></i><span>Profile</span></a>
+
+            <a class="dropdown-item" href="@Url.Action("Index","ClientSide")"><i class="dropdown-icon zmdi zmdi-home"></i><span>Home Page</span></a>
+
+        }
+        else if (User.IsInRole(MB.Admin))
+        {
+            <a class="dropdown-item" href="@Url.Action("Index","Manage")"><i class="dropdown-icon zmdi zmdi-account"></i><span>Profile</span></a>
+
+            <a class="dropdown-item" href="@Url.Action("Index","Contact")"><i class="dropdown-icon zmdi zmdi-email"></i><span>Contact Messages</span></a>
+
+        }
+
+        <div class="dropdown-divider"></div>
+
+
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"><i class="dropdown-icon zmdi zmdi-power"></i><span>Log out</span></a>
+            }
+        }
+
+    </div>
+</li>

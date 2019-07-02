@@ -1,0 +1,280 @@
+﻿@model MenBytes.Models.ViewModels.NewProductViewModel
+
+@{
+    ViewBag.Title = "ProductAdd";
+}
+@section CustomrCss{
+    <!-- Bootstrap Dropzone CSS -->
+
+}
+
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Forms</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Form Product</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+<!-- Container -->
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="align-left"></i></span></span>New Product</h4>
+    </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+                <div class="row">
+                    <div class="col-sm">
+                        <form action="@Url.Action("ProductAdd","Product")" id="productForm" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="address2">Product's Name <span class="text-muted">(*)</span></label>
+                                <input class="form-control" id="address2" name="ProductName" placeholder="Enter Product Name" type="text">
+                                @Html.ValidationMessageFor(x => x.ProductName, "", new { @class = "text-danger" })
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <label for="ProductDescription">Product Description <span class="text-muted">(*)</span></label>
+                                <textarea name="ProductDescription" class="form-control" placeholder="Product Description"></textarea>
+                                @Html.ValidationMessageFor(x => x.ProductDescription, "", new { @class = "text-danger" })
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="state">Companies</label>
+                                    <select class="form-control custom-select d-block w-100" id="state" name="CompanyId">
+                                        @foreach (var com in Model.Companies)
+                                        {
+
+                                            @*<option value="">Choose...</option>*@
+                                            <option value="@com.Id">@com.CompanyName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="country">category</label>
+
+                                    <select class="form-control custom-select d-block w-100" id="country" name="CategoryId">
+                                        @foreach (var cat in Model.Category)
+                                        {
+                                            <option value="@cat.Id">@cat.Name</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 mb-10">
+
+                                    <label for="purchasePrice">Purchase Price <span class="text-muted">(*)</span></label>
+                                    <input class="form-control" id="purchasePrice" name="purchasePrice" placeholder="Enter Purchase Price" type="number" min="1">
+                                    @*<label for="country">Category</label>*@
+
+                                    @*<select class="form-control custom-select d-block w-100" id="country">
+                                            @foreach (var cat in Model.Category)
+                                            {
+                                                <option value="@cat.Id">@cat.Name</option>
+                                            }
+
+                                        </select>*@
+                                </div>
+                                <div class="col-md-4 mb-10">
+
+                                    <label for="sPrice">Sale Price <span class="text-muted">(*)</span></label>
+                                    <input class="form-control" id="sPrice" name="salePrice" placeholder="Enter Sale Price" type="number" min="1">
+
+                                </div>
+                                <div class="col-md-4 mb-10">
+                                    <label for="zip">Quantity <span class="text-muted">(*)</span></label>
+                                    <input class="form-control" id="zip" name="Quantity" placeholder="Enter Price" type="number" min="1">
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                                @*<div class="col-sm">
+                                        <div  class="dropzone" id="remove_link">
+                                            <div class="fallback">
+                                                <input name="file" type="file" multiple />
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                <section class="hk-sec-wrapper">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="dropzone" id="remove_link">
+                                                <div class="fallback">
+                                                    <input name="Images" type="file" multiple />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+
+                            @*<div class="row">
+                                    <div class="col-md-4 mb-10">
+
+                                        <label for="pPrice">Image *<span class="text-muted">(1)</span></label>
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                                <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                <span class="input-group-append">
+                                                    <span class=" btn btn-primary btn-file">
+                                                        <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                        <input type="file" id="file1" name="photo1" multiple="multiple">
+                                                    </span>
+                                                    <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-10">
+
+                                        <label for="sPrice">Image *<span class="text-muted">(2)</span></label>
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                                <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                <span class="input-group-append">
+                                                    <span class=" btn btn-primary btn-file">
+                                                        <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                        <input type="file" id="file2" name="photo2">
+                                                    </span>
+                                                    <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-10">
+                                        <label for="zip">Image *<span class="text-muted">(3)</span></label>
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                                <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                <span class="input-group-append">
+                                                    <span class=" btn btn-primary btn-file">
+                                                        <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                        <input type="file" id="file3" name="photo3">
+                                                    </span>
+                                                    <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                            <hr>
+                            <div class="custom-control custom-checkbox mb-15">
+                                <input class="custom-control-input" id="same-address" type="checkbox">
+                                <label class="custom-control-label" for="same-address">Featured Product</label>
+                            </div>
+                            @*<div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="save-info" type="checkbox">
+                                    <label class="custom-control-label" for="save-info">Save this information for next time</label>
+                                </div>*@
+
+                            <hr>
+                            
+                            
+                            <input type="file" id="FileUpload1" multiple="multiple" />  
+                            <input type="button" id="btnUpload" value="Upload Files" />  
+                            <hr />
+                            
+
+                            <button class="btn btn-primary" type="submit" id="SaveProduct">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- /Row -->
+</div>
+
+
+
+@section scripts{
+    <!-- Dropzone JavaScript -->
+    <script src="~/AdminSide/html/vendors/dropzone/dist/dropzone.js"></script>
+    
+    
+    <Script>
+        $(document).ready(function() {
+
+            $("#btnUpload").click(function() {
+
+                alert("btn is Click")
+                if (window.FormData !== undefined) {
+                    var fileUpload = $("#FileUpload1").get(0);
+
+                    var files = fileUpload.files;
+
+                    //Create FormData
+
+                    var fileData = new FormData();
+
+                    //Looping all the file and add it to the FormDAta object
+
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name,files[i]);
+                    }
+
+                    //Adding One More key to FormData object
+            
+                    fileData.append("username", 'Manas');
+
+                    $.ajax(
+                        {
+                            url: '@Url.Action("fileUpload", "Product")',
+                            type: 'POST',
+                            contentType: false,
+                            processData: false,
+                            data: { fileData},
+                            success: function(result) {
+                                alert(result);
+                            },
+                            error: function() {
+                                alert("Somethisg is wrong");
+                            }
+                        })
+           
+                } else {
+                    alert("Formet is Not Supported");
+                }
+
+
+            });
+
+
+        });
+    </Script>
+
+    @*<!-- Dropzone JavaScript -->
+        <script src="~/AdminSide/html/vendors/dropzone/dist/dropzone.js"></script>
+        <!-- Slimscroll JavaScript -->
+        <script src="~/AdminSide/html/dist/js/jquery.slimscroll.js"></script>
+
+        <!-- Fancy Dropdown JS -->
+        <script src="~/AdminSide/html/dist/js/dropdown-bootstrap-extended.js"></script>
+
+
+        <!-- Dropify JavaScript -->
+        <script src="~/AdminSide/html/vendors/dropify/dist/js/dropify.min.js"></script>
+
+        <!-- Form Flie Upload Data JavaScript -->
+        <script src="~/AdminSide/html/dist/js/form-file-upload-data.js"></script>*@
+
+}

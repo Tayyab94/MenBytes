@@ -1,0 +1,377 @@
+﻿@using MenBytes.Models.Context
+@model MenBytes.Models.ViewModels.PhotoGalleryViewModel
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+}
+
+
+@section CustomrCss{
+
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+
+}
+
+
+
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color: white">The Best Shop Collection</h4>
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index","ClientSide")" style="color: white">Home</a></li>
+                @*<li><a href="@Url.Action("Index","Shop")" style="color: white">Page</a></li>*@
+                <li class="active"><a href="@Url.Action("Index", "Shop")" style="color: white"> Shop </a></li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<div id="content">
+
+    <!-- Products -->
+    <section class="shop-page padding-top-100 padding-bottom-100">
+        <div class="container-full">
+            <div class="row">
+
+                <!-- Shop SideBar -->
+                <div class="col-md-2">
+                    <div class="shop-sidebar">
+                        <h5 class="shop-tittle margin-bottom-30">Search Item</h5>
+                        <form class="form-inline" action="@Url.Action("Index","Shop")" method="get">
+                            <div class="input-group">
+                                @*<label for="inputPassword2" class="sr-only">Password</label>*@
+                                <input type="text" class="form-control" value="@Model.searchITem" name="sreachProduct" id="searchTxtBox" placeholder="Search Product">
+                            
+                                </div>
+
+                        </form>
+                        <br /><br/>
+                       
+                        <!-- Category -->
+                        <h5 class="shop-tittle margin-bottom-30">Category</h5>
+                        <ul class="shop-cate">
+
+                            @foreach (var cat in Model.FeaturedCatagories)
+                            {
+                                string ac = cat.Id == Model.categoryId ? "active" : string.Empty;
+                                <li><a href="@Url.Action("index", "Shop", new {CataId = cat.Id})" class="@ac"> @cat.Name <span>@cat.ProductsList.Where(x=>x.isDeleted!=true).Count()</span></a></li>
+                            }
+
+
+                        </ul>
+
+                        <!-- SortBy -->
+                        <h5 class="shop-tittle margin-top-60 margin-bottom-30">Sort By</h5>
+                        <ul class="shop-cate">
+
+                            <li><a href="@Url.Action("Index", "Shop", new {SortBy = (int) SortByEnum.lowToHigh, CataId = Model.categoryId})">Low to High</a></li>
+                            <li><a href="@Url.Action("Index", "Shop", new {SortBy = (int) SortByEnum.highToLow, CataId = Model.categoryId})">High To Low</a></li>
+                            <li><a href="@Url.Action("Index", "Shop", new {SortBy = (int) SortByEnum.Popularity, CataId = Model.categoryId})">Popularity</a></li>
+
+
+
+                        </ul>
+
+
+                        <!-- FILTER BY PRICE -->
+                        @*<h5 class="shop-tittle margin-top-60 margin-bottom-30">Filter By Price</h5>*@
+
+
+
+                        <!-- BRAND -->
+                        <h5 class="shop-tittle margin-top-60 margin-bottom-30">Brands</h5>
+                        <ul class="shop-cate">
+                            @foreach (var brandCompany in Model.FeaturedCompanieses)
+                            {
+                                <li><a href="@Url.Action("Index", "Shop", new {compId = brandCompany.Id})">@brandCompany.CompanyName</a></li>
+                            }
+
+                        </ul>
+                        <h5 class="shop-tittle margin-bottom-30">@Html.ActionLink("Remove Filters", "Index", "Shop")</h5>
+                        <!-- SIDE BACR BANER -->
+                        <div class="side-bnr margin-top-50">
+                            <img class="img-responsive" src="~/ClientHtml/images/team-1.jpg" alt="">
+                            <div class="position-center-center">
+                                <span class="price" style="color:white"><small>PKR-</small>1299</span>
+                                <div class="bnr-text">look hot with style</div>
+                            </div>
+                        </div>
+                        
+                       
+                    </div>
+                </div>
+
+                <!-- Item Content -->
+                <div class="col-md-10">
+                    <div class="sidebar-layout">
+
+                        <!-- Item Filter -->
+                        <div class="item-fltr">
+                            <!-- short-by -->
+                            <div class="short-by">
+                                Showing @(((Model.pager.CurrentPage - 1) * Model.pager.PageSize) + 1)– @(((Model.pager.CurrentPage - 1) * Model.pager.PageSize) + (Model.ProductList.Count < Model.pager.PageSize ? Model.ProductList.Count : Model.pager.PageSize)) of @Model.pager.TotalItems Products
+                                @*Showing 1–10 of 20 results*@
+                            
+                            </div>
+                            <!-- List and Grid Style -->
+                            <div class="lst-grd">
+                                <a href="#" id="list"><i class="flaticon-interface"></i></a> <a href="#" id="grid"><i class="icon-grid"></i></a>
+                                <!-- Select -->
+                                @*<form action="@Url.Action("index","Shop")" method="get">
+                                        <input type="search" name="sreachProduct" class="form-control" placeholder="Search Shop">
+
+                                    </form>*@
+                             
+                                @*<select id="Sortby">
+                                    <option value="0">Short By: New</option>
+                                    <option value="@((int)SortByEnum.lowToHigh)" data-hred="@Url.Action("Index","Shop", new {SortBy=(int)SortByEnum.lowToHigh})">Short By: Low to High</option>
+                                    <option value="@((int)SortByEnum.highToLow)" data-hred="@Url.Action("Index","Shop", new {SortBy=(int)SortByEnum.highToLow})">Short By: High To Low</option>
+                                    <option value="@((int)SortByEnum.Popularity)" data-hred="@Url.Action("Index","Shop", new {SortBy=(int)SortByEnum.Popularity})">Short By: Popularity</option>
+
+                                </select>*@
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div id="products" class="arrival-block col-item-4 list-group">
+                            <div class="row">
+
+                                @foreach (var product in Model.ProductList)
+                                {
+
+
+                                    <!-- Item -->
+                                    <div class="item">
+                                        <div class="img-ser">
+                                            @if (product.isDeleted)
+                                            {
+                                                <div class="on-sale"> Sale </div>
+                                            }
+                                            <!-- ~/ClientHtml/images -->
+                                            <div class="thumb">
+                                                <img class="img-1" src="@Url.Content(product.ProductImages[0].ImagePath)" alt=""><img class="img-2" src="@Url.Content(product.ProductImages[1].ImagePath)" alt="">
+                                                <!-- Overlay  -->
+                                                <div class="overlay">
+                                                    <div class="position-center-center"> <a class="popup-with-move-anim" href="#qck-view-shop_@product.ID"><i class="icon-eye"></i></a> </div>
+                                                    <div class="add-crt"><a href="#." class="addtocartbtn" data-pid="@product.ID"><i class="icon-basket margin-right-10"></i> Add To Cart</a></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Item Name -->
+                                            <div class="item-name fr-grd">
+                                                <a href="#." class="i-tittle">@product.ProductName</a>
+                                                <span class="price">
+                                                    @*<small>$</small><span class="line-through">299.00</span>*@ <small>PKR-</small>@product.salePrice
+                                                </span>
+                                                <a class="deta animated fadeInRight" href="@Url.Action("ProductDetail", "Product", new {id = @product.ID})">View Detail</a>
+                                            </div>
+                                            <!-- Item Details -->
+                                            <div class="cap-text">
+                                                <div class="item-name">
+                                                    <a href="#." class="i-tittle">@product.ProductName</a> <span class="price">@*<small>PKR- </small><span class="line-through">299.00</span>*@ <small>PKR- </small>@product.salePrice</span>
+                                                    <!-- Stars -->
+                                                    <div class="stras"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i> <a href="#." class="wsh-list wishBtn" data-id="@product.ID"><i class="icon-heart"></i> ADD TO WISHLIST</a> </div>
+                                                    <!-- Details -->
+
+
+                                                    @*@if (product.ProductDescription.Length < 4)
+                                                    {
+                                                        <p>@product.ProductDescription</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>@product.ProductDescription</p>
+                                                    }*@
+
+                                                    <!-- List Style -->
+                                                    @*<ul class="list-style">
+            <li> Best Shop Products </li>
+            <li> Color Option </li>
+            <li> All Sizes </li>
+            <li> Discounted Prices </li>
+            <li> Refund Poloicy </li>
+            <li> New Arrival </li>
+        </ul>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+                            </div>
+                        </div>
+
+                        <!-- View All Items -->
+                        <!-- Pagination -->
+                        <div class="pull-right">
+                            <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                                <ul class="pagination custom-pagination pagination-rounded pagination-filled"></ul>
+                            </nav>
+
+                        </div>
+                        <ul class="pagination">
+                            @if (Model.pager != null && Model.pager.TotalPages > 1)
+                            {
+                                if (Model.pager.CurrentPage > 1)
+                                {
+                                    <li><a href="@Url.Action("Index","Shop",new{pageNo=(Model.pager.CurrentPage-1),CataId=Model.categoryId,compId=Model.companyId})"><i class="fa fa-backward"></i></a></li>
+
+                                    @*<li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>*@
+
+                                }
+
+                                for (int page = Model.pager.StartPage; page < Model.pager.EndPage; page++)
+                                {
+                                    string activeClass = Model.pager.CurrentPage == page ? "active" : string.Empty;
+
+                                    @*<li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>*@
+
+                                    <li class="@activeClass"><a href="@Url.Action("Index","Shop",new{pageNo=page,CataId=Model.categoryId,compId=Model.companyId})">@page</a></li>
+
+                                }
+                                if (Model.pager.CurrentPage < Model.pager.TotalPages)
+                                {
+                                    <li><a href="@Url.Action("Index","Shop",new{pageNo=(Model.pager.CurrentPage+1),CataId=Model.categoryId,compId=Model.companyId})"><i class="fa fa-forward"></i></a></li>
+
+                                    @*<li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>*@
+                                }
+                            }
+
+                        </ul>
+
+                        @foreach (var product in Model.ProductList)
+                        {
+                            <div id="qck-view-shop_@product.ID" class="zoom-anim-dialog qck-inside mfp-hide">
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+
+                                        <!-- Images Slider -->
+                                        <div class="images-slider">
+                                            <ul class="slides">
+                                                @foreach (var im in product.ProductImages)
+                                                {
+                                                    <li data-thumb="@Url.Content(im.ImagePath)"> <img src="@Url.Content(im.ImagePath)" alt=""> </li>
+
+                                                }
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Content Info -->
+                                    <div class="col-md-6">
+                                        <div class="contnt-info">
+                                            <h3>@product.ProductName</h3>
+                                            @*<p>
+                                                @product.ProductDescription
+                                            </p>*@
+
+                                            <!-- Btn  -->
+                                            <div class="add-info">
+                                                @*<div class="quantity">
+                                                        <input type="number" min="1" max="100" step="1" value="1" class="form-control qty">
+                                                    </div>*@
+                                                <a href="#." class="btn btn-inverse wishBtn" data-id="@product.ID">
+                                                    <i class="icon-heart "></i>
+                                                </a> 
+                                                <button type="button" id="" data-pid="@product.ID" class="btn addtocartbtn">ADD TO CART</button>
+                                                @*<a href="#." id="addtocart" data-pid="@product.ID" class="btn">ADD TO CART </a>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        }
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+
+
+
+
+    <script src="~/Scripts/toastr.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            $("#Sortby").change(function(e) {
+
+                var vale = $("#Sortby option:selected").val();
+
+
+                var ur = $("#Sortby option:selected").attr("data-hred");
+                alert(ur);
+                $.ajax({
+                    @*url: "@Url.Action("Index","Shop")",*@
+                    url: ur,
+
+                });
+                alert(vale);
+            });
+
+
+
+
+
+
+
+            $(".addtocartbtn").click(function () {
+
+                var id = $(this).data("pid");
+
+
+                $.ajax({
+                    url: "/Cart/AddToCartPartial/" + id,
+                    type: "GET",
+                    success: function (result) {
+                        if (result == false) {
+                            $.alert({
+                                icon: 'fa fa-warning',
+                                title: 'Error!',
+                                titleClass: 'text-danger',
+                                content: 'Paa hor Quantity nai Add honi hai',
+                                animationBounce: 1.5
+                            });
+
+                        } else {
+                            $(".ajaxCart").html(result);
+
+                            toastr.success("Product is added Successfuly.", "Success!");
+                        }
+
+                    },
+                    error: function (result) {
+                        toastr.error("Product is Not added.", "Error!");
+                    }
+                });
+
+
+            });
+
+        });
+
+    </script>
+}

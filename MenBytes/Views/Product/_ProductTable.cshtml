@@ -1,0 +1,497 @@
+﻿@*@model MenBytes.Models.ViewModels.AllProducts*@
+
+@model MenBytes.Models.ViewModels.AllProductViewModel
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #6cca05ab">
+                <h5 class="modal-title text-center" id="exampleModalLongTitle">Update Product Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm())
+            {
+
+                <div id="orderStatusBody">
+
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" id="editQtyBtn" data-id="" class="btn btn-outline-info">Edit</button>*@
+
+                    <button type="button" class="btn btn-outline-danger left" data-dismiss="modal">Close</button>
+                    <button type="button" id="changeQtyBtn" class="btn btn-outline-primary">Update Quantity</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updataQuantityModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #6cca05ab">
+                <h5 class="modal-title text-center" id="exampleModalLongTitle">Change Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm())
+            {
+
+                <div id="orderStatusBody1">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" id="EditchangeQtyBtn" class="btn btn-primary">Edit Quantity</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+@if (Model.productList != null && Model.productList.Count > 0)
+{
+    <section class="hk-sec-wrapper">
+
+        <div class="row">
+            <div class="col-sm">
+                <div class="searchdiv">
+                    <div class="pull-right">
+                        <form class="form-inline">
+                            @*<div class="form-group mb-2">
+                                    <label for="staticEmail2" class="sr-only">Email</label>
+                                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                                </div>*@
+                            <div class="form-group mx-sm-3 mb-2">
+                                <div class="input-group">
+                                    @*<label for="inputPassword2" class="sr-only">Password</label>*@
+                                    <input type="text" class="form-control" value="@Model.SearchItem" id="searchTxtBox" placeholder="Search Product">
+                                    <button type="button" class="btn btn-primary mb-2 searchBtn input-group-addon"><i class="jq-toast-icon ti-search"></i></button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-lg mb-0">
+                            <thead class="thead-active">
+                                <tr>
+                                    @*<th>ID</th>*@
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Images</th>
+                                    <th>Quantity</th>
+
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.productList)
+                                {
+
+                                    <tr>
+                                        @*<td>@item.ID</td>*@
+                                        <td><a href="@Url.Action("Edit","Product", new {id=item.ID})">@item.ProductName</a></td>
+                                        <td>@item.CategoryName</td>
+
+                                        <td>
+                                            @foreach (var im in item.ProductImages)
+                                            {
+
+                                                <img src="@im" class="img-rounded img-responsive" width="40" />
+
+                                            }
+                                        </td>
+                                        <td class="proQty_@item.ID">
+                                            @if (@item.Quantity >= 0)
+                                            {
+                                                <span class="badge badge-danger">@item.Quantity</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-soft-info">@item.Quantity</span>
+                                                     
+                                            }
+                                         
+                                        </td>
+
+                                        <td>
+
+                                            @*<button type="button" class="btn btn-info btn-sm  btnEdit" id="@item.Id" data-id="@item.Id" data-toggle="tooltip" data-original-title="Edit"> <i class="icon-pencil"></i></button>*@
+                                            <a href="#" class="btn btn-small bg-cyan-light-2 text-white btnchangeQty" data-id="@item.ID" data-toggle="tooltip" data-original-title="Edit quantity"> <i class="icon-pencil"></i> </a>
+                                            @*<a href="#" class="btnDel" data-toggle="tooltip" data-id="@item.Id" data-original-title="Close"> <i class="icon-trash txt-danger"></i> </a>*@
+                                            
+                                            
+                                            @*Ye wala link Delete nai krna hai*@
+                                            @*<a href="#" class="deleteProductBtn bg-gradient-danger btn btn-small text-white" data-id="@item.ID" data-toggle="tooltip" data-original-title="Permanent Delete"> <i class="icon-trash"></i> </a>*@
+                                            
+                                            
+
+                                            <a href="#" class="hideProductBtn btn btn-small bg-blue-dark-2 text-white" data-id="@item.ID" data-toggle="tooltip" data-original-title="Hide Product"> <i class="fa fa-eye-slash"></i> </a>
+
+                                            @*@Html.ActionLink("Delete","Delete", "Product",new {id=@item.ID},new {@class="btn btn-danger btn-sm"})*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        
+                        
+                        <div class="pull-right">
+                            <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                                <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                                    @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                                    {
+                                        if (Model.Pager.CurrentPage > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+                                        }
+
+                                        for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                                        {
+                                            string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                            <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>
+                                        }
+                                        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                        {
+                                    
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                                        }
+                                    }
+
+                                </ul>
+                            </nav>
+                        </div>
+                         
+                        
+                        @*Don't Delete this code also'*@
+                        @*<div class="pull-right">
+                            <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                                <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                                    @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                                    {
+                                        if (Model.Pager.CurrentPage > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+
+                                        }
+
+                                        for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                                        {
+                                            string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                            <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>
+                                        }
+                                        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                        {
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                                        }
+                                    }
+
+                                </ul>
+                            </nav>
+
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section class="hk-sec-wrapper">
+
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-danger text-center">No Record is Found <i class="fa ti-face-sad"></i></h2>
+        </div>
+    </div>
+    </section>
+}
+
+<script>
+
+    var iid = "";
+
+    $("#EditchangeQtyBtn").click(function(e) {
+
+        var pid = $("#ProductID").val();
+
+        var kid = $("#stocktblPrimaryKey").val();
+
+        var updateQty = $("#eidtUpdateQtyBox").val();
+
+       // var kid = $("#eidtUpdateQtyBox").attr("data-primary-id");
+
+
+
+        if (updateQty <= 0) {
+            e.preventDefault();
+            alert("VAlue can not b 0 or less");
+        } else {
+            $.ajax({
+                url: "@Url.Action("ProductUpdateQty","Product")",
+                type: "POST",
+                data: {
+                    id: pid,
+                    qty: updateQty, EditnewQty: true,
+                    KeyId:kid
+                }
+            }).done(function(result) {
+
+                if (result.Status === true) {
+
+                    $(".proQty_" + result.id).html(result.quantity);
+
+                    $("#updataQuantityModel").modal("hide");
+
+                } else {
+                    alert("Kuch b nai hoa");
+                }
+
+                //$("#exampleModalLong").css("display", "none");
+
+                ///$("#exampleModalLong").addClass("hide");
+                //$('.tblContainer').html(result);
+
+
+
+                //$("#exampleModalLong").addClass("hide");
+
+
+            }).fail(function() {
+
+            });
+
+            //$("#exampleModalLong").modal('hide');
+        }
+
+    });
+
+    $("#editQtyBtn").click(function () {
+
+
+        var pid = $("#ProductID").val();
+        alert(pid);
+
+        $.ajax({
+            url: "@Url.Action("EditUpdatedPrductQuantity","Product")",
+            type: "GET",
+            data: { id: pid }
+        }).done(function(result) {
+
+            $("#orderStatusBody1").html(result);
+            $("#exampleModalLong").modal("hide");
+
+            $("#updataQuantityModel").modal("show");
+        }).fail(function() {
+
+        });
+
+    })
+
+    $("#changeQtyBtn").on("click",
+        function(e) {
+
+            var pid = $("#ProductID").val();
+
+            var updateQty = $("#updateQtyBox").val();
+
+            if (updateQty <= 0) {
+                e.preventDefault();
+                alert("VAlue can not b 0 or less");
+            } else {
+                $.ajax({
+                    url: "@Url.Action("ProductUpdateQty","Product")",
+                    type: "POST",
+                    data: {
+                        id: pid,
+                        qty: updateQty, EditnewQty:false
+                    }
+                }).done(function(result) {
+
+                    if (result.Status === true) {
+                        if (result.quantity > 30) {
+
+                            window.location.href = "/Product/Index";
+                        } else {
+                            $(".proQty_" + result.id+" span.badge").html(result.quantity);
+
+                            $("#exampleModalLong").modal("hide");
+                        }
+
+
+                    } else {
+                        alert("Kuch b nai hoa");
+                    }
+
+                    //$("#exampleModalLong").css("display", "none");
+
+                    ///$("#exampleModalLong").addClass("hide");
+                    //$('.tblContainer').html(result);
+
+
+
+                    //$("#exampleModalLong").addClass("hide");
+
+
+                }).fail(function() {
+
+                });
+
+                //$("#exampleModalLong").modal('hide');
+            }
+
+
+
+        });
+
+
+    $(".searchBtn").click(function() {
+        var search = $("#searchTxtBox").val();
+        alert(search);
+        $.ajax({
+            url: "@Url.Action("ProductTable","Product")",
+            data: { search: search }
+        }).done(function(result) {
+            if (result != null) {
+                $('.tblContainer').html(result);
+            }
+        }).fail(function() {
+            alert("Soemthing wrogn");
+        });
+    });
+
+    $(".btnchangeQty").click(function() {
+        iid = $(this);
+        var pid = $(this).attr("data-id");
+
+        alert("btn Q click");
+
+        $.ajax({
+            url: "@Url.Action("changeProductQuantity","Product")",
+            data: { id: pid }
+        }).done(function(result) {
+            if (result != null) {
+
+                $("#orderStatusBody").html(result);
+                $("#exampleModalLong").modal('show');
+            }
+        }).fail(function() {
+            alert("Soemthing wrogn");
+        });
+
+        @*$.ajax({
+            url: "@Url.Action("changeProductQuantity","Product")",
+            type: "GET",
+            type: { id: id }
+        }).done(function(result) {
+
+            $("#orderStatusBody").html(result);
+            $("#exampleModalLong").modal('show');
+        }).fail(function() {
+
+        });*@
+    });
+
+    $(".hideProductBtn").on("click",
+        function() {
+            var dataId = $(this).attr("data-id");
+
+            $.ajax({
+                url: "@Url.Action("productHide","Product")",
+                type: "POST",
+                data: {
+                    id: dataId
+                }
+            }).done(function(result) {
+                $(".tblContainer").html(result);
+            }).fail(function() {
+
+            });
+
+        });
+
+    $(".deleteProductBtn").on("click",
+        function () {
+
+            var dataID = $(this).attr("data-id");
+
+
+            $.toast().reset('all');
+            $("body").removeAttr('class');
+            $.toast({
+                heading: 'Are you sure you want to delete this? This Product will Delete Permanently from your Record!',
+                text: '<i class="jq-toast-icon ti-alert"></i><button class="btn btn-danger btn-sm mt-10 mr-5 btnDel">yes</button>',
+                position: 'top-right',
+                loaderBg:'#7a5449',
+                class: 'jq-has-icon jq-toast-warning',
+                hideAfter: 3500,
+                stack: 6,
+                showHideTransition: 'fade'
+            });
+
+            $(".btnDel").click(function() {
+
+                //alert(dataID)
+
+                $.ajax({
+                    url: '/Product/Delete',
+                    type: 'POST',
+                    data: {
+                        id: dataID
+                    }
+
+                }).done(function(result) {
+                    $(".tblContainer").html(result);
+                    // validate form function
+                    //f("actionContainer");
+                    $.toast().reset('all');
+                }).fail(function() {
+                    alert("some")
+                });
+            });
+
+            //$.ajax(
+            //    {
+            //        url: '/Product/Delete',
+            //        type: 'POST',
+            //        data: {
+            //            id: dataID
+            //        }
+            //    }).done(function () {
+
+            //        alert("Data is Deleted Successfuly!");
+            //    }).fail(function () {
+
+            //        alert("Data is Not Deleted");
+            //    });
+
+        });
+
+    $(".pageButtons").click(function() {
+        $.ajax({
+            url: '@Url.Action("ProductTable", "Product")',
+            data: {
+                search: '@Model.SearchItem',
+                pageNo: $(this).attr("data-pageNo")
+            }
+        }).done(function(result) {
+
+            $('.tblContainer').html(result);
+        }).fail(function() {
+
+        })
+    });
+</script>

@@ -1,0 +1,296 @@
+﻿
+@using MenBytes.Models.ViewModels
+@model IEnumerable<MenBytes.Models.ViewModels.CartVM>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+    int count = 1;
+
+
+
+}
+
+@section CustomrCss{
+
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+
+}
+
+<!-- SUB BANNER -->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color: white">Shopping Cart</h4>
+            <ol class="breadcrumb">
+                <li><a href="#" style="color: white">Home</a></li>
+                <li><a href="#" style="color: white">Shop</a></li>
+                <li class="active" style="color: white">Shopping Cart</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<div id="content">
+    @if (Model == null)
+    {
+        if (ViewBag.Message != null)
+        {
+            <!-- PAGES INNER -->
+            <section class="padding-top-100 padding-bottom-100 pages-in chart-page">
+                <div class="container">
+
+                    <!-- Payments Steps -->
+                    <div class="shopping-cart text-center">
+                        <i class="fa fa-frown-o fa-3x text-danger" aria-hidden="true"></i>
+                        <h2 class="text-danger"> @ViewBag.Message </h2>
+                    </div>
+                </div>
+            </section>
+
+        }
+    }
+    else
+    {
+        int t_quantities = 0;
+        int t_Items = 0;
+        var totalItemsinCart = Session["cart"] as List<CartVM>;
+        if (totalItemsinCart.Count() > 0)
+        {
+            t_quantities = (totalItemsinCart.Sum(q => q.Quantity) > 0 ? totalItemsinCart.Sum(q => q.Quantity) : 0);
+            t_Items = totalItemsinCart.Count();
+        }
+
+        <!-- PAGES INNER -->
+        <section class="padding-top-100 padding-bottom-100 pages-in chart-page">
+            <div class="container">
+
+                <!-- Payments Steps -->
+                <div class="shopping-cart text-center">
+            
+                    
+                    <table class="table table-condensed">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="text-left">Items</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Qty</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+
+                                <tr>
+                                    <th class="text-left">
+                                        <!-- Media Image -->
+                                        <a href="#." class="item-img"> <img class="media-object" src="@Url.Content(item.ProductImage)" alt="" width="50" height="70" > </a>
+                                        <!-- Item Name -->
+                                        <div class="media-body">
+                                            <a href="@Url.Action("ProductDetail", "Product", new {id = @item.ProductID})">
+                                                <span style="font-size: 16px;">@item.ProductName.Substring(0, 20)</span>
+
+                                            </a>
+                                            
+                                        </div>
+                                    </th>
+                                    <td><span class="price"><small>PKR- </small> @Html.DisplayFor(modelItem => item.Price)</span></td>
+                                    <td>
+
+                                            <input type="number" id="qty_@item.ProductID" data-pid="@item.ProductID" min="1" max="100" step="1" value="@item.Quantity" class="form-control qty CartqtyBtn">
+                                      
+                                    </td>
+                                    <td id="totalItemPrice_@(item.ProductID)">
+                                        <span class="price"><small>PKR-</small>@Html.DisplayFor(modelItem => item.Total)</span>
+                                    </td>
+                                    <td><a href="#." class="removeProduct" data-id="@item.ProductID"><i class="icon-close"></i></a></td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGES INNER -->
+        <section class="padding-top-100 padding-bottom-100 light-gray-bg shopping-cart small-cart">
+            <div class="container">
+
+                <!-- SHOPPING INFORMATION -->
+                <div class="cart-ship-info margin-top-0">
+                    <div class="row">
+
+                        <!-- DISCOUNT CODE -->
+                        <div class="col-sm-7">
+                            <h6>MenBytes</h6>
+                            @*<form>
+                                <input type="text" value="" placeholder="ENTER YOUR CODE IF YOU HAVE ONE">
+                                <button type="submit" class="btn btn-small btn-dark">APPLY CODE</button>
+                            </form>*@
+                            <div class="coupn-btn"> <a href="/ClientSide/Index" class="btn">continue shopping</a> </div>
+                        </div>
+
+                        <!-- SUB TOTAL -->
+                        <div class="col-sm-5">
+                            <h6>Cart Summary</h6>
+                            <div class="grand-total">
+                                <div class="order-detail">
+                                    <p id="sumTotal_items">Total No. Items <span>(@t_Items) </span></p>
+                                    <p id="sumTotal_quantities">Total Quantities <span>(@t_quantities) </span></p>
+                                    <p>Shipping Charges <span> Free</span></p>
+
+                                    <!-- SUB TOTAL -->
+                                    <p class="all-total">TOTAL COST <span> PKR- @ViewBag.GrandTotal</span></p>
+                                </div>
+                                <a href="@Url.Action("CheckOut","Cart")" class="btn margin-top-20">Proceed to checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    }
+
+</div>
+
+
+@section scripts{
+
+    <script src="~/Scripts/toastr.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            
+            //$(".qty").on("keypress keyup blur",function(event){
+            //    var inputValue = event.charCode;
+
+            //    if (!((inputValue > 95 && inputValue < 106) || (inputValue > 47 && inputValue < 58) || (inputValue == 8) )){
+            //        event.preventDefault();
+            //    }
+            //});
+
+
+
+
+            $(".qty").keyup(function (e) {
+
+                var inputValue = event.charCode;
+
+                if (!((inputValue > 95 && inputValue < 106) || (inputValue > 47 && inputValue < 58) || (inputValue == 8) )){
+                    event.preventDefault();
+                    
+                }
+
+                //var currentValue = $(this).val();
+
+                var currentValue = $(this).val();
+
+                var originalValue = this.defaultValue;
+
+                var ItmId = $(this).attr("data-pid");
+
+                var finalValue = 0;
+          //      var increaseOrDecrease = this.defaultValue < this.val;
+
+                var increaseOrDecrease = originalValue < currentValue;
+
+                if ($(this).val()<= 0) {
+                    e.preventDefault();
+
+                    //alert("Quantity 0 hai");
+
+                    
+                    toastr.error("Ops!Please Enter the Quantity", "Error!");
+                    return false;
+
+                } else {
+                    originalValue = currentValue;
+
+                    $.ajax({
+                        url: "@Url.Action("GetTotalCartValue","Cart")",
+                        type: 'GET',
+                        data: { id: ItmId, currentValue: currentValue,increaseOrDecrease: increaseOrDecrease}
+
+                    }).done(function (data) {
+                        //alert(data.trueReturnMSg);
+                        //alert(data.qty);
+                        if (data.trueReturnMSg == true) {
+                            toastr.success("You cart has been Updated", "Success!");
+                            var price = data.qty * data.price;
+                            var priceHtml = "<span class='price'><small>$</small>" + price + "</span>";
+
+                            $("#qty_" + ItmId).html(data.qty);
+                            $("#totalItemPrice_" + ItmId).html(priceHtml);
+
+                            $("#sumTotal_quantities span").html(data.totalQ);
+                            $("#sumTotal_items span").html(data.totalItms);
+
+                            var grt = parseFloat($(".grand-total .order-detail .all-total span").text());
+                            var t_Gr = (grt);
+
+                            $(".grand-total .order-detail .all-total span").html(data.grandtotal);
+                            //var v = parseInt($(".c-no").html());
+                            //alert("V li vAlue" + v);
+                            //v = v + data.qty;
+                            $(".c-no").html(data.totalQ);
+                        } else {
+
+                            toastr.error("Ops!Required Quantity can't be less than 1 and Greater than Stock", "Error!");
+                            var price = data.qty * data.price;
+                            var priceHtml = "<span class='price'><small>$</small>" + price +"</span>";
+                            $("#qty_" + ItmId).val(data.qty);
+                            $("#qty_"+ItmId).html(data.qty);
+                            $("#totalItemPrice_"+ItmId).html(priceHtml);
+
+                            $("#sumTotal_quantities span").html(data.totalQ);
+                            $("#sumTotal_items span").html(data.totalItms);
+
+                            var grt = parseFloat($(".grand-total .order-detail .all-total span").text());
+                            var t_Gr = (grt);
+
+                            $(".grand-total .order-detail .all-total span").html(data.grandtotal);
+                            //var v = parseInt($(".c-no").html());
+                            //alert("V li vAlue" + v);
+                            //v = v + data.qty;
+                            $(".c-no").html(data.totalQ);
+                        }
+
+                    }).fail(function(data) {
+                        alert("Wrong");
+                    });
+
+                }
+            });
+
+            $("a.removeProduct").click(function(e) {
+
+                e.preventDefault();
+
+                var id = $(this).data("id");
+
+
+                $.ajax({
+                    url: "/Cart/RemoveFormCart",
+                    type: "GET",
+                    data: { id: id }
+                }).done(function(result) {
+
+                    location.reload();
+                }).fail(function() {
+        alert("Somethig wrong");
+                });
+            });
+        });
+    </script>
+}
+

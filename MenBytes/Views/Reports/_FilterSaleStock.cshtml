@@ -1,0 +1,129 @@
+﻿@model MenBytes.Models.ViewModels.SaleStockViewModel
+
+
+
+@if (Model.OrderRecord != null && Model.OrderRecord.Count() > 0)
+{
+
+    <div class="row">
+        <div class="col-md">
+            <p class="mb-40">If you want to <code>Print this List</code>Press This <button type="button" class="btn btn-info btn-sm" id="printtabl">Print</button> Button.</p>
+
+        </div>
+
+
+    </div>
+
+    <div class="table-wrap">
+        <h3 class="text-capitalize text-center avatar-text-info" style="margin: 10px;">MenBytes Sale's Report</h3>
+        <div class="table-responsive">
+            <table class="table table-lg mb-0">
+                <thead class="thead-active">
+                    <tr>
+                        <th class="d-print-none">ID</th>
+                        <th>User Name</th>
+                        <th>Order Status</th>
+                        <th>Payment Type</th>
+                        <th>Total Bill</th>
+                        <th>Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderRecord)
+                    {
+
+                        <tr>
+                            <td class="d-print-none">
+                                @item.Id|
+                                <a href="@Url.Action("DetailOrder", "Order", new {id = item.Id})" target="_blank"><i class="fa fa-street-view"></i></a>
+                            </td>
+                            <td>@item.userName</td>
+                            <th>@item.orderStatud</th>
+                            <td>@item.paymentType</td>
+                            <td>@item.totalBill</td>
+                            <td>@item.C_Date.ToShortDateString()</td>
+                            @*<td>@(item.preQ+@item.inQty)</td>*@
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total Sale: @ViewBag.totalBill </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="pull-right d-print-none">
+                <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                    <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                        @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                        {
+                            if (Model.Pager.CurrentPage > 1)
+                            {
+                                <li class="page-item"><a class="page-link pageButtons" href="#" data-todate="@Model.toDate" data-fromdate="@Model.frmDate" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+
+                            }
+
+                            for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                            {
+                                string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-todate="@Model.toDate" data-fromdate="@Model.frmDate" data-pageNo="@page">@page</a></li>
+                            }
+                            if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                            {
+                                <li class="page-item"><a class="page-link pageButtons" href="#" data-todate="@Model.toDate" data-fromdate="@Model.frmDate" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                            }
+                        }
+
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <h2 class="text-danger text-center">No Record is Found <i class="fa fa-frown-o"></i></h2>
+}
+
+
+
+
+<script>
+
+    var iid = "";
+
+    $(".pageButtons").click(function() {
+
+        $.ajax({
+            url: "@Url.Action("FilterSaleStock", "Reports")",
+            data: {
+                toDate: $(this).attr("data-todate"),
+                fromDate: $(this).attr("data-fromdate"),
+                payment: '@Model.SearchItem',
+                statusId: '@Model.statusId',
+                pageNo: $(this).attr("data-pageNo")
+            }
+        }).done(function(result) {
+
+            $('.tblContainer').html(result);
+        }).fail(function() {
+
+        });
+        });
+
+
+    $("#printtabl").click(function(e) {
+
+        e.preventDefault();
+
+        $('.table-wrap').printThis();
+    });
+</script>

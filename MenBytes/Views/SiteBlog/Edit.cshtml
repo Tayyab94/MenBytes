@@ -1,0 +1,161 @@
+﻿@model MenBytes.Models.MenBytesModels.Blog
+@{
+    ViewBag.Title = "Edit";
+}
+
+<!-- Container -->
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="edit-3"></i></span></span>BLOG SECTION</h4>
+    </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+                <h5 class="hk-sec-title"></h5>
+                <p class="mb-40">
+                    Please write the Blog for your Post also your website. one thing i want to mention here all field are required.
+                    so please fill all the fields before submitting your Blog Post
+                </p>
+
+                <form action="@Url.Action("Edit","SiteBlog")" id="productForm" method="post" enctype="multipart/form-data">
+                    
+                    @Html.HiddenFor(x=>x.Id)
+                    
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="Title">Blog Title <span class="text-danger">(*)</span></label>
+                            <input class="form-control" id="Title" name="Title" placeholder="" value="@Model.Title" type="text">
+
+                            @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="postedBy">Posted By <span class="text-danger">(*)</span></label>
+                            <input class="form-control" id="postedBy" name="postedBy" placeholder="" value="@Model.postedBy" type="text">
+                            @Html.ValidationMessageFor(x => x.postedBy, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="address">Write Your Blog <span class="text-danger">(*)</span></label>
+                            @*<input class="form-control" id="address" placeholder="1234 Main St" type="text">*@
+
+                            @Html.TextAreaFor(x => x.blogMessage, new { @class = "tinymce", id = "blogMessage" })
+                            @*<textarea class="tinymce" name="blogMessage" id="blogMessage"></textarea>*@
+                            @*<div class="tinymce-wrap">
+
+                </div>*@
+                            @Html.ValidationMessageFor(x => x.blogMessage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-6">
+
+                            <label for="pPrice">Featured Image <span class="text-danger">(*)</span></label>
+                            <div class="form-group">
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin-top: 60px">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file">
+                                            <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" id="file1" class="fileUploadTag" name="blogImage" value="@Model.blogImage" multiple="multiple">
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 md-6">
+                            <img src="@Url.Content(Model.blogImage)" id="preview1" class="img-responsive img-thumbnail"/>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="btnSaveBlog" type="submit">Save Blog</button>
+                </form>
+                @*<div class="col-sm">
+                        <div class="tinymce-wrap">
+                            <textarea class="tinymce"></textarea>
+                        </div>
+                    </div>*@
+
+            </section>
+        </div>
+    </div>
+    <!-- /Row -->
+</div>
+<!-- /Container -->
+
+
+@section scripts{
+    <!-- Tinymce JavaScript -->
+    <script src="~/AdminSide/html/vendors/tinymce/tinymce.min.js"></script>
+
+    <!-- Tinymce Wysuhtml5 Init JavaScript -->
+    <script src="~/AdminSide/html/dist/js/tinymce-data.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#file1").change(function () {
+           
+                if (this.files && this.files[0]) {
+                    var img = new FileReader();
+                
+                    img.onload = function(e) {
+
+                        $("#preview1").attr('src', e.target.result);
+                    }
+                    img.readAsDataURL(this.files[0]);
+                }
+           
+            });
+
+            $("#btnSaveBlog").click(function(e) {
+
+                if ($("#Title").val() == 0) {
+                    e.preventDefault();
+
+                    $("body").removeAttr('class');
+                    $.toast({
+                        heading: 'Warning..!',
+                        text: '<p>Post Title is Requird.!</p>',
+                        position: 'top-right',
+                        loaderBg:'#7a5449',
+                        class: 'jq-toast-danger',
+                        hideAfter: 3500,
+                        stack: 6,
+                        showHideTransition: 'fade'
+                    });
+
+                }
+                if ($("#postedBy").val() == 0) {
+                    e.preventDefault();
+
+                    $("body").removeAttr('class');
+                    $.toast({
+                        heading: 'Warning..!',
+                        text: '<p>Posted By Required.!</p>',
+                        position: 'top-right',
+                        loaderBg: '#7a5449',
+                        class: 'jq-toast-danger',
+                        hideAfter: 3500,
+                        stack: 50,
+                        showHideTransition: 'fade'
+                    });
+                }
+
+               
+
+            });
+
+        });
+    </script>
+
+}

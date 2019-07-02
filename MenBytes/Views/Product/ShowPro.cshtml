@@ -1,0 +1,79 @@
+﻿@model IEnumerable<MenBytes.Models.ViewModels.showAllProducts>
+@{
+    ViewBag.Title = "ShowPro";
+}
+
+@if (Model != null)
+{
+    <section class="hk-sec-wrapper">
+
+        <div class="row">
+            <div class="col-sm">
+                <div class="searchdiv">
+                    <div class="pull-right">
+                        <form class="form-inline">
+                            @*<div class="form-group mb-2">
+                                    <label for="staticEmail2" class="sr-only">Email</label>
+                                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                                </div>*@
+                            <div class="form-group mx-sm-3 mb-2">
+                                <div class="input-group">
+                                    @*<label for="inputPassword2" class="sr-only">Password</label>*@
+                                    <input type="text" class="form-control" id="searchTxtBox" placeholder="Search Category">
+                                    <button type="button" class="btn btn-primary mb-2 searchBtn input-group-addon"><i class="jq-toast-icon ti-search"></i></button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-lg mb-0">
+                            <thead class="thead-active">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Is featere</th>
+                                    <th>Category</th>
+                                    <th>Company</th>
+
+                                    <th>Images</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.ProductName</td>
+                                        <td>@(item.IsFeatured.ToString() == "True" ? "Active" : "Not Active")</td>
+                                        <td>@item.CategoryName</td>
+                                        <td>@item.CompanyName</td>
+                                        <td>
+                                            @foreach (var im in item.ProductImages)
+                                            {
+                                                <img src="@im" class="img-rounded img-responsive" width="40"/>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Delete","Delete", "Product",new {id=@item.ID},new {@class="btn btn-danger btn-sm"})
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <h2 class="text-info text-center">No Record is Found</h2>
+}
+

@@ -1,0 +1,346 @@
+﻿@model MenBytes.Models.ViewModels.DetailBlogViewModel
+
+
+@{
+    ViewBag.Title = "BlogDetail";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+}
+
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color: white">Look Beautiful In This Seasons</h4>
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index","ClientSide")" style="color: white">Home</a></li>
+                <li><a href="#" style="color: white">Blog</a></li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<div id="content">
+
+    <!-- Blog List -->
+    <section class="blog-list blog-list-3 single-post padding-top-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+
+                    <!-- Article -->
+                    <article>
+                        <!-- Post Img -->
+                        <img class="img-responsive" src="@Url.Content(Model.blogImage)" alt="">
+                        <!-- Tittle -->
+                        <div class="post-tittle left">
+                            <a href="#." class="tittle">@Model.Title</a>
+                            <!-- Post Info -->
+                            <span><i class="primary-color icon-user"></i> by @Model.postedBy</span> <span><i class="primary-color icon-calendar"></i> @Model.postedDate.ToShortDateString()</span> <span><i class="primary-color icon-bubble"></i> @Model.BlogComments.Count</span> <span><i class="primary-color icon-tag"></i> Furniture</span>
+                        </div>
+                        <!-- Post Content -->
+                        <div class="text-left">
+                            <p>@Html.Raw(Model.blogMessage)</p>
+
+                            <div class="admin-info">
+                                <div class="media-left">
+                                    <div class="admin-pic"> <img src="~/clientHtml/images/SiteImages/YounasShb.jpg" class="img-responsive" alt="">  </div>
+                                </div>
+                                <div class="media-body">
+                                    <h6>Mr. Younas Shb <span>Supervisor</span></h6>
+                                    <p><strong>Sir Younas Shb,</strong> Assistant Professor & Incharge Of IT Departent<br /> M.S.c Computer Science (PU) M.Phil Computer Science (COMSATS). Now He is Our Supvervisor </p>
+                                    <div class="admin-social"> <a href="#."><i class="icon-social-facebook"></i></a> <a href="#."><i class="icon-social-twitter"></i></a> <a href="#."><i class="icon-social-dribbble"></i></a> <a href="#."><i class="icon-envelope"></i></a> </div>
+                                </div>
+                            </div>
+
+                            <!--=======  COMMENTS =========-->
+                            <div class="comments margin-top-80">
+                                <h5 class="shop-tittle">Comments (<span>@Model.BlogComments.Count</span>)</h5>
+                                <ul class="media-list padding-left-15" id="newBlogsCmt">
+
+                                    @foreach (var blogCom in Model.BlogComments)
+                                    {
+
+                                        <!--=======  COMMENTS =========-->
+                                        <li class="media">
+                                            <div class="media-left">
+                                                <a href="#" class="avatar">
+                                                    <img class="media-object img-responsive" src="~/clientHtml/images/SiteImages/man.jpg" alt=""> <br>
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6 class="media-heading">@blogCom.Name <span><i class="icon-clock primary-color"></i> @blogCom.PostedDate.ToString("D")</span></h6>
+                                                <p>@blogCom.Comment </p>
+
+                                            </div>
+                                        </li>
+                                    }
+
+                                    @*<!--=======  COMMENTS =========-->
+                                        <li class="media">
+                                            <div class="media-left">
+                                                <a href="#" class="avatar">
+                                                    <img class="media-object img-responsive" src="images/avatar-3.jpg" alt=""> <br>
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6 class="media-heading">William Saron <span><i class="icon-clock primary-color"></i> April 27, 2016 - 10:00 am</span></h6>
+                                                <p>Crack commando unit was sent to prison by a military court for a crime they didn't commit. ese men promptly escaped from a maximum security stockade to the Los Angeles. </p>
+                                                <a href="#." class="raply"><i class="icon-bubble primary-color"></i> Reply</a>
+                                            </div>
+                                        </li>
+                                        <!--=======  COMMENTS =========-->
+                                        <li class="media padding-left-100">
+                                            <div class="media-left">
+                                                <a href="#" class="avatar">
+                                                    <img class="media-object img-responsive" src="images/avatar-2.jpg" alt=""> <br>
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6 class="media-heading">William Saron <span><i class="icon-clock primary-color"></i> April 27, 2016 - 10:00 am</span></h6>
+                                                <p>Crack commando unit was sent to prison by a military court for a crime they didn't commit. ese men promptly escaped from a maximum security stockade to the Los Angeles. </p>
+                                                <a href="#." class="raply"><i class="icon-bubble primary-color"></i> Reply</a>
+                                            </div>
+                                        </li>
+                                        <!--=======  COMMENTS =========-->
+                                        <li class="media">
+                                            <div class="media-left">
+                                                <a href="#" class="avatar">
+                                                    <img class="media-object img-responsive" src="images/avatar-3.jpg" alt=""> <br>
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6 class="media-heading">William Saron <span><i class="icon-clock primary-color"></i> April 27, 2016 - 10:00 am</span></h6>
+                                                <p>Crack commando unit was sent to prison by a military court for a crime they didn't commit. ese men promptly escaped from a maximum security stockade to the Los Angeles. </p>
+                                                <a href="#." class="raply"><i class="icon-bubble primary-color"></i> Reply</a>
+                                            </div>
+                                        </li>*@
+                                </ul>
+                                <hr>
+
+                                <!--=======  LEAVE COMMENTS =========-->
+                                <h5 class="shop-tittle margin-top-80">POST YOUR COMMENTS</h5>
+                                <form  id="commentForm" method="post">
+                                    <ul class="row">
+                                        <li class="col-sm-12">
+                                            <label>
+                                                Name
+                                                <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter User Name">
+                                            </label>
+
+                                            <input type="hidden" id="currnetblogID" value="@Model.Id">
+                                        </li>
+
+
+                                        <li class="col-sm-12">
+                                            <label>
+                                                COMMENTS
+                                                <textarea class="form-control" placeholder="Write Comment" name="message" id="message"></textarea>
+                                            </label>
+                                        </li>
+                                        <li class="col-sm-12">
+                                            <button type="button" id="blogcmtButton" class="btn margin-top-30">Submit Comment </button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- Sider Bar -->
+                <div class="col-md-3">
+                    @using (Html.BeginForm("BloglistPage", "SiteBlog"))
+                    {
+                        <div class="search">
+                            <input class="form-control" type="search" id="searchBlogTxt" name="search" placeholder="Search">
+                            <button type="submit" id="blogSearchBtn"><i class="fa fa-search"></i></button>
+                        </div>
+                    }
+
+                    <div class="sidebar">
+
+                        <!-- Recent Post -->
+                        <h5 class="shop-tittle margin-top-60 margin-bottom-30">recent post</h5>
+                        <div class="blogCommenDiv">
+                            
+                            <ul class="papu-post margin-top-20">
+
+                                @foreach (var recent in Model.RecentBlogs)
+                                {
+                                    <li class="media">
+                                        <div class="media-left"> <a href="@Url.Action("BlogDetail", "SiteBlog", new { id = @recent.Id })"> <img class="media-object" src="@Url.Content(recent.blogImage)" alt="Blog Image"></a> </div>
+                                        <div class="media-body">
+                                            <a class="media-heading" href="@Url.Action("BlogDetail", "SiteBlog", new { id = @recent.Id })">
+                                                @recent.Title
+                                            </a> <span>Posted on @recent.postedDate.ToString("yy-MMM-dd ddd")</span>
+                                        </div>
+                                    </li>
+                                }
+
+
+                            </ul>
+                        </div>
+
+
+
+                        <!-- SIDE BACR BANER -->
+                        <div class="side-bnr margin-top-50">
+                            <img class="img-responsive" src="~/ClientHtml/images/team-1.jpg" alt="">
+                            <div class="position-center-center">
+                                <span class="price"><small>$</small>299</span>
+                                <div class="bnr-text">
+                                    look
+                                    hot
+                                    with
+                                    style
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- About -->
+@Html.Partial("~/Views/ClientSide/_SubscribeSection.cshtml")
+
+@*<section class="small-about">
+        <div class="container-full">
+            <div class="news-letter padding-top-150 padding-bottom-150">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>We always stay with our clients and respect their business. We deliver 100% and provide instant response to help them succeed in constantly changing and challenging business world. </h3>
+                        <ul class="social_icons">
+                            <li><a href="#."><i class="icon-social-facebook"></i></a></li>
+                            <li><a href="#."><i class="icon-social-twitter"></i></a></li>
+                            <li><a href="#."><i class="icon-social-tumblr"></i></a></li>
+                            <li><a href="#."><i class="icon-social-youtube"></i></a></li>
+                            <li><a href="#."><i class="icon-social-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Subscribe Our Newsletter</h3>
+                        <span>Phasellus lacinia fermentum bibendum. Interdum et malesuada fames ac.</span>
+                        <form>
+                            <input type="email" placeholder="Enter your email address" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>*@
+</div>
+
+
+@section scripts{
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+    
+    <script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+            $("#subscribeBtn").on("click",
+                function(e) {
+
+                    var email = $("#emailtext").val();
+                
+
+                    if (email == null || email == undefined)
+                    {
+                        e.preventDefault();
+                        return false;
+                    }
+                    else
+                    {
+                        $.ajax(
+                            {
+                                url:'@Url.Action("subscriptionAction", "ClientSide")',
+                                type:'POST',
+                                data: {
+                                    emailID: email
+                                },
+                                success:function(msg) {
+                                    alert(msg);
+                                }
+                            })
+                    }
+                });
+
+
+
+            $("#blogSearchBtn").click(function() {
+                var name = $("#searchBlogTxt").val();
+                alert(name);
+                $.ajax({
+                    url: '@Url.Action("BloglistPage","SiteBlog")',
+                    type: 'GET',
+                    data: { search: name }
+                }).done(function() {}).fail(function() {
+                    alert("Something wrong");
+                });
+            });
+
+
+
+             $("#blogcmtButton").click(function (e) {
+                var status = true;
+
+                //alert("Comment Button is Clicked");
+                var id = $("#currnetblogID").val();
+
+                var newComment = "";
+                var userName = $("#UserName").val();
+
+                var Comment = $("#message").val();
+
+                if ($("#UserName").val() == 0 || $("#message").val()== 0) {
+                    e.preventDefault();
+                    status = false;
+
+                    $.alert({
+                        icon: 'fa fa-warning',
+                        title: 'Error!',
+                        titleClass:'text-danger',
+                        content: 'User name or Message is Required, before Submitting your Review (*)',
+                        animationBounce: 1.5
+                    });
+
+                    return false;
+                } else {
+                    $.ajax({
+                        url: "@Url.Action("CommentAdding", "SiteBlog")",
+                        type: "POST",
+                        data: { id: id, userName: userName, comment: Comment }
+                    }).done(function(result) {
+
+                        $(".shop-tittle span").html(result.count);
+                        newComment ="<li class='media'><div class='media-left'>" +
+                            "<a href='#' class='avatar'><img class='media-object img-responsive' src='/clientHtml/images/SiteImages/man.jpg' alt=''> " +
+                            "<br></a></div><div class='media-body'><h6 class='media-heading'>"+result.Name+" <span>" +
+                            "<i class='icon-clock primary-color'></i> " +moment(result.PostedDate).format("DD-MMM-YYYY") +"</span></h6><p>"+ result.Comment+"</p></div></li>";
+
+                       // alert(newComment);
+                        $("#newBlogsCmt").append(newComment);
+                        $("#UserName").val("");
+                        $("#message").val("");
+
+                    }).fail(function() {
+                        alert("Kuch techniquee problem ki waja se ap ka kam nai ho sakaa.!");
+                    });
+                }
+
+
+            });
+
+        });
+    </script>
+
+}

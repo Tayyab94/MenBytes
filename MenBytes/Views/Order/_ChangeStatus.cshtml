@@ -1,0 +1,66 @@
+﻿@model MenBytes.Models.MenBytesModels.Order
+
+@*@using (Html.BeginForm())
+    {
+
+
+            <div class="form-group">
+                @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.orderStatusID, ViewBag.StatusList as SelectList,new {@class="form-control statusDD"})
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" onclick="changestatus(@Model.Id)" id="changeStatusBtn" data-id="@Model.Id" class="btn btn-primary">Save changes</button>
+        </div>
+
+    }*@
+
+    <div class="modal-body">
+        @Html.HiddenFor(x=>x.Id,new {id="orderID"})
+
+        <div class="form-group">
+            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.orderStatusID, ViewBag.StatusList as SelectList, new { @class = "form-control statusDD" })
+            </div>
+        </div>
+
+    </div>
+  
+
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+
+
+@section scripts{
+
+
+    @*<script>
+
+            $(document).ready(function() {
+
+
+                $("#changeStatusBtn").on("click",
+                    function(e) {
+                        var id = $(this).attr("data-id");
+
+                        var selectValueD_V = $(".statusDD ").find(":selected").val();
+
+                        var selectValueD_T = $(".statusDD ").find(":selected").text();
+
+                        alert(selectValueD_V);
+
+                        alert(selectValueD_T);
+
+
+                    });
+            })
+        </script>*@
+}

@@ -1,0 +1,516 @@
+﻿@model MenBytes.Models.ViewModels.NewProductViewModel
+
+
+@{
+    ViewBag.Title = "CreatProduct";
+}
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Forms</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Form Product</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+<!-- Container -->
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="align-left"></i></span></span>New Product</h4>
+    </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+                <div class="row">
+                    <div class="col-sm">
+                        <form action="@Url.Action("CreatProduct","Product")" id="productForm" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="address2">Product's Name <span class="text-danger">(*)</span></label>
+                                <input class="form-control" id="address2" name="ProductName" value="@Model.ProductName" placeholder="Enter Product Name" type="text">
+                                @Html.ValidationMessageFor(x => x.ProductName, "", new { @class = "text-danger" })
+                                <label id="lbproductname" style="color:red"></label>
+                                <span class="form-control-feedback"></span>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <label for="ProductDescription">Product Description <span class="text-danger">(*)</span></label>
+                                <textarea name="ProductDescription" class="form-control" id="productDescription" value="@Model.ProductDescription" placeholder="Product Description"></textarea>
+                                @Html.ValidationMessageFor(x => x.ProductDescription, "", new { @class = "text-danger" })
+                                <label id="lbproductDes" style="color:red"></label>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="state">Companies</label>
+                                    <select class="form-control custom-select d-block w-100" id="state" name="CompanyId">
+                                        @foreach (var com in Model.Companies)
+                                        {
+                                            var selected = com.Id == Model.CompanyId ? "selected" : string.Empty;
+                                            @*<option value="">Choose...</option>*@
+                                            <option value="@com.Id" @selected>@com.CompanyName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="country">category</label>
+
+                                    <select class="form-control custom-select d-block w-100" id="country" name="CategoryId">
+                                        @foreach (var cat in Model.Category)
+                                        {
+                                            var selected = cat.Id == Model.CategoryId ? "selected" : string.Empty;
+                                            <option value="@cat.Id" @selected>@cat.Name</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 mb-10">
+
+                                    <label for="purchasePrice">Purchase Price <span class="text-danger">(*)</span></label>
+                                    <input class="form-control sale_purchase_Qty purchasePrice1" id="purchasePrice" name="purchasePrice" placeholder="Enter Purchase Price" type="number" min="1">
+
+                                    @Html.ValidationMessageFor(x => x.purchasePrice, "", new { @class = "text-danger" })@*<label for="country">Category</label>*@
+                                    
+                                    
+                                    <label id="lbproductPPrice" style="color:red"></label>
+                                    @*<select class="form-control custom-select d-block w-100" id="country">
+                                            @foreach (var cat in Model.Category)
+                                            {
+                                                <option value="@cat.Id">@cat.Name</option>
+                                            }
+
+                                        </select>*@
+                                </div>
+                                <div class="col-md-4 mb-10">
+
+                                    <label for="sPrice">Sale Price <span class="text-danger">(*)</span></label>
+                                    <input class="form-control sale_purchase_Qty salePrice" id="sPrice" name="salePrice" placeholder="Enter Sale Price" type="number" min="1">
+                                    
+                                    <p id="salePriceErrorMessage" class="text-danger"></p>
+                                    
+                                    <label id="lbproductsalePrice" style="color:red"></label>
+                                    @*<input type="number" class="normal" name="salePrice" placeholder="Enter Sale Price" min="0" step="1" />*@
+                                    @Html.ValidationMessageFor(x => x.salePrice, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mb-10">
+                                    <label for="Quantity">Quantity <span class="text-danger">(*)</span></label>
+                                    @*<input type="number" class="normal" name="Quantity" placeholder="Enter Quantity" min="0" step="1" />*@
+                                  
+                                    
+                                    <input class="form-control sale_purchase_Qty" id="Quantity" name="Quantity" placeholder="Enter Qunatty" type="number" min="1">
+                                  
+                                    <label id="lbproductQuantity" style="color:red"></label>
+                                    @Html.ValidationMessageFor(x => x.Quantity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <hr>
+                                <div class="row">
+                                    <div class="col-md-4 mb-10">
+
+                                        <label for="pPrice">Image <span class="text-danger">*</span><span class="text-muted">(1)</span></label>
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                                <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                <span class="input-group-append">
+                                                    <span class=" btn btn-primary btn-file">
+                                                        <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                        <input type="file" id="file1" class="fileUploadTag" name="photo1" multiple="multiple">
+                                                    </span>
+                                                    <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </span>
+                                            </div>
+                                            
+                                            <label id="lbproductfile1" style="color:red"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-10">
+
+                                        <label for="sPrice">Image <span class="text-danger">*</span><span class="text-muted">(2)</span></label>
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                                <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                <span class="input-group-append">
+                                                    <span class=" btn btn-primary btn-file">
+                                                        <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                        <input type="file" id="file2" name="photo2"  class="fileUploadTag" >
+                                                    </span>
+                                                    <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </span>
+                                            </div>
+                                            <label id="lbproductfile2" style="color:red"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-10">
+                                        <label for="zip">Image <span class="text-danger">*</span><span class="text-muted">(3)</span></label>
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                                <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                <span class="input-group-append">
+                                                    <span class=" btn btn-primary btn-file">
+                                                        <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                        <input type="file" id="file3" name="photo3"  class="fileUploadTag" accept="image/*">
+                                                    </span>
+                                                    <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </span>
+                                            </div>
+                                            <label id="lbproductfile3" style="color:red"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            @*<hr>*@
+                            <div class="custom-control custom-checkbox mb-15">
+                                @*<input class="custom-control-input isFeaturedCheck" id="same-address" type="checkbox">
+                                <label class="custom-control-label" for="same-address">Featured Product</label>*@
+                                
+                                @Html.HiddenFor(x=>x.IsFeatured)
+                            </div>
+                            @*<div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="save-info" type="checkbox">
+                                    <label class="custom-control-label" for="save-info">Save this information for next time</label>
+                                </div>*@
+
+                            <hr>
+                            <button class="btn btn-primary" type="submit" id="SaveProduct">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- /Row -->
+</div>
+<!-- /Container -->
+@section scripts{
+
+    <script src="~/AdminSide/html/vendors/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
+    <script src="~/AdminSide/html/dist/js/inputspinner-data.js"></script>
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet"/>
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+
+
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $(".isFeaturedCheck").change(function() {
+                if ($(this).prop('checked') == true) {
+
+                    $('#IsFeatured').val('true');
+                } else {
+                    $('#IsFeatured').val('false');
+                }
+            });
+
+         
+            var Quantity = $("#Quantity").val();
+           
+            var purshase = $("#purchasePrice").val();
+            var sale = $("#sPrice").val();
+
+
+            
+
+            $("#SaveProduct").on("click",
+                function(e) {
+                    var Status = true;
+
+
+                    var pPrice = $("#purchasePrice").val();
+                    var sPrice = $("#sPrice").val();
+
+
+                    if ($("#address2").val() == 0 || $("#address2").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductname").html("Please Write Product Name");
+                        Status = false;
+                    } else {
+                        if ($("#address2").val().length > 150 || $("#address2").val().length <= 3) {
+                            e.preventDefault();
+
+                            //$.alert({
+                            //    icon: 'fa fa-warning',
+                            //    title: 'Error!',
+                            //    titleClass: 'text-danger',
+                            //    content: "Name Should be between 3 to 50 charactors",
+                            //    animationBounce: 1.5
+                            //});
+
+                            $("#lbproductname").html("Name Should be between 3 to 150 charactors");
+                            Status = false;
+                        } else {
+
+                            $("#lbproductname").html("");
+                            Status = true;
+                        }
+                    }
+
+                    if ($("#productDescription").val() == 0 || $("#productDescription").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductDes").html("Please Write Product Description");
+                        Status = false;
+                    } else {
+                        
+                        $("#lbproductDes").html("");
+                            Status = true;
+                       
+                    }
+
+                    if ($("#purchasePrice").val() == 0 || $("#purchasePrice").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductPPrice").html("Please Write Purchase Price");
+                        Status = false;
+                    } else {
+                        
+                        $("#lbproductPPrice").html("");
+                        Status = true;
+                       
+                    }
+
+
+                    if ($("#sPrice").val() == 0 || $("#sPrice").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductsalePrice").html("Please Write Sale Price");
+                        Status = false;
+                    } else {
+                        if ($("#sPrice").val() < $("#purchasePrice").val()) {
+                            e.preventDefault();
+
+                            //$.alert({
+                            //    icon: 'fa fa-warning',
+                            //    title: 'Error!',
+                            //    titleClass: 'text-danger',
+                            //    content: "Name Should be between 3 to 50 charactors",
+                            //    animationBounce: 1.5
+                            //});
+
+                            $("#lbproductsalePrice").html("Sale price can not less than Purshase price");
+                            Status = false;
+                        } else {
+
+                            $("#lbproductsalePrice").html("");
+                            Status = true;
+                        }
+                    }
+
+                    if ($("#Quantity").val() == 0 || $("#Quantity").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductQuantity").html("Please Write Quanityt");
+                        Status = false;
+                    } else {
+                        
+                        $("#lbproductQuantity").html("");
+                        Status = true;
+                       
+                    }
+
+                    
+
+
+                    if ($("#file1").val() == 0 || $("#file1").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductfile1").html("Please upload the I,mage");
+                        Status = false;
+                    } else {
+                        
+                        $("#lbproductfile1").html("");
+                        Status = true;
+                       
+                    }
+
+                    if ($("#file2").val() == 0 || $("#file2").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductfile2").html("Please upload the I,mage");
+                        Status = false;
+                    } else {
+
+                        $("#lbproductfile2").html("");
+                        Status = true;
+
+                    }
+
+                    if ($("#file3").val() == 0 || $("#file3").val() == null) {
+                        e.preventDefault();
+                        $("#lbproductfile3").html("Please upload the I,mage");
+                        Status = false;
+                    } else {
+
+                        $("#lbproductfile3").html("");
+                        Status = true;
+
+                    }
+                    $('.fileUploadTag').each(function() {
+                        if ($(this).val() == '') {
+                            e.preventDefault();
+
+                            Status = false;
+                        }
+                    });
+
+                    if (Status === true) {
+                        $.alert({
+                            icon: 'fa fa-success',
+                            title: 'success!',
+                            titleClass: 'text-success',
+                            content: 'Please Wait form is Uploading',
+                            animationBounce: 1.5
+                        });
+                    } else {
+                        $.alert({
+                            icon: 'fa fa-warning',
+                            title: 'Error!',
+                            titleClass: 'text-danger',
+                            content: 'Please fill all Required Fileds (*) ',
+                            animationBounce: 1.5
+                        });
+                    }
+
+
+                });
+
+        });
+       
+        @*$("#productForm").validate(
+            {
+                rules: {
+                    ProductName: {
+                        required:true
+                    },
+                    ProductDescription: {
+                        required:true
+                    }
+                },
+                message: {
+                    ProductName: {
+                        required: "Product Name is Required"
+                    },
+                    ProductDescription: {
+                        required: "Description Should not be an empty"
+                    }
+                }
+            });
+
+        $("#SaveProduct").click(function() {
+
+            if ($("#productForm").valid()) {
+                $.ajax(
+                    {
+                        url: '@Url.Action("CreatProduct","Product")',
+                        type: 'POST',
+                        data: $("#productForm").serialize(),
+                        success: function() {
+
+                        }
+                    });
+
+            } else {
+                alert("Please Fill all the Required Fields");
+            }
+        });*@
+
+
+
+
+        //$("#address2").on("keypress keyup blur",
+        //    function(e) {
+        //        var leng = $(this);
+
+        //        if (leng.val().length > 50) {
+        //            e.preventDefault();
+
+        //            alert("Length is greter 50");
+
+        //            return false;
+        //        }
+        //    });
+
+ 
+
+
+        //$("#sPrice").blur(function(e) {
+
+        //    var pPrice = $("#purchasePrice").val();
+        //    var sPrice = $("#sPrice").val();
+
+
+        //    if (sPrice <= pPrice) {
+
+        //        e.preventDefault();
+        //        $.alert({
+        //            icon: 'fa fa-warning',
+        //            title: 'Error!',
+        //            titleClass: 'text-danger',
+        //            content: "Purshcase Price can't be Greater or Equal to Sale Price",
+        //            animationBounce: 1.5
+
+        //        });
+
+
+        //        return false;
+        //    } else {
+        //        return true;
+        //    }
+        //})
+
+
+           function ProductValidation() {
+
+               var ProductName = $("#address2").val();
+             
+               var description = $("#productDescription").val();
+            var companyid = $('#state').val();
+               var categoryid = $("#country").val();
+               var Quantity = $("#Quantity").val();
+           
+               var purshase = $("#purchasePrice").val();
+               var sale = $("#sPrice").val();
+            
+            var check = true;
+               if (ProductName =="")
+                {
+                    $("#lbproductname").html("This Feild is required");
+                    check = false;
+                }
+               else if (ProductName !="")
+                {
+                    var count = 0;
+                    for (var item of Name)
+                    {
+                        count++;
+                    }
+                    alert(count)
+                    if (parseInt(count) < 3)
+                    {
+                        $("#lbproductname").html("Minimun lenght is 3");
+                        check = false;
+                    }
+                    else if (parseInt(count) > 150) {
+                        $("#lbproductname").html("Maxminmun lenght is 150");
+                        check = false;
+                    }
+                   
+
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+    </script>
+}

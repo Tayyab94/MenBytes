@@ -1,0 +1,102 @@
+﻿@model MenBytes.Models.Context.Email
+
+<div class="form-group">
+    
+    @Html.HiddenFor(x=>x.ID)
+    <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+            <span class="input-group-text">To</span>
+        </div>
+        <input type="text" class="form-control" name="To" value="@Model.To" readonly="readonly">
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Subject</span>
+        </div>
+        <input type="text" name="Subject" value="@Model.Subject" class="form-control form-control-sm" readonly="readonly">
+    </div>
+</div>
+<div class="form-group">
+    <div class="tinymce-wrap">
+        <textarea class="tinymce" name="Message"></textarea>
+    </div>
+</div>
+<div class="form-group">
+    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Upload</span>
+        </div>
+        <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+        <span class="input-group-append">
+            <span class=" btn btn-primary btn-file">
+                <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                <input type="file" name="fileUploader">
+            </span>
+            <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+        </span>
+    </div>
+</div>
+<div class="form-group mb-0">
+    <button class="btn btn-primary" type="submit">Send</button>
+</div>
+
+
+
+@*<div class="form-group">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span class="input-group-text">To</span>
+            </div>
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Cc / Bcc</span>
+            </div>
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Subject</span>
+            </div>
+            <input type="text" class="form-control form-control-sm">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="tinymce-wrap">
+            <textarea class="tinymce"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Upload</span>
+            </div>
+            <div class="form-control text-truncate" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+            <span class="input-group-append">
+                <span class=" btn btn-primary btn-file">
+                    <span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                    <input type="file" name="...">
+                </span>
+                <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+            </span>
+        </div>
+    </div>
+    <div class="form-group mb-0">
+        <button class="btn btn-primary" type="submit">Send</button>
+    </div>*@
+
+
+
+    <!-- Tinymce JavaScript -->
+    <script src="~/AdminSide/html/vendors/tinymce/tinymce.min.js"></script>
+
+    <!-- Tinymce Wysuhtml5 Init JavaScript -->
+    <script src="~/AdminSide/html/dist/js/tinymce-data.js"></script>

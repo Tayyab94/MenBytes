@@ -1,0 +1,205 @@
+﻿@model MenBytes.Models.ViewModels.AllBlogViewModel
+
+@if (Model.BlogsList != null && Model.BlogsList.Count > 0)
+{
+    <section class="hk-sec-wrapper">
+
+        <div class="row">
+            <div class="col-sm">
+                <div class="searchdiv">
+                    <div class="pull-right">
+                        <form class="form-inline">
+                            @*<div class="form-group mb-2">
+                                    <label for="staticEmail2" class="sr-only">Email</label>
+                                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                                </div>*@
+                            <div class="form-group mx-sm-3 mb-2">
+                                <div class="input-group">
+                                    @*<label for="inputPassword2" class="sr-only">Password</label>*@
+                                    <input type="text" class="form-control" value="@Model.SearchItem" id="searchTxtBox" placeholder="Search Product">
+                                    <button type="button" class="btn btn-primary mb-2 searchBtn input-group-addon"><i class="jq-toast-icon ti-search"></i></button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-lg mb-0">
+                            <thead class="thead-active">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Posted By</th>
+                                    <th>Images</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.BlogsList)
+                                {
+
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Title</td>
+                                        <td>@item.postedBy</td>
+
+                                        <td>
+
+                                            <img src="@Url.Content(item.blogImage)" class="img-rounded img-responsive" width="40" />
+
+
+                                        </td>
+                                        <td>@item.postedDate</td>
+                                        <td>
+                                            @*<button type="button" class="btn btn-info btn-sm  btnEdit" id="@item.Id" data-id="@item.Id" data-toggle="tooltip" data-original-title="Edit"> <i class="icon-pencil"></i></button>*@
+                                            <a href="@Url.Action("Edit", "SiteBlog", new {id = @item.Id})" class="mr-25 btnEdit" data-id="@item.Id" data-toggle="tooltip" data-original-title="Edit"> <i class="icon-pencil"></i> </a>
+                                            @*<a href="#" class="btnDel" data-toggle="tooltip" data-id="@item.Id" data-original-title="Close"> <i class="icon-trash txt-danger"></i> </a>*@
+
+                                            <a href="#" class="mr-25 deleteBlogBtn text-danger" data-id="@item.Id" data-toggle="tooltip" data-original-title="Delete"> <i class="icon-trash"></i> </a>
+
+                                            @*@Html.ActionLink("Delete","Delete", "Product",new {id=@item.ID},new {@class="btn btn-danger btn-sm"})*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <div class="pull-right">
+                            <nav class="pagination-wrap d-inline-block mt-30" aria-label="Page navigation example">
+                                <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                                    @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                                    {
+                                        if (Model.Pager.CurrentPage > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+
+                                        }
+
+                                        for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                                        {
+                                            string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                            <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>
+                                        }
+                                        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                        {
+                                            <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                                        }
+                                    }
+
+                                </ul>
+                            </nav>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+
+    <section class="hk-sec-wrapper">
+
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-danger text-center">No Record is Found <i class="fa ti-face-sad"></i></h2>
+        </div>
+    </div>
+    </section>
+}
+
+
+
+<script>
+    $(".searchBtn").click(function() {
+        var search = $("#searchTxtBox").val();
+    //    alert(search);
+        $.ajax({
+            url: "@Url.Action("BlogTable", "SiteBlog")",
+            data: { search: search }
+        }).done(function(result) {
+            if (result != null) {
+                $('.tblContainer').html(result);
+            }
+        }).fail(function() {
+            alert("Soemthing wrogn");
+        });
+    });
+
+    $(".deleteBlogBtn").on("click",
+        function () {
+
+            var dataID = $(this).attr("data-id");
+
+
+            $.toast().reset('all');
+            $("body").removeAttr('class');
+            $.toast({
+                heading: 'Are you sure you want to delete this Blog?',
+                text: '<i class="jq-toast-icon ti-alert"></i><button class="btn btn-danger btn-sm mt-10 mr-5 btnDel">yes</button>',
+                position: 'top-right',
+                loaderBg:'#7a5449',
+                class: 'jq-has-icon jq-toast-warning',
+                hideAfter: 3500,
+                stack: 6,
+                showHideTransition: 'fade'
+            });
+
+            $(".btnDel").click(function() {
+
+                $.ajax({
+                    url: '/SiteBlog/Delete',
+                    type: 'POST',
+                    data: {
+                        id: dataID
+                    }
+
+                }).done(function(result) {
+                    $(".tblContainer").html(result);
+                    
+                    $.toast().reset('all');
+                }).fail(function() {
+                    alert("some")
+                });
+            });
+
+            //$.ajax(
+            //    {
+            //        url: '/Product/Delete',
+            //        type: 'POST',
+            //        data: {
+            //            id: dataID
+            //        }
+            //    }).done(function () {
+
+            //        alert("Data is Deleted Successfuly!");
+            //    }).fail(function () {
+
+            //        alert("Data is Not Deleted");
+            //    });
+
+        });
+
+    $(".pageButtons").click(function() {
+        $.ajax({
+            url: '@Url.Action("BlogTable", "SiteBlog")',
+            data: {
+                search: '@Model.SearchItem',
+                pageNo: $(this).attr("data-pageNo")
+            }
+        }).done(function(result) {
+
+            $('.tblContainer').html(result);
+        }).fail(function() {
+
+        })
+    });
+</script>
+
+

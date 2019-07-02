@@ -1,0 +1,107 @@
+﻿@model MenBytes.Models.MenBytesModels.Companies
+@{
+    ViewBag.Title = "CreateCompany";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Form</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Company Create</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+<!-- /Breadcrumb -->
+<div class="content">
+
+</div> <!-- Row -->
+<div class="row">
+    <div class="col-xl-12">
+        <section class="hk-sec-wrapper">
+            <div class="row">
+                <div class="col-sm">
+                    
+                    @using (Html.BeginForm("CreateCompany", "Company"))
+                    {
+                        <div class="form-row">
+                            <div class="col-md-12 mb-12">
+                                <label for="categoryName"><strong>Company Name</strong> <span class="text-danger">(*)</span></label>
+                                @*<input type="text" name="Name" class="form-control" id="companyName" placeholder="Company's Name">*@
+                                
+                               @Html.TextBoxFor(x=>x.CompanyName,new {@class= "form-control", id= "companyName", placeholder = "Company's Name" })
+
+                                @Html.ValidationMessageFor(model => model.CompanyName,"",new {@class = "text-danger"})
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-primary" id="btnSave" type="submit" style="margin-top: 10px">Savev Company</button>
+                    
+                    }
+                    @*<form class="needs-validation" id="CreateCompanyFrm" action="@Url.Action("CreateCompany", "Company")">
+
+
+
+
+                        <div class="form-row">
+                            <div class="col-md-12 mb-12">
+                                <label for="categoryName"><strong>Company Name</strong> <span class="text-danger">(*)</span></label>
+                                <input type="text" name="Name" class="form-control" id="companyName" placeholder="Company's Name">
+
+                                @Html.ValidationMessageFor(model => model.CompanyName, "", new {@class = "invalid-feedback"})
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-primary" id="btnSave" type="submit" style="margin-top: 10px">Savev Company</button>
+                    
+                        </form>*@
+                    <div class="pull-right">
+                        @Html.ActionLink("List of Companies", "Index", "Company")
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- /Row -->
+
+
+
+
+@section scripts
+{
+    @*<script src="~/Scripts/S_Alerts/sweetalert.min.js"></script>*@
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <script type="text/javascript">
+
+        //$("#Name").on("keypress keyup blur", function (event) {
+        //    $(this).val($(this).val().replace(/[^\d].+/, ""));
+        //    if ((event.which < 48 || event.which > 57)) {
+
+        //        event.preventDefault();
+        //    }
+        //});
+
+
+        $("#companyName").on("keypress keyup blur",function(event){
+            var inputValue = event.charCode;
+
+            if(!((inputValue > 64 && inputValue < 91) || (inputValue > 96 && inputValue < 123)||(inputValue==32) || (inputValue==0))){
+                event.preventDefault();
+            }
+        });
+
+        
+
+    </script>
+}

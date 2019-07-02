@@ -1,0 +1,280 @@
+﻿
+@{
+    ViewBag.Title = "LiveChat";
+    Layout = "~/Views/Shared/_LayoutPageClient.cshtml";
+}
+
+
+
+@section CustomrCss
+{
+    <style type="text/css">
+
+
+        .portlet {
+            margin-bottom: 15px;
+        }
+
+        .btn-white {
+            border-color: #cccccc;
+            color: #333333;
+            background-color: #ffffff;
+        }
+
+        .portlet {
+            border: 1px solid;
+        }
+
+            .portlet .portlet-heading {
+                padding: 0 15px;
+            }
+
+                .portlet .portlet-heading h4 {
+                    padding: 1px 0;
+                    font-size: 16px;
+                }
+
+                .portlet .portlet-heading a {
+                    color: #fff;
+                }
+
+                    .portlet .portlet-heading a:hover,
+                    .portlet .portlet-heading a:active,
+                    .portlet .portlet-heading a:focus {
+                        outline: none;
+                    }
+
+            .portlet .portlet-widgets .dropdown-menu a {
+                color: #333;
+            }
+
+            .portlet .portlet-widgets ul.dropdown-menu {
+                min-width: 0;
+            }
+
+            .portlet .portlet-heading .portlet-title {
+                float: left;
+            }
+
+                .portlet .portlet-heading .portlet-title h4 {
+                    margin: 10px 0;
+                }
+
+            .portlet .portlet-heading .portlet-widgets {
+                float: right;
+                margin: 8px 0;
+            }
+
+                .portlet .portlet-heading .portlet-widgets .tabbed-portlets {
+                    display: inline;
+                }
+
+                .portlet .portlet-heading .portlet-widgets .divider {
+                    margin: 0 5px;
+                }
+
+            .portlet .portlet-body {
+                padding: 15px;
+                background: #fff;
+            }
+
+            .portlet .portlet-footer {
+                padding: 10px 15px;
+                background: #e0e7e8;
+            }
+
+                .portlet .portlet-footer ul {
+                    margin: 0;
+                }
+
+        .portlet-green,
+        .portlet-green > .portlet-heading {
+            border-color: #16a085;
+        }
+
+            .portlet-green > .portlet-heading {
+                color: #fff;
+                background-color: #16a085;
+            }
+
+        .portlet-orange,
+        .portlet-orange > .portlet-heading {
+            border-color: #f39c12;
+        }
+
+            .portlet-orange > .portlet-heading {
+                color: #fff;
+                background-color: #f39c12;
+            }
+
+        .portlet-blue,
+        .portlet-blue > .portlet-heading {
+            border-color: #2980b9;
+        }
+
+            .portlet-blue > .portlet-heading {
+                color: #fff;
+                background-color: #2980b9;
+            }
+
+        .portlet-red,
+        .portlet-red > .portlet-heading {
+            border-color: #e74c3c;
+        }
+
+            .portlet-red > .portlet-heading {
+                color: #fff;
+                background-color: #e74c3c;
+            }
+
+        .portlet-purple,
+        .portlet-purple > .portlet-heading {
+            border-color: #8e44ad;
+        }
+
+            .portlet-purple > .portlet-heading {
+                color: #fff;
+                background-color: #8e44ad;
+            }
+
+        .portlet-default,
+        .portlet-dark-blue,
+        .portlet-default > .portlet-heading,
+        .portlet-dark-blue > .portlet-heading {
+            border-color: #34495e;
+        }
+
+            .portlet-default > .portlet-heading,
+            .portlet-dark-blue > .portlet-heading {
+                color: #fff;
+                background-color: #34495e;
+            }
+
+        .portlet-basic,
+        .portlet-basic > .portlet-heading {
+            border-color: #333;
+        }
+
+            .portlet-basic > .portlet-heading {
+                border-bottom: 1px solid #333;
+                color: #333;
+                background-color: #fff;
+            }
+
+        media(min-width:768px) {
+            .portlet
+
+        {
+            margin-bottom: 30px;
+        }
+
+        }
+
+        .img-chat {
+            width: 40px;
+            height: 40px;
+        }
+
+        .text-green {
+            color: #16a085;
+        }
+
+        .text-orange {
+            color: #f39c12;
+        }
+
+        .text-red {
+            color: #e74c3c;
+        }
+    </style>
+}
+<!--======= SUB BANNER =========-->
+<section class="sub-bnr" data-stellar-background-ratio="0.5">
+    <div class="position-center-center">
+        <div class="container">
+            <h4 style="color: white">Contact Us With live Chat</h4>
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index","ClientSide")" style="color: white">Home</a></li>
+                <li class="active" style="color: white">Chat</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<div id="content">
+
+    <!--======= CONATACT  =========-->
+    <section class="contact padding-top-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="container bootstrap snippet">
+
+                        <div class="portlet portlet-default">
+                            <div class="portlet-heading">
+                                <div class="portlet-title">
+                                    <h4 class="text-white"><i class="fa fa-circle text-green"></i> Live Chat</h4>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="chat" class=" in">
+                                <div>
+                                    <div class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 230px;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="text-center text-muted small">@DateTime.Now.ToString("f")</p>
+                                            </div>
+                                        </div>
+                                        <div class="currentmsg">
+                                         
+                                        
+                                           
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                                <div class="portlet-footer">
+                                    
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control"  id="msgChat" placeholder="Write your Message Here" aria-label="Write your Message Here" aria-describedby="Write your Message Here">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-primary btn-small pull-right sendMessageBtn"><i class="fa fa-send"></i></button>
+                                        </div>
+                                    </div>
+                                    @*<form role="form">
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="msgChat" placeholder="Enter message..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-default btn-small pull-right sendMessageBtn">Send</button>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </form>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+    <!--======= MAP =========-->
+</div>
+
+@section scripts{
+   
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="~/Signalr/hubs"></script>
+
+    <script src="~/Scripts/MenBytes.js"></script>
+
+}

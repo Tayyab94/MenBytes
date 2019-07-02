@@ -1,0 +1,521 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+}
+
+
+@section CustomrCss{
+
+
+    <!-- Data Table CSS -->
+    <link href="~/AdminSide/html/vendors/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/AdminSide/html/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="~/clientHtml/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/AdminSide/html/vendors/jquery-toggles/css/toggles.css" rel="stylesheet" type="text/css">
+    <link href="~/AdminSide/html/vendors/jquery-toggles/css/themes/toggles-light.css" rel="stylesheet" type="text/css">
+
+
+
+
+}
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="/order/Index">Orders</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #6cca05ab">
+                <h5 class="modal-title text-center" id="exampleModalLongTitle">Change Order Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm())
+            {
+
+                <div id="orderStatusBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" id="changeStatusBtn" class="btn btn-primary">Save changes</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<!-- Container -->
+<div class="container">
+
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="database"></i></span></span>Client's Orders</h4>
+    </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+
+                <p class="mb-40">If you want to <code>Print this List</code>Press This <button type="button" class="btn btn-info btn-sm" id="printtabl">Print</button> Button.</p>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="table-wrap">
+                            <table id="datable_1" class="table table-hover w-100 display pb-30">
+                                <thead>
+                                    <tr>
+                                        <th class="d-print-none">ID</th>
+                                        <th>User Name</th>
+                                        <th>Created Time</th>
+                                        <th>order Status</th>
+                                        <th>Total Bill</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </div>
+    <!-- /Row -->
+
+</div>
+<!-- /Container -->
+
+
+@section scripts{
+    <script src="~/AdminSide/html/dist/JavaScriptPrint/printThis.js"></script>
+    <!-- Data Table JavaScript -->
+    <script src="~/AdminSide/html/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/AdminSide/html/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="~/AdminSide/html/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/AdminSide/html/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+
+
+
+    @*<script src="~/AdminSide/html/dist/js/dataTables-data.js"></script>*@
+
+    ccc
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    @*<script src="http://cdn.datatables.net/plug-ins/1.10.19/sorting/date-de.js"></script>*@
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+
+        <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>*@
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script src="https://cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>*@
+
+
+
+    <script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+    
+    <link href="~/Scripts/jqueryConfirmation/jquery-confirm.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jqueryConfirmation/jquery-confirm.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var tID = "";
+            //$.fn.dataTable.moment( 'HH:mm MMM D, YY' );
+            //$.fn.dataTable.moment( 'dddd, MMMM Do, YYYY' );
+
+            //jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            //    "de_datetime-asc": function (a, b) {
+            //        var x, y;
+            //        if (jQuery.trim(a) !== '') {
+            //            var deDatea = jQuery.trim(a).split(' ');
+            //            var deTimea = deDatea[1].split(':');
+            //            var deDatea2 = deDatea[0].split('.');
+            //            if (typeof deTimea[2] != 'undefined') {
+            //                x = (deDatea2[2] + deDatea2[1] + deDatea2[0] + deTimea[0] + deTimea[1] + deTimea[2]) * 1;
+            //            } else {
+            //                x = (deDatea2[2] + deDatea2[1] + deDatea2[0] + deTimea[0] + deTimea[1]) * 1;
+            //            }
+            //        } else {
+            //            x = -Infinity; // = l'an 1000 ...
+            //        }
+
+            //        if (jQuery.trim(b) !== '') {
+            //            var deDateb = jQuery.trim(b).split(' ');
+            //            var deTimeb = deDateb[1].split(':');
+            //            deDateb = deDateb[0].split('.');
+            //            if (typeof deTimeb[2] != 'undefined') {
+            //                y = (deDateb[2] + deDateb[1] + deDateb[0] + deTimeb[0] + deTimeb[1] + deTimeb[2]) * 1;
+            //            } else {
+            //                y = (deDateb[2] + deDateb[1] + deDateb[0] + deTimeb[0] + deTimeb[1]) * 1;
+            //            }
+            //        } else {
+            //            y = -Infinity;
+            //        }
+            //        var z = ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            //        return z;
+            //    },
+
+            //    "de_datetime-desc": function (a, b) {
+            //        var x, y;
+            //        if (jQuery.trim(a) !== '') {
+            //            var deDatea = jQuery.trim(a).split(' ');
+            //            var deTimea = deDatea[1].split(':');
+            //            var deDatea2 = deDatea[0].split('.');
+            //            if (typeof deTimea[2] != 'undefined') {
+            //                x = (deDatea2[2] + deDatea2[1] + deDatea2[0] + deTimea[0] + deTimea[1] + deTimea[2]) * 1;
+            //            } else {
+            //                x = (deDatea2[2] + deDatea2[1] + deDatea2[0] + deTimea[0] + deTimea[1]) * 1;
+            //            }
+            //        } else {
+            //            x = Infinity;
+            //        }
+
+            //        if (jQuery.trim(b) !== '') {
+            //            var deDateb = jQuery.trim(b).split(' ');
+            //            var deTimeb = deDateb[1].split(':');
+            //            deDateb = deDateb[0].split('.');
+            //            if (typeof deTimeb[2] != 'undefined') {
+            //                y = (deDateb[2] + deDateb[1] + deDateb[0] + deTimeb[0] + deTimeb[1] + deTimeb[2]) * 1;
+            //            } else {
+            //                y = (deDateb[2] + deDateb[1] + deDateb[0] + deTimeb[0] + deTimeb[1]) * 1;
+            //            }
+            //        } else {
+            //            y = -Infinity;
+            //        }
+            //        var z = ((x < y) ? 1 : ((x > y) ? -1 : 0));
+            //        return z;
+            //    },
+
+            //    "de_date-asc": function (a, b) {
+            //        var x, y;
+            //        if (jQuery.trim(a) !== '') {
+            //            var deDatea = jQuery.trim(a).split('.');
+            //            x = (deDatea[2] + deDatea[1] + deDatea[0]) * 1;
+            //        } else {
+            //            x = Infinity; // = l'an 1000 ...
+            //        }
+
+            //        if (jQuery.trim(b) !== '') {
+            //            var deDateb = jQuery.trim(b).split('.');
+            //            y = (deDateb[2] + deDateb[1] + deDateb[0]) * 1;
+            //        } else {
+            //            y = -Infinity;
+            //        }
+            //        var z = ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            //        return z;
+            //    },
+
+            //    "de_date-desc": function (a, b) {
+            //        var x, y;
+            //        if (jQuery.trim(a) !== '') {
+            //            var deDatea = jQuery.trim(a).split('.');
+            //            x = (deDatea[2] + deDatea[1] + deDatea[0]) * 1;
+            //        } else {
+            //            x = -Infinity;
+            //        }
+
+            //        if (jQuery.trim(b) !== '') {
+            //            var deDateb = jQuery.trim(b).split('.');
+            //            y = (deDateb[2] + deDateb[1] + deDateb[0]) * 1;
+            //        } else {
+            //            y = Infinity;
+            //        }
+            //        var z = ((x < y) ? 1 : ((x > y) ? -1 : 0));
+            //        return z;
+            //    }
+            //});
+
+
+
+
+            // getEmployeeRecord();
+
+            //BindData();
+
+            $("#printtabl").click(function(e) {
+
+                e.preventDefault();
+
+                $('#datable_1').printThis();
+            });
+
+
+            var tableOrders = $('#datable_1').DataTable({
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search",
+                    sLengthMenu: "_MENU_items"
+
+                },
+                "processing": true,
+
+                "bServerSide": true,
+                "sAjaxSource": "/Order/ShowAllOrders",
+                "fnServerData": function(sSource, aoData, fnCallback) {
+                    $.ajax({
+                        type: "GET",
+                        data: aoData,
+                        url: sSource,
+                        success: fnCallback
+                    })
+                },
+
+                //"aaData": response,
+                "aoColumns": [
+                    {
+                        "mData": "Id",
+                        "render": function(id, type, full, meta) {
+
+                            return "<a href='/Order/DetailOrder/" +
+                                id +
+                                "' class='btn btn-sm btn-info btn-link' title='Detail Info Order'><i class='fa fa-eye'></i></a>" +
+                                "|<button type='button' class='btn btn-sm btn-danger btn-link del-btnOrder' data-order-id=" +
+                                id +
+                                " title='Remove an Order '><i class='fa fa-trash'></i></button>|" +
+                                "<button type='button' class='btn btn-sm btn-secondary btn-link ch-btnOrder' data-order-id=" +
+                                id +
+                                " title='Change Order Status '><i class='fa fa-edit'></i></button>";
+                        }
+
+                    },
+                    {
+                        "mData": "userName",
+                        rowCallback: function(row, data) {
+
+
+                            $(row).addClass('d-print-none');
+                        }
+                    },
+                    {
+                        "mData": "orderCreated",
+                        render: function ( data, type, row ) {
+                            var rowvalueallday = row['orderCreated'];
+                            if (rowvalueallday == '0000-00-00') {
+                                var gdat = '1900-01-01';
+                                return (moment(gdat).format("DD.MM.YYYY"));
+                            } else {
+                                return (moment(data).format("DD.MM.YYYY"));
+                            }
+                        }
+                   },
+                    {
+                        "mData": "orderStatud"
+
+                    },
+                    { "mData": "totalBill" }
+                ]
+                ,
+                createdRow: function(row, data, dataIndex) {
+                    $(row).find('td:eq(0)').addClass('d-print-none');
+                }
+               
+
+        });
+
+
+            $('#datable_1').on("click",
+                ".del-btnOrder",
+                function () {
+                    var t = $(this);
+                    swal({
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover this file!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+
+                                $.ajax({
+                                    url: "/order/deleteOrder/" + t.attr("data-order-id"),
+                                    type: "POST",
+
+                                }).done(function (result) {
+
+                                    if (result) {
+                                        swal("Poof! Your imaginary file has been deleted!",
+                                            {
+                                                icon: "success",
+                                            });
+                                        tableOrders.row(t.parents("tr")).remove().draw();
+                                        $.ajax({
+                                            url: "/Order/TotalOrderCount",
+                                            type: "GET",
+
+                                        }).done(function (count) {
+                                            $("#totalOrderCount").html(count);
+
+                                        }).fail(function () {
+
+                                        });
+
+                                    } else {
+                                        swal("Kuch Galt hai !",
+                                            {
+                                                icon: "danger",
+                                            });
+                                    }
+
+                                }).fail(function () {
+                                    swal("Your File is Not Delete yet!");
+                                });
+
+
+                            } else {
+                                swal("Your  file is safe!");
+                            }
+                        });
+                });
+
+
+            $('#datable_1').on("click",
+                ".ch-btnOrder",
+                function () {
+
+                    var tid = $(this).attr("data-order-id");
+
+                    tID = $(this);
+
+                    //alert("Ab wali Value"+tID);
+                    $.ajax({
+                        url: '@Url.Action("EditOrderStatus", "Order")',
+                        type: "POST",
+                        data: { id: tid},
+                        success: function (result) {
+
+
+                            $("#orderStatusBody").html(result);
+                            $("#exampleModalLong").modal('show');
+                        },
+                        error: function() {
+
+                        }
+                    });
+                });
+
+
+
+            $("#changeStatusBtn").on("click",
+                function(e) {
+                    var id = $(this).attr("data-id");
+
+                    //alert($("#orderID").val());
+
+                    var vID = $("#orderID").val();
+                    var selectValueD_V = $(".statusDD ").find(":selected").val();
+
+                    var selectValueD_T = $(".statusDD ").find(":selected").text();
+
+
+                    $.ajax({
+                        url: "@Url.Action("ChangeOrderStatus","Order")",
+                        data: { orderID: vID, statusValue: selectValueD_V }
+                    }).done(function() {
+
+                        $("#exampleModalLong").modal('hide');
+
+
+                        var trt = $('#datable_1').DataTable().cell('#orderStatus_' + vID).data();
+                        $.confirm({
+                            icon: 'fa fa-success',
+                            title: 'Success!',
+                            content: 'Order Status has been Chanage Successfuly!',
+                            type: 'dark',
+                            typeAnimated: true,
+                            buttons: {
+                                tryAgain: {
+                                    text: 'Ok',
+                                    btnClass: 'btn',
+                                    action: function () {
+                                        window.location.href = "/Order/Index";
+                                    }
+                                },
+                               
+                            }
+                        });
+                        
+                        //  window.location.href = "/Order/Index";
+                    }).fail(function() {
+
+                    });
+
+                    //alert(selectValueD_V);
+
+                    //alert(selectValueD_T);
+                    //var currow = tID.closest('tr');
+                    //alert(currow);
+
+                   // alert(tableOrders.column($("#orderStatus_"+vID)).data());
+                   //// tableOrders.cell(tID.sibling($("#orderStatus_" + vID))).add(selectValueD_T).draw(false);
+                   // //tableOrders.row(tID.parents("tr").find('td:eq(3)')).data(selectValueD_T);
+                   //// tableOrders.columns(find($("#orderStatus_" + vID)).html(selectValueD_T));
+                   //// $("#orderStatus_"+vID).html(selectValueD_T);
+
+
+                });
+
+
+
+            //$('#datable_1 tbody tr td.sorting_1').addClass('d-print-none');
+
+        });
+
+
+        function changestatus(id) {
+
+            var selectValueD_V = $(".statusDD ").find(":selected").val();
+
+            var selectValueD_T = $(".statusDD ").find(":selected").text();
+
+            alert(selectValueD_V);
+
+            alert(selectValueD_T);
+        }
+
+        var getEmployeeRecord = function () {
+            $.ajax({
+                type: "GET",
+                url: "/Order/ShowAllOrders",
+                success: function (response) {
+                    alert(response);
+                    console.log(response);
+                    BindData(response);
+                }
+            });
+        }
+
+
+
+
+    </script>
+}

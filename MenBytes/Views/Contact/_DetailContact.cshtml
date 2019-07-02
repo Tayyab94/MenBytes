@@ -1,0 +1,218 @@
+﻿@model MenBytes.Models.MenBytesModels.ContactUs
+
+
+@*<div class="nicescroll-bar">
+    <div>
+        <div class="email-subject-head">
+            <h4>Subject :@Model.Subject</h4>
+            <div class="d-flex align-items-center">
+                <span class="badge badge-secondary">inbox</span>
+                <a href="javascript:void(0)" class="email-star starred"><span class="feather-icon"><i data-feather="star"></i></span></a>
+            </div>
+        </div>
+        <hr class="mt-10 mb-20">
+        <div class="email-head">
+            <div class="media">
+                <div class="media-img-wrap">
+                    <div class="avatar">
+                        <img src="~/AdminSide/html/dist/img/avatar1.jpg" alt="user" class="avatar-img rounded-circle">
+                    </div>
+                </div>
+                <div class="media-body">
+                    <span class="text-capitalize sender-name d-inline-block">@Model.fullName</span>
+                    <span class="sender-email d-inline-block">(@Model.Email)</span>
+                    <span class="d-block">
+                        to
+                        <span>me</span>
+                    </span>
+                </div>
+            </div>
+            <div class="head-other-wrap">
+                <div class="d-inline-block mr-5">
+                    <span class="d-inline-block">10:06 AM</span>
+                    <span class="d-inline-block">(2 hours ago)</span>
+                </div>
+                <div class="d-inline-block dropdown">
+                    <a class="dropdown-toggle no-caret" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="zmdi   zmdi-more-vert"></i></a>
+                    <div class="dropdown-menu bullet dropdown-menu-right" role="menu">
+                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-reply" aria-hidden="true"></i>Reply</a>
+                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-trash" aria-hidden="true"></i>Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="email-text-wrap mt-30">
+            <span class="d-block email-title text-capitalize mb-30">dear sir,</span>
+            <p class="mb-30">
+                @Model.Message
+            </p>
+            <p class="mt-30">Thank you for your time.</p>
+            <div class="email-end-detail mt-35">
+                <span class="text-capitalize d-block">@Model.fullName</span>
+                <span class="d-block">@Model.Phone</span>
+                <span class="d-block">@Model.Email</span>
+            </div>
+        </div>
+        <hr class="hr-light">
+        <div class="email-attachment-wrap">
+            <div class="email-attachment-block">
+                <a href="javascript:void(0)">
+                    <div class="card card-sm w-200p">
+                        <div class="card-body d-flex align-items-center">
+                            <img src="dist/img/jpgicon.png" class="d-inline-block mr-10" alt="attachicon" />
+                            <span class="d-inline-block mnw-0">
+                                <span class="d-block file-name text-truncate">concept_design.jpg</span>
+                                <small class="d-block file-size text-truncate">5.78 MB</small>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0)">
+                    <div class="card card-sm w-200p">
+                        <div class="card-body d-flex align-items-center">
+                            <img src="dist/img/pdficon.png" class="d-inline-block mr-10" alt="attachicon" />
+                            <span class="d-inline-block mnw-0">
+                                <span class="d-block file-name text-truncate">Design-titleccv.pdf</span>
+                                <small class="d-block file-size text-truncate">2.1 MB</small>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex ml-auto">
+                <a href="javascript:void(0)"><i class="zmdi zmdi-download"></i></a>
+                <a href="javascript:void(0)"><i class="zmdi zmdi-more"></i></a>
+            </div>
+        </div>
+
+        <hr class="hr-light">
+        <div class="email-reply-block">
+            Click here to <a href="javascript:void(0)" class="text-capitalize">reply</a> or <a href="javascript:void(0)" class="text-capitalize">forwrd</a>
+        </div>
+    </div>
+</div>*@
+
+
+<div>
+    <div class="email-subject-head">
+        <h4>Subject :(@Html.DisplayFor(x=>x.Subject,new {style="forn-size:12px"}))</h4>
+        <div class="d-flex align-items-center">
+            <span class="badge badge-secondary">inbox</span>
+            <a href="javascript:void(0)" class="email-star starred"><span class="feather-icon"><i data-feather="star"></i></span></a>
+        </div>
+    </div>
+    <hr class="mt-10 mb-20">
+    <div class="email-head">
+        <div class="media">
+            <div class="media-img-wrap">
+                <div class="avatar">
+                    <img src="~/AdminSide/html/dist/user.png" alt="user" class="avatar-img rounded-circle">
+                </div>
+            </div>
+            <div class="media-body">
+                <span class="text-capitalize sender-name d-inline-block">@Model.fullName</span>
+                <span class="sender-email d-inline-block">(@Model.Email)</span>
+                <span class="d-block">
+                    to
+                    <span>me</span>
+                </span>
+            </div>
+        </div>
+        <div class="head-other-wrap">
+            <div class="d-inline-block mr-5">
+                <span class="d-inline-block">@Model.ContactDate.ToShortTimeString()</span>
+            
+            </div>
+            <div class="d-inline-block dropdown">
+                <a class="dropdown-toggle no-caret" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="zmdi   zmdi-more-vert"></i></a>
+                <div class="dropdown-menu bullet dropdown-menu-right" role="menu">
+                    <a class="dropdown-item mailReplay" href="#" data-id="@Model.ID" role="menuitem"><i class="icon wb-reply" aria-hidden="true"></i>Reply</a>
+                     @*<a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-trash" aria-hidden="true"></i>Delete</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="email-text-wrap mt-30">
+        <span class="d-block email-title text-capitalize mb-30">dear sir,</span>
+        <p class="mb-30">
+        @Model.Message
+            </p>
+        <p>Thank you for your time.</p>
+        <div class="email-end-detail mt-35">
+            <p style="margin-left: 40px"><i class="fa fa-user"></i><strong>&nbsp;User Name</strong>: @Model.fullName &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <i class="fa fa-phone"></i><strong>&nbsp;Phone: </strong>@Model.Phone</p>
+            <p style="margin-left: 90px"><i class="fa fa-envelope"></i> &nbsp; <strong>Email</strong> @Model.Email</p>
+            
+            @*<span class="text-capitalize d-block">evie one</span>
+            <span class="d-block">+12 234 443</span>
+            <span class="d-block">evieone@Mintos.com</span>*@
+        </div>
+    </div>
+    <hr class="hr-light">
+    @*<div class="email-attachment-wrap">
+        <div class="email-attachment-block">
+            <a href="javascript:void(0)">
+                <div class="card card-sm w-200p">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="dist/img/jpgicon.png" class="d-inline-block mr-10" alt="attachicon" />
+                        <span class="d-inline-block mnw-0">
+                            <span class="d-block file-name text-truncate">concept_design.jpg</span>
+                            <small class="d-block file-size text-truncate">5.78 MB</small>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript:void(0)">
+                <div class="card card-sm w-200p">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="dist/img/pdficon.png" class="d-inline-block mr-10" alt="attachicon" />
+                        <span class="d-inline-block mnw-0">
+                            <span class="d-block file-name text-truncate">Design-titleccv.pdf</span>
+                            <small class="d-block file-size text-truncate">2.1 MB</small>
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="d-flex ml-auto">
+            <a href="javascript:void(0)"><i class="zmdi zmdi-download"></i></a>
+            <a href="javascript:void(0)"><i class="zmdi zmdi-more"></i></a>
+        </div>
+    </div>*@
+
+    <hr class="hr-light">
+    <div class="email-reply-block">
+        Click here to <a href="#" class="text-capitalize mailReplay" data-id="@Model.ID">reply</a>
+    </div>
+</div>
+
+
+    <script>
+
+
+        $(".mailReplay").click(function() {
+
+            var cID = $(this).attr("data-id");
+
+            //alert(cID);
+
+
+            $.ajax({
+                url: "@Url.Action("GetEmailData","Contact")",
+                type: "GET",
+                data: {
+                    id: cID
+                }
+            }).done(function (result) {
+            //    alert(result);
+                $(".sendingDiv").html(result);
+                $("#exampleModalEmail").modal("show");
+            }).fail(function() {
+
+            });
+
+        
+        })
+
+    </script>
+
+

@@ -1,0 +1,82 @@
+﻿@model MenBytes.Models.ViewModels.AllContactsListViewModel
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+   
+    <!-- Main Content -->
+    <div class=" pb-0">
+        <!-- Container -->
+        <div class="container-fluid">
+            <!-- Row -->
+            <div class="row">
+                <div class="col-xl-12 pa-0">
+                    <div class="emailapp-wrap">
+
+                        <div class="email-box">
+                            <div class="emailapp-left">
+                                <div class="tblContainer">
+                                    @{
+                                        Html.RenderAction("ContactTableList");
+                                    }
+                                </div>
+                            </div>
+                            <div class="emailapp-right">
+                                <header>
+                                    <a id="back_email_list" href="javascript:void(0)" class="back-email-list">
+                                        <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                                    </a>
+                                    <div class="email-options-wrap">
+                                        <a href="javascript:void(0)" class="" title="Print Email"><span class="feather-icon"><i data-feather="printer"></i></span></a>
+                                        @*<a href="javascript:void(0)" class=""><span class="feather-icon"><i data-feather="trash"></i></span></a>
+                        <a href="javascript:void(0)" class="text-smoke"><span class="feather-icon"><i data-feather="more-vertical"></i></span></a>*@
+                                    </div>
+                                </header>
+                                <div class="email-body">
+                                    <div class="nicescroll-bar replayContainer">
+                                        
+                                        @if (TempData["mailError"] != null)
+                                        {
+                                            <h2 class="text-danger">Please try Again mail is  not sent to this user</h2>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Compose email -->
+                        <div class="modal fade" id="exampleModalEmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalEmail" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-grey-dark-5">
+                                        <h6 class="modal-title text-white" id="exampleModalPopoversLabel">New Email</h6>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      @using (Html.BeginForm("SendEmailToCient", "Contact", FormMethod.Post, new {enctype = "multipart/form-data"}))
+                                      {
+                                          <div class="sendingDiv">
+
+                                          </div>
+                                      }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Compose email -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- /Row -->
+
+        </div>
+        <!-- /Container -->
+    </div>
+    <!-- /Main Content -->

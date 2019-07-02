@@ -1,0 +1,55 @@
+﻿@model MenBytes.Models.ViewModels.ProductQunatiyUPViewModel
+
+
+<div class="modal-body">
+    @Html.HiddenFor(x=>x.Id,new {id="ProductID"})
+    
+     @*<div class="form-group">
+        @Html.Label("Previous Quantity", htmlAttributes: new { @class = "control-label col-md-5" })
+        <div class="col-md-12">
+            <input type="number" min="1" max="100" name="Quantity"  readonly="readonly" value="@Model.quantity" class="form-control sale_purchase_Qty"/>
+        </div>
+    </div>*@  
+    <div class="form-group">
+        @Html.Label("Update Quantity", htmlAttributes: new { @class = "control-label col-md-5" })
+        <div class="col-md-12">
+            <input type="number" min="1" max="100" name="Quantity"  id="updateQtyBox" class="form-control sale_purchase_Qty"/>
+        </div>
+    </div>  
+
+</div>
+
+  
+
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+
+
+@section scripts{
+
+
+    @*<script>
+
+            $(document).ready(function() {
+
+
+                $("#changeStatusBtn").on("click",
+                    function(e) {
+                        var id = $(this).attr("data-id");
+
+                        var selectValueD_V = $(".statusDD ").find(":selected").val();
+
+                        var selectValueD_T = $(".statusDD ").find(":selected").text();
+
+                        alert(selectValueD_V);
+
+                        alert(selectValueD_T);
+
+
+                    });
+            })
+        </script>*@
+}

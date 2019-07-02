@@ -1,0 +1,166 @@
+﻿@model MenBytes.Models.ViewModels.AllContactsListViewModel
+
+<header>
+    <a href="javascript:void(0)" id="emailapp_sidebar_move" class="emailapp-sidebar-move">
+        <span class="feather-icon"><i data-feather="menu"></i></span>
+    </a>
+    <span class="">Inbox</span>
+    <a href="javascript:void(0)" class="email-compose" data-toggle="modal" data-target="#exampleModalEmail">
+        <span class="feather-icon"><i data-feather="edit"></i></span>
+    </a>
+</header>
+<div role="search" class="email-search">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="feather-icon"><i data-feather="search"></i></span>
+        </div>
+        <input type="text" class="form-control" value="@Model.SearchItem" id="searchTxtBox" placeholder="Search">
+    </div>
+</div>
+
+@if (Model.ContactUsList != null && Model.ContactUsList.Count() > 0)
+{
+
+    <div class="emailapp-emails-list">
+        <div class="nicescroll-bar">
+
+            @foreach (var msg in Model.ContactUsList)
+            {
+                <a href="javascript:void(0);" class="media" id="emaildiv" data-id="@msg.ID" onclick="heelo(@msg.ID)">
+                    <div class="media-img-wrap">
+                        <div class="avatar">
+                          
+                            <img src="~/AdminSide/html/dist/user.png" alt="user" class="avatar-img rounded-circle">
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <div>
+                            <div class="email-head">@msg.fullName</div>
+                            <div class="email-subject">@msg.Subject</div>
+                            <div class="email-text">
+                                <p>To View This email... Please Clcik on this :)</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="last-email-details"><span class="badge badge-danger badge-indicator"></span> @msg.ContactDate.ToShortTimeString()</div>
+                            <span class="email-star"><span class="feather-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span></span>
+                        </div>
+                    </div>
+                </a>
+                <div class="email-hr-wrap">
+                    <hr>
+                </div>
+            }
+
+            <div class=" mb-25">
+                <nav class="pagination-wrap justify-content-center  mt-30" aria-label="Page navigation example">
+                    <ul class="pagination custom-pagination pagination-rounded pagination-filled">
+
+                        @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+                        {
+                            if (Model.Pager.CurrentPage > 1)
+                            {
+                                <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage - 1)"><i class="ion ion-ios-arrow-round-back"></i></a></li>
+
+                            }
+
+                            for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage; page++)
+                            {
+                                string activeClass = Model.Pager.CurrentPage == page ? "acive bg-info" : string.Empty;
+                                <li class="page-item"><a class="page-link @activeClass pageButtons" href="#" data-pageNo="@page">@page</a></li>
+                            }
+                            if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                            {
+                                <li class="page-item"><a class="page-link pageButtons" href="#" data-pageNo="@(Model.Pager.CurrentPage + 1)"><i class="ion ion-ios-arrow-round-forward"></i></a></li>
+                            }
+                        }
+
+                    </ul>
+                </nav>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+}
+else
+{
+    <div class="nicescroll-bar">
+
+        <h3 class="text-danger">Not Found</h3>
+
+    </div>
+
+
+}
+
+<script>
+
+    var iid = "";
+
+    $("#searchTxtBox").blur(function() {
+        var search = $("#searchTxtBox").val();
+
+        $.ajax({
+            url: "@Url.Action("ContactTableList", "Contact")",
+            data: { search: search }
+        }).done(function(result) {
+            if (result != null) {
+                $('.tblContainer').html(result);
+            }
+        }).fail(function() {
+            alert("Soemthing wrogn");
+        });
+    });
+
+    function heelo(id) {
+        $.ajax({
+            url: "@Url.Action("DetailContact", "Contact")",
+            type: "GET",
+            data: {
+                id: id
+            }
+        }).done(function(result) {
+            $(".replayContainer").html(result);
+        }).fail(function() {
+
+        });
+    }
+
+    $("emaildiv").on("click",
+        function() {
+            var dataId = $(this).attr("data-id");
+
+            $.ajax({
+                url: "@Url.Action("DetailContact", "Contact")",
+                type: "GET",
+                data: {
+                    id: dataId
+                }
+            }).done(function(result) {
+                $(".replayContainer").html(result);
+            }).fail(function() {
+
+            });
+
+        });
+
+
+    $(".pageButtons").click(function() {
+        $.ajax({
+            url: '@Url.Action("ContactTableList", "Contact")',
+            data: {
+                search: '@Model.SearchItem',
+                pageNo: $(this).attr("data-pageNo")
+            }
+        }).done(function(result) {
+
+            $('.tblContainer').html(result);
+        }).fail(function() {
+
+        })
+    });
+</script>

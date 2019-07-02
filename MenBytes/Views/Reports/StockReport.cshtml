@@ -1,0 +1,387 @@
+﻿
+@{
+    ViewBag.Title = "StockReport";
+}
+
+<h2>StockReport</h2>
+
+
+@section CustomrCss{
+
+
+    <!-- Data Table CSS -->
+    <link href="~/AdminSide/html/vendors/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/AdminSide/html/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="~/clientHtml/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/AdminSide/html/vendors/jquery-toggles/css/toggles.css" rel="stylesheet" type="text/css">
+    <link href="~/AdminSide/html/vendors/jquery-toggles/css/themes/toggles-light.css" rel="stylesheet" type="text/css">
+
+
+
+
+}
+
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="/order/Index">Product</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+
+<div class="container">
+
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="database"></i></span></span>Active Products</h4>
+    
+        </div>
+    <!-- /Title -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <section class="hk-sec-wrapper">
+
+                <p class="mb-40">If you want to <code>Print this List</code>Press This <button type="button" class="btn btn-info btn-sm" id="printtabl">Print</button> Button.</p>
+                <form class="form-inline">
+
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="DateStarting">Form :</label>
+                        @*<input type="password" class="form-control" id="inputPassword2" placeholder="Password">*@
+
+                        <div class="input-group date" id="dp3" data-date="12-02-2017" data-date-format="mm-dd-yyyy">
+                            <input name="date" id="fromDate" class="form-control" type="text" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="DateStarting">To :</label>
+                        @*<input type="password" class="form-control" id="inputPassword2" placeholder="Password">*@
+
+                        <div class="input-group date" id="dp3" data-date="12-02-2017" data-date-format="mm-dd-yyyy">
+                            <input name="date" id="toDate" class="form-control" type="text" value="12-02-2017">
+                        </div>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="inputPassword2" class="sr-only">Search</label>
+                        <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                    </div>
+                    <button type="button" id="filterbtn" class="btn btn-primary mb-2">Filter</button>
+                </form>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="table-wrap">
+                            <table id="datable_124" class="table table-hover w-100 display pb-30">
+                                <thead>
+                                <tr>
+                                    <th class="d-print-none">ID</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Company</th>
+                                    <th>Quantity</th>
+                                    <th>Is Featured</th>
+                                    <th>Images</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </div>
+    <!-- /Row -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+    <script src="~/AdminSide/html/dist/JavaScriptPrint/printThis.js"></script>
+    <!-- Data Table JavaScript -->
+    <script src="~/AdminSide/html/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/AdminSide/html/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="~/AdminSide/html/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/AdminSide/html/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/AdminSide/html/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+
+
+
+    @*<script src="~/AdminSide/html/dist/js/dataTables-data.js"></script>*@
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+    <script src="~/Scripts/moment/ActiveFiles/moment.min.js"></script>
+    <script src="~/Scripts/moment/ActiveFiles/datetime.js"></script>
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.tr.min.js"></script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function() {
+            var datatableProduct;
+            moment.locale('pk');
+//var ahmet = moment("25/04/2012","DD/MM/YYYY").year();
+            var date = new Date();
+            bugun = moment(date).format("DD/MM/YYYY");
+
+            var date_input = $('input[name="date"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                //startDate: '+1d',
+                endDate: '+0d',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+
+                //defaultDate: moment().subtract(15, 'days')
+              //  setStartDate : "<DATETIME STRING HERE>"
+            };
+            date_input.val();
+            date_input.datepicker(options).on('focus',
+                function(date_input) {
+            
+                });;
+
+
+            date_input.change(function() {
+                var deger = $(this).val();
+            });
+
+
+            $('.input-group').find('.glyphicon-calendar').on('click',
+                function() {
+                    date_input.trigger('focus');
+                    date_input.datepicker('show');
+                    //$("h3").html("event : click");
+
+
+                    if (!date_input.data('datepicker').picker.is(":visible")) {
+                        date_input.trigger('focus');
+                        
+                        //$('.input-group').find('.glyphicon-calendar').blur();
+                        //date_input.trigger('blur');
+                        //$("h3").html("görünür");    
+                    } else {
+                    }
+
+
+                });
+
+
+            $("#filterbtn").click(function() {
+                alert("click");
+                var fromDate = $("#fromDate").val();
+
+                var toDate = $("#toDate").val();
+
+                if ($.fn.DataTable.isDataTable("#datable_124")) {
+                    debugger;
+                    datatableProduct.draw(false);
+
+                    datatableProduct.remove();
+
+
+                    datatableProduct = $('#datable_124').DataTable({
+                        responsive: true,
+                        autoWidth: false,
+                        language: {
+                            search: "",
+                            searchPlaceholder: "Search",
+                            sLengthMenu: "_MENU_items"
+
+                        },
+                        "processing": true,
+
+                        "bServerSide": true,
+                        "sAjaxSource": "/Reports/showProductsAl",
+                        "fnServerData": function (sSource, aoData, fnCallback) {
+
+                            aoData.push({ "name": "f_Date", "value": fromDate }, { "name": "to_Date", "value": toDate });
+                            $.ajax({
+                                type: "GET",
+                                data: aoData,
+                                url: sSource,
+                                success: fnCallback
+                            })
+                        },
+
+                        //"aaData": response,
+                        "aoColumns": [
+                            {
+                                "mData": "ID",
+                                "render": function (ID, type, full, mete) {
+                                    return "<a href='#' class='btn btn-sm btn-outline-info btn-link productDetailBtn'  data-pid='" +
+                                        ID +
+                                        "' title='Detail Info Order'><i class='fa fa-eye'></i></a>" +
+                                        "|" +
+                                        "<button type='button' class='btn btn-sm btn-outline-danger btn-link hideProductBtn' data-id=" +
+                                        ID +
+                                        " title='Change Product Status '><i class='fa fa-trash'></i></button>";
+                                }
+                            },
+                            {
+                                "mData": "ProductName"
+
+                            },
+                            {
+                                "mData": "CategoryName"
+                            },
+                            {
+                                "mData": "CompanyName"
+                            },
+                            { "mData": "Quantity" },
+                            {
+                                "mData": "IsFeatured"
+                            }, {
+                                "mData": "productImage",
+                                "render": function (ID, type, full, meta) {
+                                    return '<img src="' + full.productImage + '" style="height:50px;width:50px;"/>';
+                                }
+                            }
+                        ],
+                        createdRow: function (row, data, dataIndex) {
+                            // Set the data-status attribute, and add a class
+                            $(row).find('td:eq(0)')
+                                .addClass('d-print-none');
+                        }
+
+                    });
+                } else {
+                    debugger;
+
+                    datatableProduct = $('#datable_124').DataTable({
+                        responsive: true,
+                        autoWidth: false,
+                        language: {
+                            search: "",
+                            searchPlaceholder: "Search",
+                            sLengthMenu: "_MENU_items"
+
+                        },
+                        "processing": true,
+
+                        "bServerSide": true,
+                        "sAjaxSource": "/Reports/showProductsAl",
+                        "fnServerData": function (sSource, aoData, fnCallback) {
+
+                            aoData.push({ "name": "f_Date", "value": fromDate }, { "name": "to_Date", "value": toDate });
+                            $.ajax({
+                                type: "GET",
+                                data: aoData,
+                                url: sSource,
+                                success: fnCallback
+                            })
+                        },
+
+                        //"aaData": response,
+                        "aoColumns": [
+                            {
+                                "mData": "ID",
+                                "render": function (ID, type, full, mete) {
+                                    return "<a href='#' class='btn btn-sm btn-outline-info btn-link productDetailBtn'  data-pid='" +
+                                        ID +
+                                        "' title='Detail Info Order'><i class='fa fa-eye'></i></a>" +
+                                        "|" +
+                                        "<button type='button' class='btn btn-sm btn-outline-danger btn-link hideProductBtn' data-id=" +
+                                        ID +
+                                        " title='Change Product Status '><i class='fa fa-trash'></i></button>";
+                                }
+                            },
+                            {
+                                "mData": "ProductName"
+
+                            },
+                            {
+                                "mData": "CategoryName"
+                            },
+                            {
+                                "mData": "CompanyName"
+                            },
+                            { "mData": "Quantity" },
+                            {
+                                "mData": "IsFeatured"
+                            }, {
+                                "mData": "productImage",
+                                "render": function (ID, type, full, meta) {
+                                    return '<img src="' + full.productImage + '" style="height:50px;width:50px;"/>';
+                                }
+                            }
+                        ],
+                        createdRow: function (row, data, dataIndex) {
+                            // Set the data-status attribute, and add a class
+                            $(row).find('td:eq(0)')
+                                .addClass('d-print-none');
+                        }
+
+                    });
+                }
+
+
+            });
+
+        });
+
+
+        function changestatus(id) {
+
+            var selectValueD_V = $(".statusDD ").find(":selected").val();
+
+            var selectValueD_T = $(".statusDD ").find(":selected").text();
+
+            alert(selectValueD_V);
+
+            alert(selectValueD_T);
+        }
+
+        var getEmployeeRecord = function() {
+            $.ajax({
+                type: "GET",
+                url: "/Order/ShowAllOrders",
+                success: function(response) {
+                    alert(response);
+                    console.log(response);
+                    BindData(response);
+                }
+            });
+        }
+
+
+    </script>
+}
+
+

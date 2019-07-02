@@ -1,0 +1,210 @@
+﻿@model MenBytes.Models.MenBytesModels.Order
+@{
+                /**/
+
+                ViewBag.Title = "DetailOrder";
+
+                int i = 1;
+}
+
+@section CustomrCss{
+
+    <link href="~/AdminSide/html/dist/OrderdetailRecipt.css" rel="stylesheet" />
+
+}
+
+
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">List</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Order Detail show</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+<!-- Container -->
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="align-left"></i></span></span>Order's Detail</h4>
+    </div>
+
+    @if (Model != null)
+    {
+
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <div class="printablDiv">
+
+
+                        <div class="row pad-top-botm ">
+                            <div class="col-lg-6 col-md-6 col-sm-6 ">
+
+                                <img src="~/clientHtml/images/SiteImages/ReciptLogo.jpg" style="padding-bottom:20px;" />
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                <strong> MenBytes Limited.</strong>
+                                <br />
+                                <i>Address :</i> Rawalpindi Bypass,
+                                <br />
+                                Near Alipur chowk, Gujranwala
+                                <br />
+                                Pakistan.
+
+                            </div>
+                        </div>
+                        <div class="row text-center contact-info">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <hr />
+                                <span>
+                                    <strong>Email : </strong> tayyab.bhatti30@gmail.com
+                                </span>
+                                <span>
+                                    <strong>Call : </strong> +92(336-4978774)
+                                </span>
+                                <span>
+                                    <strong>Fax : </strong> +012340-908- 890
+                                </span>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row pad-top-botm client-info">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <h4> <strong>Client's Shipping Information</strong></h4>
+                                <strong> @Model.OrderShipping.firstName @Model.OrderShipping.lastName</strong>
+                                <br />
+                                <b>Address :</b> @Model.OrderShipping.address
+                                <br />
+                                @Model.OrderShipping.City , @Model.OrderShipping.Country
+                                <br />
+                                <b>Call :</b> @Model.OrderShipping.phone
+                                <br />
+                                <b>E-mail :</b> @Model.OrderShipping.email
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                <h4> <strong>Payment Details </strong></h4>
+                                <b>Bill Amount : @Model.totalBill USD </b>
+                                <br />
+                                Bill Date : @Model.createAt.ToString("D")
+                                <br />
+                                <b>Payment Status : @Model.OrderStatus.statusName </b>
+                                <br />
+                                Delivery Date : 10th August 2014
+                                <br />
+                                Purchase Date : 30th July 2014
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table  table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>S. No.</th>
+                                                <th>Perticulars</th>
+                                                <th>Quantity.</th>
+                                                <th>Unit Price</th>
+                                                <th>Sub Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var orderDetail in Model.OrderDetail)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@orderDetail.ProductName</td>
+                                                    <td>@orderDetail.Quantity</td>
+                                                    <td>@orderDetail.Price</td>
+                                                    <td>@orderDetail.Total</td>
+                                                </tr>
+                                                i++;
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <hr />
+
+                                <div class="ttl-amts">
+                                    <h4> <strong>Bill Amount : @Model.totalBill PKR</strong> </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <strong> Important: </strong>
+                                <ol>
+                                    <li>
+                                        This is an electronic generated invoice so doesn't require any signature.
+
+                                    </li>
+                                    <li>
+                                        Please read all terms and polices on www.menBytes.com/ClientSide/Contactus for returns, replacement and other issues.
+
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row pad-top-botm">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <hr />
+                            <a href="#" class="btn btn-primary btn-lg" id="printtabl">Print Invoice</a>
+                            @*&nbsp;&nbsp;&nbsp;
+                                <a href="#" class="btn btn-success btn-lg">Download In Pdf</a>*@
+
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                            <div class="col-sm">
+
+                            </div>
+                        </div>*@
+                </section>
+            </div>
+        </div>
+        <!-- /Row -->
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <h2 class="text-danger">Oop..! Something is Wrong <i class="fa ti-face-sad"></i></h2>
+                </section>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@section scripts{
+    <script src="~/AdminSide/html/dist/JavaScriptPrint/printThis.js"></script>
+ 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+        
+            $("#printtabl").click(function (e) {
+
+               // alert("Print Button is Click");
+                e.preventDefault();
+                $('.printablDiv').printThis();
+            })
+        });
+
+     
+    </script>
+}
+

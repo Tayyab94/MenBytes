@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Companies List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Companies</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+<div class="container">
+    <!-- Title -->
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="external-link"></i></span></span><a href="@Url.Action("CreateCompany","Company")">Add Company</a></h4>
+        @*<input type="button" id="btnNew" class="btn btn-primary form-control" value="Add New" />*@
+    </div>
+    <!-- /Title -->
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="tblContainer">
+                @{
+                    Html.RenderAction("CompanyTable");
+                }
+            </div>
+            <hr />
+            <div class="actionContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+    @*<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#btnNew").click(function() {
+
+                $.ajax({
+                    url: '@Url.Action("Create", "Category")',
+                    type: "GET",
+
+                }).done(function(result) {
+
+                    $(".actionContainer").html(result);
+                    // validate form function
+                    //f("actionContainer");
+                }).fail(function() {
+                    alert("some")
+                });
+            });
+
+
+
+
+        });
+
+        //function focusAction(controlToFocus) {
+        //    alert("asd");
+        //    $('html, body').animate({
+        //       scrollTop: $("#" + controlToFocus).offset().top-100
+        //    }, 1000);
+
+        //}
+
+        //function f(controlToFocus) {
+        //    $('html', 'body').animate({
+        //            scrollTop: $("#" + controlToFocus).offset().top - 100
+        //        },
+        //        1000);
+        //}
+
+    </script>
+
+}
